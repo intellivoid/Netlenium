@@ -1,0 +1,23 @@
+{
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "name": "Netlenium Service",
+  "icons": {
+    "16": "icons/netlenium_16.png",
+    "48": "icons/netlenium_48.png",
+    "128": "icons/netlenium_128.png"
+  },
+  "permissions": [
+    "proxy",
+    "tabs",
+    "unlimitedStorage",
+    "storage",
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking"
+  ],
+  "background": {
+    "scripts": [ "background.js" ]
+  },
+  "minimum_chrome_version": "22.0.0"
+}

@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{18C6CB5F-0E09-4F3C-A42C-2DBEE6CA2357}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Netlenium.Driver</RootNamespace>
+    <AssemblyName>Netlenium.Driver</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebDriver\By.cs" />
+    <Compile Include="WebDriver\Chrome\ChromeDriver.cs" />
+    <Compile Include="WebDriver\Chrome\ChromeDriverService.cs" />
+    <Compile Include="WebDriver\Chrome\ChromeMobileEmulationDeviceSettings.cs" />
+    <Compile Include="WebDriver\Chrome\ChromeNetworkConditions.cs" />
+    <Compile Include="WebDriver\Chrome\ChromeOptions.cs" />
+    <Compile Include="WebDriver\Chrome\ChromePerformanceLoggingPreferences.cs" />
+    <Compile Include="WebDriver\Chrome\ChromeWebElement.cs" />
+    <Compile Include="WebDriver\Cookie.cs" />
+    <Compile Include="WebDriver\DefaultFileDetector.cs" />
+    <Compile Include="WebDriver\DriverOptions.cs" />
+    <Compile Include="WebDriver\DriverOptionsMergeResult.cs" />
+    <Compile Include="WebDriver\DriverService.cs" />
+    <Compile Include="WebDriver\DriverServiceNotFoundException.cs" />
+    <Compile Include="WebDriver\Edge\EdgeDriver.cs" />
+    <Compile Include="WebDriver\Edge\EdgeDriverService.cs" />
+    <Compile Include="WebDriver\Edge\EdgeOptions.cs" />
+    <Compile Include="WebDriver\Edge\EdgeWebElement.cs" />
+    <Compile Include="WebDriver\ElementClickInterceptedException.cs" />
+    <Compile Include="WebDriver\ElementNotInteractableException.cs" />
+    <Compile Include="WebDriver\ElementNotSelectableException.cs" />
+    <Compile Include="WebDriver\ElementNotVisibleException.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxBinary.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxDriver.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxDriverCommandExecutor.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxDriverLogLevel.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxDriverServer.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxDriverService.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxExtension.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxOptions.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxProfile.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxProfileManager.cs" />
+    <Compile Include="WebDriver\Firefox\FirefoxWebElement.cs" />
+    <Compile Include="WebDriver\Firefox\Internal\Executable.cs" />
+    <Compile Include="WebDriver\Firefox\Internal\ILock.cs" />
+    <Compile Include="WebDriver\Firefox\Internal\IniFileReader.cs" />
+    <Compile Include="WebDriver\Firefox\Internal\SocketLock.cs" />
+    <Compile Include="WebDriver\Firefox\Preferences.cs" />
+    <Compile Include="WebDriver\HTML5\AppCacheStatus.cs" />
+    <Compile Include="WebDriver\HTML5\IApplicationCache.cs" />
+    <Compile Include="WebDriver\HTML5\IHasApplicationCache.cs" />
+    <Compile Include="WebDriver\HTML5\IHasLocationContext.cs" />
+    <Compile Include="WebDriver\HTML5\IHasWebStorage.cs" />
+    <Compile Include="WebDriver\HTML5\ILocalStorage.cs" />
+    <Compile Include="WebDriver\HTML5\ILocationContext.cs" />
+    <Compile Include="WebDriver\HTML5\ISessionStorage.cs" />
+    <Compile Include="WebDriver\HTML5\IWebStorage.cs" />
+    <Compile Include="WebDriver\HTML5\Location.cs" />
+    <Compile Include="WebDriver\IAlert.cs" />
+    <Compile Include="WebDriver\IAllowsFileDetection.cs" />
+    <Compile Include="WebDriver\ICapabilities.cs" />
+    <Compile Include="WebDriver\ICookieJar.cs" />
+    <Compile Include="WebDriver\IE\InternetExplorerDriver.cs" />
+    <Compile Include="WebDriver\IE\InternetExplorerDriverLogLevel.cs" />
+    <Compile Include="WebDriver\IE\InternetExplorerDriverService.cs" />
+    <Compile Include="WebDriver\IE\InternetExplorerOptions.cs" />
+    <Compile Include="WebDriver\IE\InternetExplorerWebElement.cs" />
+    <Compile Include="WebDriver\IFileDetector.cs" />
+    <Compile Include="WebDriver\IHasCapabilities.cs" />
+    <Compile Include="WebDriver\IHasInputDevices.cs" />
+    <Compile Include="WebDriver\IHasTouchScreen.cs" />
+    <Compile Include="WebDriver\IJavascriptExecutor.cs" />
+    <Compile Include="WebDriver\IKeyboard.cs" />
+    <Compile Include="WebDriver\ILocatable.cs" />
+    <Compile Include="WebDriver\ILogs.cs" />
+    <Compile Include="WebDriver\IMouse.cs" />
+    <Compile Include="WebDriver\INavigation.cs" />
+    <Compile Include="WebDriver\Interactions\ActionBuilder.cs" />
+    <Compile Include="WebDriver\Interactions\Actions.cs" />
+    <Compile Include="WebDriver\Interactions\ActionSequence.cs" />
+    <Compile Include="WebDriver\Interactions\ButtonReleaseAction.cs" />
+    <Compile Include="WebDriver\Interactions\ClickAction.cs" />
+    <Compile Include="WebDriver\Interactions\ClickAndHoldAction.cs" />
+    <Compile Include="WebDriver\Interactions\CompositeAction.cs" />
+    <Compile Include="WebDriver\Interactions\ContextClickAction.cs" />
+    <Compile Include="WebDriver\Interactions\DoubleClickAction.cs" />
+    <Compile Include="WebDriver\Interactions\DoubleTapAction.cs" />
+    <Compile Include="WebDriver\Interactions\FlickAction.cs" />
+    <Compile Include="WebDriver\Interactions\IAction.cs" />
+    <Compile Include="WebDriver\Interactions\ICoordinates.cs" />
+    <Compile Include="WebDriver\Interactions\InputDevice.cs" />
+    <Compile Include="WebDriver\Interactions\InputDeviceKind.cs" />
+    <Compile Include="WebDriver\Interactions\Interaction.cs" />
+    <Compile Include="WebDriver\Interactions\KeyboardAction.cs" />
+    <Compile Include="WebDriver\Interactions\KeyDownAction.cs" />
+    <Compile Include="WebDriver\Interactions\KeyInputDevice.cs" />
+    <Compile Include="WebDriver\Interactions\KeyUpAction.cs" />
+    <Compile Include="WebDriver\Interactions\LongPressAction.cs" />
+    <Compile Include="WebDriver\Interactions\MouseAction.cs" />
+    <Compile Include="WebDriver\Interactions\MoveMouseAction.cs" />
+    <Compile Include="WebDriver\Interactions\MoveToOffsetAction.cs" />
+    <Compile Include="WebDriver\Interactions\PauseInteraction.cs" />
+    <Compile Include="WebDriver\Interactions\PointerInputDevice.cs" />
+    <Compile Include="WebDriver\Interactions\ScreenMoveAction.cs" />
+    <Compile Include="WebDriver\Interactions\ScreenPressAction.cs" />
+    <Compile Include="WebDriver\Interactions\ScreenReleaseAction.cs" />
+    <Compile Include="WebDriver\Interactions\ScrollAction.cs" />
+    <Compile Include="WebDriver\Interactions\SendKeysAction.cs" />
+    <Compile Include="WebDriver\Interactions\SingleKeyAction.cs" />
+    <Compile Include="WebDriver\Interactions\SingleTapAction.cs" />
+    <Compile Include="WebDriver\Interactions\TouchAction.cs" />
+    <Compile Include="WebDriver\Interactions\TouchActions.cs" />
+    <Compile Include="WebDriver\Interactions\WebDriverAction.cs" />
+    <Compile Include="WebDriver\Internal\AsyncJavaScriptExecutor.cs" />
+    <Compile Include="WebDriver\Internal\FileUtilities.cs" />
+    <Compile Include="WebDriver\Internal\IActionExecutor.cs" />
+    <Compile Include="WebDriver\Internal\IFindsByClassName.cs" />
+    <Compile Include="WebDriver\Internal\IFindsByCssSelector.cs" />
+    <Compile Include="WebDriver\Internal\IFindsById.cs" />
+    <Compile Include="WebDriver\Internal\IFindsByLinkText.cs" />
+    <Compile Include="WebDriver\Internal\IFindsByName.cs" />
+    <Compile Include="WebDriver\Internal\IFindsByPartialLinkText.cs" />
+    <Compile Include="WebDriver\Internal\IFindsByTagName.cs" />
+    <Compile Include="WebDriver\Internal\IFindsByXPath.cs" />
+    <Compile Include="WebDriver\Internal\IHasCapabilitiesDictionary.cs" />
+    <Compile Include="WebDriver\Internal\IWebElementReference.cs" />
+    <Compile Include="WebDriver\Internal\IWrapsDriver.cs" />
+    <Compile Include="WebDriver\Internal\IWrapsElement.cs" />
+    <Compile Include="WebDriver\Internal\NativeMethods.cs" />
+    <Compile Include="WebDriver\Internal\PortUtilities.cs" />
+    <Compile Include="WebDriver\Internal\ResourceUtilities.cs" />
+    <Compile Include="WebDriver\Internal\ReturnedCapabilities.cs" />
+    <Compile Include="WebDriver\Internal\ReturnedCookie.cs" />
+    <Compile Include="WebDriver\Internal\ZipStorer.cs" />
+    <Compile Include="WebDriver\InvalidCookieDomainException.cs" />
+    <Compile Include="WebDriver\InvalidElementStateException.cs" />
+    <Compile Include="WebDriver\InvalidSelectorException.cs" />
+    <Compile Include="WebDriver\IOptions.cs" />
+    <Compile Include="WebDriver\IRotatable.cs" />
+    <Compile Include="WebDriver\ISearchContext.cs" />
+    <Compile Include="WebDriver\ITakesScreenshot.cs" />
+    <Compile Include="WebDriver\ITargetLocator.cs" />
+    <Compile Include="WebDriver\ITimeouts.cs" />
+    <Compile Include="WebDriver\ITouchScreen.cs" />
+    <Compile Include="WebDriver\IWebDriver.cs" />
+    <Compile Include="WebDriver\IWebElement.cs" />
+    <Compile Include="WebDriver\IWindow.cs" />
+    <Compile Include="WebDriver\Keys.cs" />
+    <Compile Include="WebDriver\LogEntry.cs" />
+    <Compile Include="WebDriver\LogLevel.cs" />
+    <Compile Include="WebDriver\LogType.cs" />
+    <Compile Include="WebDriver\NoAlertPresentException.cs" />
+    <Compile Include="WebDriver\NoSuchElementException.cs" />
+    <Compile Include="WebDriver\NoSuchFrameException.cs" />
+    <Compile Include="WebDriver\NoSuchWindowException.cs" />
+    <Compile Include="WebDriver\NotFoundException.cs" />
+    <Compile Include="WebDriver\Opera\OperaDriver.cs" />
+    <Compile Include="WebDriver\Opera\OperaDriverService.cs" />
+    <Compile Include="WebDriver\Opera\OperaOptions.cs" />
+    <Compile Include="WebDriver\Opera\OperaWebElement.cs" />
+    <Compile Include="WebDriver\Platform.cs" />
+    <Compile Include="WebDriver\Proxy.cs" />
+    <Compile Include="WebDriver\Remote\CapabilityType.cs" />
+    <Compile Include="WebDriver\Remote\Command.cs" />
+    <Compile Include="WebDriver\Remote\CommandInfo.cs" />
+    <Compile Include="WebDriver\Remote\CommandInfoRepository.cs" />
+    <Compile Include="WebDriver\Remote\DesiredCapabilities.cs" />
+    <Compile Include="WebDriver\Remote\DriverCommand.cs" />
+    <Compile Include="WebDriver\Remote\DriverServiceCommandExecutor.cs" />
+    <Compile Include="WebDriver\Remote\ErrorResponse.cs" />
+    <Compile Include="WebDriver\Remote\HttpCommandExecutor.cs" />
+    <Compile Include="WebDriver\Remote\ICommandExecutor.cs" />
+    <Compile Include="WebDriver\Remote\ICommandServer.cs" />
+    <Compile Include="WebDriver\Remote\IHasSessionId.cs" />
+    <Compile Include="WebDriver\Remote\JsonConverters\CharArrayJsonConverter.cs" />
+    <Compile Include="WebDriver\Remote\JsonConverters\ResponseValueJsonConverter.cs" />
+    <Compile Include="WebDriver\Remote\LocalFileDetector.cs" />
+    <Compile Include="WebDriver\Remote\ReadOnlyDesiredCapabilities.cs" />
+    <Compile Include="WebDriver\Remote\RemoteAlert.cs" />
+    <Compile Include="WebDriver\Remote\RemoteApplicationCache.cs" />
+    <Compile Include="WebDriver\Remote\RemoteCookieJar.cs" />
+    <Compile Include="WebDriver\Remote\RemoteCoordinates.cs" />
+    <Compile Include="WebDriver\Remote\RemoteKeyboard.cs" />
+    <Compile Include="WebDriver\Remote\RemoteLocalStorage.cs" />
+    <Compile Include="WebDriver\Remote\RemoteLocationContext.cs" />
+    <Compile Include="WebDriver\Remote\RemoteLogs.cs" />
+    <Compile Include="WebDriver\Remote\RemoteMouse.cs" />
+    <Compile Include="WebDriver\Remote\RemoteNavigator.cs" />
+    <Compile Include="WebDriver\Remote\RemoteOptions.cs" />
+    <Compile Include="WebDriver\Remote\RemoteSessionSettings.cs" />
+    <Compile Include="WebDriver\Remote\RemoteSessionStorage.cs" />
+    <Compile Include="WebDriver\Remote\RemoteTargetLocator.cs" />
+    <Compile Include="WebDriver\Remote\RemoteTimeouts.cs" />
+    <Compile Include="WebDriver\Remote\RemoteTouchScreen.cs" />
+    <Compile Include="WebDriver\Remote\RemoteWebDriver.cs" />
+    <Compile Include="WebDriver\Remote\RemoteWebElement.cs" />
+    <Compile Include="WebDriver\Remote\RemoteWebElementFactory.cs" />
+    <Compile Include="WebDriver\Remote\RemoteWebStorage.cs" />
+    <Compile Include="WebDriver\Remote\RemoteWindow.cs" />
+    <Compile Include="WebDriver\Remote\Response.cs" />
+    <Compile Include="WebDriver\Remote\SendingRemoteHttpRequestEventArgs.cs" />
+    <Compile Include="WebDriver\Remote\SessionId.cs" />
+    <Compile Include="WebDriver\Remote\StackTraceElement.cs" />
+    <Compile Include="WebDriver\Remote\W3CWireProtocolCommandInfoRepository.cs" />
+    <Compile Include="WebDriver\Remote\WebDriverError.cs" />
+    <Compile Include="WebDriver\Remote\WebDriverWireProtocolCommandInfoRepository.cs" />
+    <Compile Include="WebDriver\Safari\SafariDriver.cs" />
+    <Compile Include="WebDriver\Safari\SafariDriverService.cs" />
+    <Compile Include="WebDriver\Safari\SafariOptions.cs" />
+    <Compile Include="WebDriver\ScreenOrientation.cs" />
+    <Compile Include="WebDriver\Screenshot.cs" />
+    <Compile Include="WebDriver\StaleElementReferenceException.cs" />
+    <Compile Include="WebDriver\Support\DefaultWait{T}.cs" />
+    <Compile Include="WebDriver\Support\Events\EventFiringWebDriver.cs" />
+    <Compile Include="WebDriver\Support\Events\FindElementEventArgs.cs" />
+    <Compile Include="WebDriver\Support\Events\WebDriverExceptionEventArgs.cs" />
+    <Compile Include="WebDriver\Support\Events\WebDriverNavigationEventArgs.cs" />
+    <Compile Include="WebDriver\Support\Events\WebDriverScriptEventArgs.cs" />
+    <Compile Include="WebDriver\Support\Events\WebElementEventArgs.cs" />
+    <Compile Include="WebDriver\Support\Events\WebElementValueEventArgs.cs" />
+    <Compile Include="WebDriver\Support\Extensions\WebDriverExtensions.cs" />
+    <Compile Include="WebDriver\Support\IClock.cs" />
+    <Compile Include="WebDriver\Support\IWait{T}.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\ByAll.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\ByChained.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\ByFactory.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\ByIdOrName.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\CacheLookupAttribute.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\DefaultElementLocator.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\DefaultPageObjectMemberDecorator.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\FindsByAllAttribute.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\FindsByAttribute.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\FindsBySequenceAttribute.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\How.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\IElementLocator.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\IPageObjectMemberDecorator.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\PageFactory.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\RetryingElementLocator.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\WebDriverObjectProxy.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\WebElementListProxy.cs" />
+    <Compile Include="WebDriver\Support\PageObjects\WebElementProxy.cs" />
+    <Compile Include="WebDriver\Support\SystemClock.cs" />
+    <Compile Include="WebDriver\Support\UI\ExpectedConditions.cs" />
+    <Compile Include="WebDriver\Support\UI\ILoadableComponent.cs" />
+    <Compile Include="WebDriver\Support\UI\LoadableComponentException.cs" />
+    <Compile Include="WebDriver\Support\UI\LoadableComponent{T}.cs" />
+    <Compile Include="WebDriver\Support\UI\PopupWindowFinder.cs" />
+    <Compile Include="WebDriver\Support\UI\SelectElement.cs" />
+    <Compile Include="WebDriver\Support\UI\SlowLoadableComponent{T}.cs" />
+    <Compile Include="WebDriver\Support\UI\UnexpectedTagNameException.cs" />
+    <Compile Include="WebDriver\Support\WebDriverWait.cs" />
+    <Compile Include="WebDriver\UnableToSetCookieException.cs" />
+    <Compile Include="WebDriver\UnhandledAlertException.cs" />
+    <Compile Include="WebDriver\WebDriverException.cs" />
+    <Compile Include="WebDriver\WebDriverResult.cs" />
+    <Compile Include="WebDriver\WebDriverTimeoutException.cs" />
+    <Compile Include="WebDriver\XPathLookupException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ServiceExtensions\Chrome\background.js" />
+    <Content Include="ServiceExtensions\Chrome\icons\netlenium_128.png" />
+    <Content Include="ServiceExtensions\Chrome\icons\netlenium_16.png" />
+    <Content Include="ServiceExtensions\Chrome\icons\netlenium_48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="ServiceExtensions\Chrome\manifest.json" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

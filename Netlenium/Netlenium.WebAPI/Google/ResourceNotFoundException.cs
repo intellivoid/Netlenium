@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Runtime.Serialization;
 
-namespace Netlenium.Driver.WebAPI.Google
+namespace Netlenium.WebAPI.Google
 {
     /// <summary>
     /// Raised when the resource was not found or does not exist

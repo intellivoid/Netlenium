@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace Netlenium.Driver.WebAPI.Google
+namespace Netlenium.WebAPI.Google
 {
     /// <summary>
     /// Storage Content Object

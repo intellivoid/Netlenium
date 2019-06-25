@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Xml;
 
-namespace Netlenium.Driver.WebAPI.Google
+namespace Netlenium.WebAPI.Google
 {
     public class Storage
     {
@@ -47,9 +47,9 @@ namespace Netlenium.Driver.WebAPI.Google
         /// <returns></returns>
         public static Content FetchResource(string name, string endPoint = "https://chromedriver.storage.googleapis.com/")
         {
-            foreach(var content in FetchContents(endPoint))
+            foreach (var content in FetchContents(endPoint))
             {
-                if(string.Equals(content.Name, name, StringComparison.CurrentCultureIgnoreCase))
+                if (string.Equals(content.Name, name, StringComparison.CurrentCultureIgnoreCase))
                 {
                     return content;
                 }

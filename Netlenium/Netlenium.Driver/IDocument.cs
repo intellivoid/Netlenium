@@ -1,6 +1,6 @@
 ﻿namespace Netlenium.Driver
 {
-    interface IDocument
+    public interface IDocument
     {
     }
 }

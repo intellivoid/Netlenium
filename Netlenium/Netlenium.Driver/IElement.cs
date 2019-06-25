@@ -1,6 +1,6 @@
 ﻿namespace Netlenium.Driver
 {
-    interface IElement
+    public interface IElement
     {
     }
 }

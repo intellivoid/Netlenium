@@ -1,0 +1,62 @@
+﻿namespace Netlenium.Logging
+{
+    /// <summary>
+    /// Service Object for Logging
+    /// </summary>
+    public class Service
+    {
+        /// <summary>
+        /// The name of the service
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Option for if Information Type Entries are allowed to be logged
+        /// </summary>
+        public bool InformationEntriesEnabled { get; set; }
+
+        /// <summary>
+        /// Option for if Warning Type Entires are allowed to be logged
+        /// </summary>
+        public bool WarningEntriesEnabled { get; set; }
+
+        /// <summary>
+        /// Option for if Error Type Entries are allowed to be logged
+        /// </summary>
+        public bool ErrorEntriesEnabled { get; set; }
+
+        /// <summary>
+        /// Option for if Verbose Type Entries are allowed to be logged
+        /// </summary>
+        public bool VerboseEntriesEnabled { get; set; }
+
+        /// <summary>
+        /// Option for if Debugging Type Entries are allowed to be logged
+        /// </summary>
+        public bool DebuggingEntriesEnabled { get; set; }
+
+        /// <summary>
+        /// If Enabled, all entries will be printed to the CommandLine
+        /// </summary>
+        public bool CommandLineLoggingEnabled { get; set; }
+
+        /// <summary>
+        /// Writes a log entry
+        /// </summary>
+        /// <param name="messageType"></param>
+        /// <param name="moudleName"></param>
+        /// <param name="message"></param>
+        public void WriteEntry(MessageType messageType, string moudleName, string message)
+        {
+            if(CommandLineLoggingEnabled == true)
+            {
+                CommandLine.PrintEntry(
+                    messageType: messageType,
+                    serviceName: Name,
+                    moduleName: moudleName,
+                    entry: message
+                );
+            }
+        }
+    }
+}

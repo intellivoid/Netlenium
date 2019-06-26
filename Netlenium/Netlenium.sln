@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium.Driver", "Netleni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium.WebAPI", "Netlenium.WebAPI\Netlenium.WebAPI.csproj", "{D0F19DD7-EBBB-4BEC-9A02-79DB0A99BFBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium Server", "Netlenium Server\Netlenium Server.csproj", "{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D0F19DD7-EBBB-4BEC-9A02-79DB0A99BFBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0F19DD7-EBBB-4BEC-9A02-79DB0A99BFBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0F19DD7-EBBB-4BEC-9A02-79DB0A99BFBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

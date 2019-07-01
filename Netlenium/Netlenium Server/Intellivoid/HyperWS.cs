@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Netlenium.Driver
+namespace NetleniumServer.Intellivoid
 {
-    public enum Browser
+    class HyperWS
     {
-        Chrome = 0,
-        Firefox = 1
     }
 }

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium.WebAPI", "Netleni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium Server", "Netlenium Server\Netlenium Server.csproj", "{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium.Logging", "Netlenium.Logging\Netlenium.Logging.csproj", "{B00DFF05-7ABC-4F3F-B3C8-7A0C4DFC8591}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B00DFF05-7ABC-4F3F-B3C8-7A0C4DFC8591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B00DFF05-7ABC-4F3F-B3C8-7A0C4DFC8591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B00DFF05-7ABC-4F3F-B3C8-7A0C4DFC8591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B00DFF05-7ABC-4F3F-B3C8-7A0C4DFC8591}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

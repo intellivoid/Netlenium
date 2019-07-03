@@ -60,6 +60,7 @@
     <Compile Include="INavigation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Platform.cs" />
+    <Compile Include="Utilities.cs" />
     <Compile Include="WebDriver\By.cs" />
     <Compile Include="WebDriver\Chrome\ChromeDriver.cs" />
     <Compile Include="WebDriver\Chrome\ChromeDriverService.cs" />

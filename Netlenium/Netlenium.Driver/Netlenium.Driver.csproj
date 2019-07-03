@@ -55,9 +55,11 @@
     <Compile Include="IActions.cs" />
     <Compile Include="IDocument.cs" />
     <Compile Include="IDriver.cs" />
+    <Compile Include="IDriverManager.cs" />
     <Compile Include="IElement.cs" />
     <Compile Include="INavigation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Platform.cs" />
     <Compile Include="WebDriver\By.cs" />
     <Compile Include="WebDriver\Chrome\ChromeDriver.cs" />
     <Compile Include="WebDriver\Chrome\ChromeDriverService.cs" />
@@ -316,6 +318,15 @@
     <None Include="packages.config" />
     <None Include="ServiceExtensions\Chrome\manifest.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Netlenium.Logging\Netlenium.Logging.csproj">
+      <Project>{b00dff05-7abc-4f3f-b3c8-7a0c4dfc8591}</Project>
+      <Name>Netlenium.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Netlenium.WebAPI\Netlenium.WebAPI.csproj">
+      <Project>{d0f19dd7-ebbb-4bec-9a02-79db0a99bfbb}</Project>
+      <Name>Netlenium.WebAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

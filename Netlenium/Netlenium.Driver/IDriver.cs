@@ -17,11 +17,9 @@
         Logging.Service Logging { get; set; }
 
         /// <summary>
-        /// Property for using the Driver Manager, if this is disabled the
-        /// location for the driver must be set manually otherwise an
-        /// exception would be thrown
+        /// Driver Manager for this Driver
         /// </summary>
-        bool DriverManagerEnabled { get; set; }
+        IDriverManager DriverManager { get; set; }
 
         /// <summary>
         /// The driver directory location if DriverManager is disabled
@@ -42,6 +40,12 @@
         /// Current Document Properties
         /// </summary>
         IDocument Document { get; }
+
+        /// <summary>
+        /// Initalizes the driver by checking for updates or installing
+        /// missing resources for the selected platform
+        /// </summary>
+        void Initalize();
        
     }
 }

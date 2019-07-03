@@ -5,7 +5,7 @@
         /// <summary>
         /// The platform that the Driver Manager will target
         /// </summary>
-        PlatformType TargetPlatform { get; set; }
+        Platform TargetPlatform { get; set; }
 
         /// <summary>
         /// The latest version of the driver for the selected platform

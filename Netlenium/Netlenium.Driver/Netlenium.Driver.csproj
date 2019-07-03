@@ -47,6 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Browser.cs" />
+    <Compile Include="Chrome\Actions.cs" />
+    <Compile Include="Chrome\Driver.cs" />
+    <Compile Include="Chrome\DriverManager.cs" />
+    <Compile Include="Chrome\Navigation.cs" />
     <Compile Include="IActions.cs" />
     <Compile Include="IDocument.cs" />
     <Compile Include="IDriver.cs" />
@@ -311,8 +316,6 @@
     <None Include="packages.config" />
     <None Include="ServiceExtensions\Chrome\manifest.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Chrome\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

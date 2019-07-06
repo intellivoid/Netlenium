@@ -10,6 +10,10 @@ namespace DriverManager_Test
     {
         static void Main(string[] args)
         {
+            var Netlenium = new Netlenium.Driver.Chrome.Driver();
+            Netlenium.DriverManager.Initalize();
+
+            Console.ReadLine();
         }
     }
 }

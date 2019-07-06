@@ -1,4 +1,6 @@
-﻿namespace Netlenium.Logging
+﻿using System.Diagnostics;
+
+namespace Netlenium.Logging
 {
     /// <summary>
     /// Service Object for Logging
@@ -41,21 +43,31 @@
         public bool CommandLineLoggingEnabled { get; set; }
 
         /// <summary>
+        /// If enabled, all enteries will be printed out to the debugging menu
+        /// </summary>
+        public bool DebuggingOutputEnabled { get; set; }
+
+        /// <summary>
         /// Writes a log entry
         /// </summary>
         /// <param name="messageType"></param>
-        /// <param name="moudleName"></param>
+        /// <param name="moduleName"></param>
         /// <param name="message"></param>
-        public void WriteEntry(MessageType messageType, string moudleName, string message)
+        public void WriteEntry(MessageType messageType, string moduleName, string message)
         {
             if(CommandLineLoggingEnabled == true)
             {
                 CommandLine.PrintEntry(
                     messageType: messageType,
                     serviceName: Name,
-                    moduleName: moudleName,
+                    moduleName: moduleName,
                     entry: message
                 );
+            }
+
+            if(DebuggingOutputEnabled == true)
+            {
+                Debug.Print(string.Format("[{0}] {1} => {2} :: {3}", messageType.ToString(), Name, moduleName, message));
             }
         }
     }

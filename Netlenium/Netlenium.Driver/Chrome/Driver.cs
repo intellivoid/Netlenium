@@ -30,7 +30,9 @@ namespace Netlenium.Driver.Chrome
             {
                 if(value == Platform.AutoDetect)
                 {
+                    logging.WriteEntry(MessageType.Verbose, "Driver", "Auto detecting platform");
                     targetPlatform = Utilities.DetectPlatform();
+                    logging.WriteEntry(MessageType.Verbose, "Driver", string.Format("Detected Platform: {0}", targetPlatform));
                 }
                 else
                 {
@@ -39,11 +41,15 @@ namespace Netlenium.Driver.Chrome
             }
         }
 
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
         public Driver()
         {
             logging = new Service()
             {
                 CommandLineLoggingEnabled = true,
+                DebuggingOutputEnabled = true,
                 InformationEntriesEnabled = true,
                 DebuggingEntriesEnabled = true,
                 ErrorEntriesEnabled = true,
@@ -55,6 +61,8 @@ namespace Netlenium.Driver.Chrome
             driverManager = new DriverManager(this);
             headless = true;
             targetPlatform = Platform.AutoDetect;
+
+            logging.WriteEntry(MessageType.Debugging, "Driver", "Class constructed");
         }
 
         public void Start()

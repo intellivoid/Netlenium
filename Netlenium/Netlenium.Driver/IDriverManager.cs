@@ -9,11 +9,6 @@ namespace Netlenium.Driver
     public interface IDriverManager
     {
         /// <summary>
-        /// Logging properties of this Driver Manager
-        /// </summary>
-        Logging.Service Logging { get; }
-
-        /// <summary>
         /// Gets the latest version of the driver
         /// </summary>
         /// <returns></returns>

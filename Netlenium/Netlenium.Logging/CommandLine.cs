@@ -56,7 +56,7 @@ namespace Netlenium.Logging
             Console.Write(string.Format(" >{0}.{1}", serviceName, moduleName));
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(string.Format(" =>", entry));
+            Console.Write(string.Format(" => {0}", entry));
             Console.WriteLine();
         }
     }

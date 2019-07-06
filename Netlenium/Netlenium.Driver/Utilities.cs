@@ -33,5 +33,57 @@ namespace Netlenium.Driver
         {
             Process.Start("chmod", $"+x \"{filePath}\"");
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="platform"></param>
+        /// <param name="browser"></param>
+        /// <returns></returns>
+        public static string GetDriverDirectoryName(Platform platform, Browser browser)
+        {
+            if(platform == Platform.AutoDetect)
+            {
+                platform = DetectPlatform();
+            }
+
+            var Results = string.Empty;
+
+            switch(browser)
+            {
+                case Browser.Chrome:
+                    Results = "chrome";
+                    break;
+
+                case Browser.Firefox:
+                    Results = "firefox";
+                    break;
+
+                default:
+                    Results = "unknown";
+                    break;
+            }
+
+            switch(platform)
+            {
+                case Platform.Windows:
+                    Results = string.Format("{0}_{1}", Results, "win32");
+                    break;
+
+                case Platform.Linux32:
+                    Results = string.Format("{0}_{1}", Results, "linux_x86");
+                    break;
+
+                case Platform.Linux64:
+                    Results = string.Format("{0}_{1}", Results, "linux_x64");
+                    break;
+
+                default:
+                    Results = string.Format("{0}_{1}", Results, "unknown");
+                    break;
+            }
+
+            return Results;
+        }
     }
 }

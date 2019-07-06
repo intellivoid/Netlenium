@@ -47,11 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationPaths.cs" />
     <Compile Include="Browser.cs" />
-    <Compile Include="Chrome\Actions.cs" />
-    <Compile Include="Chrome\Driver.cs" />
-    <Compile Include="Chrome\DriverManager.cs" />
-    <Compile Include="Chrome\Navigation.cs" />
     <Compile Include="IActions.cs" />
     <Compile Include="IDocument.cs" />
     <Compile Include="IDriver.cs" />
@@ -328,6 +325,9 @@
       <Project>{d0f19dd7-ebbb-4bec-9a02-79db0a99bfbb}</Project>
       <Name>Netlenium.WebAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Chrome\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,24 +1,48 @@
-﻿namespace Netlenium.Driver
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Netlenium.Driver
 {
-    /// <summary>
-    /// Driver Manager Interface
-    /// </summary>
     public interface IDriverManager
     {
         /// <summary>
-        /// The platform that the Driver Manager will target
+        /// Gets the latest version of the driver
         /// </summary>
-        Platform TargetPlatform { get; set; }
+        /// <returns></returns>
+        Version GetLatestVersion();
 
         /// <summary>
-        /// Gets the latest version of the driver that's available
+        /// Gets the current version that's currently installed
+        /// 
+        /// Throws an exception if the driver is not installed
         /// </summary>
-        string GetLatestVersion();
+        /// <returns></returns>
+        Version GetCurrentVersion();
 
         /// <summary>
-        /// Determines
+        /// The current target platform that this Driver Manager is trying to target
         /// </summary>
-        bool IsInstalled { get; set; }
+        /// <returns></returns>
+        Platform TargetPlatform { get; }
+
+        /// <summary>
+        /// The browser that this DriverManager will manage
+        /// </summary>
+        /// <returns></returns>
+        Browser TargetBrowser { get; }
+
+        /// <summary>
+        /// Determines if the Driver is properly installed
+        /// </summary>
+        bool IsInstalled { get; }
+
+        /// <summary>
+        /// Intializes the driver by updating or fetching any missing resources
+        /// </summary>
+        void Initalize();
 
     }
 }

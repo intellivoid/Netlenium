@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Netlenium.Driver.Chrome
+namespace DriverManager_Test
 {
-    public class DriverManager : IDriverManager
+    class Program
     {
+        static void Main(string[] args)
+        {
+        }
     }
 }

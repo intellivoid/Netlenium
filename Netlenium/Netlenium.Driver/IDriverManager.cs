@@ -28,6 +28,21 @@ namespace Netlenium.Driver
         bool IsInstalled { get; }
 
         /// <summary>
+        /// Gets the file name of the executable driver
+        /// </summary>
+        string DriverExecutableName { get; }
+
+        /// <summary>
+        /// The directory path which contains all the driver resources
+        /// </summary>
+        string DriverDirectoryPath { get; }
+
+        /// <summary>
+        /// The full path to the driver executable file
+        /// </summary>
+        string DriverExecutablePath { get; }
+
+        /// <summary>
         /// Intializes the driver by updating or fetching any missing resources
         /// </summary>
         void Initalize();

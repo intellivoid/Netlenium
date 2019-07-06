@@ -25,7 +25,17 @@ namespace Netlenium.Driver.Chrome
 
         private Platform targetPlatform;
         public Platform TargetPlatform {
-            get => targetPlatform;
+            get
+            {
+                if (targetPlatform == Platform.AutoDetect)
+                {
+                    logging.WriteEntry(MessageType.Verbose, "Driver", "Auto detecting platform");
+                    targetPlatform = Utilities.DetectPlatform();
+                    logging.WriteEntry(MessageType.Verbose, "Driver", string.Format("Detected Platform: {0}", targetPlatform));
+                }
+
+                return targetPlatform;
+            }
             set
             {
                 if(value == Platform.AutoDetect)

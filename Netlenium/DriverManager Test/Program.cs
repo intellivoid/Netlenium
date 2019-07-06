@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Netlenium.Driver;
 
 namespace DriverManager_Test
 {
@@ -10,8 +11,16 @@ namespace DriverManager_Test
     {
         static void Main(string[] args)
         {
-            var Netlenium = new Netlenium.Driver.Chrome.Driver();
-            Netlenium.DriverManager.Initalize();
+            var WebDriver = new Netlenium.Driver.Chrome.Driver();
+
+            WebDriver.Logging.CommandLineLoggingEnabled = true;
+            WebDriver.Logging.DebuggingEntriesEnabled = false;
+            WebDriver.Logging.VerboseEntriesEnabled = true;
+            WebDriver.Logging.InformationEntriesEnabled = true;
+            WebDriver.Logging.WarningEntriesEnabled = true;
+            WebDriver.Logging.ErrorEntriesEnabled = true;
+
+            WebDriver.DriverManager.Initalize();
 
             Console.ReadLine();
         }

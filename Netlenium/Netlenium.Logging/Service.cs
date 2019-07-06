@@ -55,6 +55,44 @@ namespace Netlenium.Logging
         /// <param name="message"></param>
         public void WriteEntry(MessageType messageType, string moduleName, string message)
         {
+            switch(messageType)
+            {
+                case MessageType.Debugging:
+                    if(DebuggingEntriesEnabled == false)
+                    {
+                        return;
+                    }
+                    break;
+
+                case MessageType.Error:
+                    if (ErrorEntriesEnabled == false)
+                    {
+                        return;
+                    }
+                    break;
+
+                case MessageType.Information:
+                    if(InformationEntriesEnabled == false)
+                    {
+                        return;
+                    }
+                    break;
+
+                case MessageType.Verbose:
+                    if(VerboseEntriesEnabled == false)
+                    {
+                        return;
+                    }
+                    break;
+
+                case MessageType.Warning:
+                    if (WarningEntriesEnabled == false)
+                    {
+                        return;
+                    }
+                    break;
+            }
+
             if(CommandLineLoggingEnabled == true)
             {
                 CommandLine.PrintEntry(

@@ -175,7 +175,7 @@ namespace Netlenium.Driver.Chrome
             var TemporaryFileDownloadPath = string.Format($"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}chromedriver_tmp.zip");
             var DriverExecutableName = string.Empty;
             var DriverDirectoryPath = Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser);
-            var DriverVersionFile = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}version";
+            var DriverVersionFilePath = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}version";
             var PermissionsRequired = false;
 
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("Requesting Google Storage Resource '{0}'", $"{LatestVersion}/chromedriver_win32.zip"));
@@ -190,11 +190,13 @@ namespace Netlenium.Driver.Chrome
                 case Platform.Linux32:
                     Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_linux32.zip");
                     DriverExecutableName = "chromedriver.exe";
+                    PermissionsRequired = true;
                     break;
 
                 case Platform.Linux64:
                     Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_linux64.zip");
                     DriverExecutableName = "chromedriver.exe";
+                    PermissionsRequired = true;
                     break;
 
                 default:
@@ -202,12 +204,51 @@ namespace Netlenium.Driver.Chrome
                     throw new UnsupportedPlatformException();
             }
 
-           
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Temporary File Download Path: {TemporaryFileDownloadPath}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Executable Name: {DriverExecutableName}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Directory Path: {DriverDirectoryPath}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Version File Path: {DriverVersionFilePath}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Permissions Required (chmod): {PermissionsRequired}");
+
+            // Check files before modification
+            if(Directory.Exists(DriverDirectoryPath) == true)
+            {
+                if (File.Exists(TemporaryFileDownloadPath) == true)
+                {
+                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{TemporaryFileDownloadPath}' already exists, this file will be deleted");
+                    File.Delete(TemporaryFileDownloadPath);
+                }
+
+                if (File.Exists($"{DriverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}") == true)
+                {
+                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{DriverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}' already exists, this file will be deleted");
+                    File.Delete($"{DriverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}");
+                }
+
+                if (File.Exists(DriverVersionFilePath) == true)
+                {
+                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{DriverVersionFilePath}' already exists, this file will be deleted");
+                    File.Delete(DriverVersionFilePath);
+                }
+            }
+            else
+            {
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Creating directory '{DriverDirectoryPath}'");
+                Directory.CreateDirectory(DriverDirectoryPath);
+            }
+
+            var webClient = new WebClient();
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Downloading archive from '{Resource.AccessLocation.ToString()}'");
+            webClient.DownloadFile(Resource.AccessLocation.ToString(), TemporaryFileDownloadPath);
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Download completed");
         }
 
         public void Update()
         {
             throw new NotImplementedException();
         }
+
+     
+        
     }
 }

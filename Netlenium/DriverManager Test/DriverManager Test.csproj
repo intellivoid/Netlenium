@@ -54,6 +54,10 @@
       <Project>{18c6cb5f-0e09-4f3c-a42c-2dbee6ca2357}</Project>
       <Name>Netlenium.Driver</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Netlenium.Logging\Netlenium.Logging.csproj">
+      <Project>{B00DFF05-7ABC-4F3F-B3C8-7A0C4DFC8591}</Project>
+      <Name>Netlenium.Logging</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

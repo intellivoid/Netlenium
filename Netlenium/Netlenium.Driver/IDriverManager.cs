@@ -9,6 +9,11 @@ namespace Netlenium.Driver
     public interface IDriverManager
     {
         /// <summary>
+        /// Logging properties of this Driver Manager
+        /// </summary>
+        Logging.Service Logging { get; }
+
+        /// <summary>
         /// Gets the latest version of the driver
         /// </summary>
         /// <returns></returns>
@@ -21,18 +26,6 @@ namespace Netlenium.Driver
         /// </summary>
         /// <returns></returns>
         Version GetCurrentVersion();
-
-        /// <summary>
-        /// The current target platform that this Driver Manager is trying to target
-        /// </summary>
-        /// <returns></returns>
-        Platform TargetPlatform { get; }
-
-        /// <summary>
-        /// The browser that this DriverManager will manage
-        /// </summary>
-        /// <returns></returns>
-        Browser TargetBrowser { get; }
 
         /// <summary>
         /// Determines if the Driver is properly installed

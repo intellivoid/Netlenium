@@ -8,17 +8,22 @@
         /// <summary>
         /// Logging properties of this Driver
         /// </summary>
-        Logging.Service Logging { get; set; }
+        Logging.Service Logging { get; }
 
         /// <summary>
         /// Driver Manager for this Driver
         /// </summary>
-        IDriverManager DriverManager { get; set; }
+        IDriverManager DriverManager { get; }
 
         /// <summary>
         /// The target browser that this driver is going to control
         /// </summary>
         Browser TargetBrowser { get; }
+
+        /// <summary>
+        /// The target platform that this driver will attempt to work with
+        /// </summary>
+        Platform TargetPlatform { get; set; }
 
         /// <summary>
         /// Driver Actions
@@ -31,7 +36,7 @@
         IDocument Document { get; }
 
         /// <summary>
-        /// If the browser should run in headless mode before starting
+        /// If the browser should run in headless mode before startingz
         /// </summary>
         bool Headless { get; set; }
 

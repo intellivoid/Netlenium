@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using Netlenium.Driver.WebDriver.Chrome;
+using Netlenium.Driver.WebDriver.Remote;
 using Netlenium.Logging;
 
 namespace Netlenium.Driver.Chrome
@@ -52,6 +57,48 @@ namespace Netlenium.Driver.Chrome
         }
 
         /// <summary>
+        /// The Driver Service process manager
+        /// </summary>
+        private ChromeDriverService DriverService { get; set; }
+
+        /// <summary>
+        /// Options that are passed on to the Chrome Driver
+        /// </summary>
+        private ChromeOptions DriverOptions { get; set; }
+
+        /// <summary>
+        /// Remote Driver Client for controlling the Driver Service
+        /// </summary>
+        private RemoteWebDriver RemoteDriver { get; set; }
+
+        /// <summary>
+        /// The Window size that is set if running in headless mode
+        /// </summary>
+        private Size HeadlessWindowSize { get; set; }
+
+        private bool driverLoggingEnabled;
+        public bool DriverLoggingEnabled { get => driverLoggingEnabled; set => driverLoggingEnabled = value; }
+
+        private bool driverVerboseLoggingEnabled;
+        public bool DriverVerboseLoggingEnabled { get => driverVerboseLoggingEnabled; set => driverVerboseLoggingEnabled = value; }
+
+        /// <summary>
+        /// Sets the current options for Chrome Driver
+        /// </summary>
+        /// <param name="options"></param>
+        private void SetOptions(Dictionary<string, string> options)
+        {
+            DriverOptions = new ChromeOptions();
+
+            foreach (var option in options)
+            {
+                var Argument = option.Value == string.Empty ? option.Key : $"{option.Key}={option.Value}";
+                logging.WriteEntry(MessageType.Debugging, "Driver", $"Setting argument '{Argument}'");
+                DriverOptions.AddArgument(Argument);
+            }
+        }
+
+        /// <summary>
         /// Public Constructor
         /// </summary>
         public Driver()
@@ -68,16 +115,75 @@ namespace Netlenium.Driver.Chrome
                 Name = "Netlenium.Driver.Chrome"
             };
 
+            HeadlessWindowSize = new Size(1920, 1080);
+
             driverManager = new DriverManager(this);
             headless = true;
             targetPlatform = Platform.AutoDetect;
-
-            logging.WriteEntry(MessageType.Debugging, "Driver", "Class constructed");
         }
 
         public void Start()
         {
-            throw new NotImplementedException();
+            DriverManager.Initalize();
+
+            logging.WriteEntry(MessageType.Information, "Driver", "Starting remote driver service");
+
+            logging.WriteEntry(MessageType.Debugging, "Driver", $"Working Directory: {DriverManager.DriverDirectoryPath}");
+            logging.WriteEntry(MessageType.Debugging, "Driver", $"Driver Executable: {DriverManager.DriverExecutableName}");
+            DriverService = ChromeDriverService.CreateDefaultService(DriverManager.DriverDirectoryPath, DriverManager.DriverExecutableName);
+            logging.WriteEntry(MessageType.Debugging, "Driver", "DriverService Constructed");
+
+
+            logging.WriteEntry(MessageType.Verbose, "Driver", "Creating options for driver");
+            var options = new Dictionary<string, string>();
+
+            if(Headless == true)
+            {
+                logging.WriteEntry(MessageType.Debugging, "Driver", $"Headless mode with window-size of {HeadlessWindowSize.Width}x{HeadlessWindowSize.Height}");
+                options.Add("headless", string.Empty);
+                options.Add("window-size", $"{HeadlessWindowSize.Width}x{HeadlessWindowSize.Height}");
+            }
+
+            if (driverLoggingEnabled == false)
+            {
+                options.Add("log-level", "0");
+                options.Add("silent", string.Empty);
+                DriverService.SuppressInitialDiagnosticInformation = true;
+            }
+            else
+            {
+                if(driverVerboseLoggingEnabled == true)
+                {
+                    options.Add("log-level", "1");
+                    DriverService.EnableVerboseLogging = true;
+                }
+                else
+                {
+                    options.Add("log-level", "2");
+                    DriverService.EnableVerboseLogging = false;
+                }
+
+                DriverService.SuppressInitialDiagnosticInformation = false;
+            }
+
+            logging.WriteEntry(MessageType.Verbose, "Driver", "Setting options for driver");
+            SetOptions(options);
+
+            var LoggingPath = $"{ApplicationPaths.LoggingDirectory}{Path.DirectorySeparatorChar}chrome_driver.log";
+            logging.WriteEntry(MessageType.Verbose, "Driver", $"Setting logging path '{LoggingPath}'");
+            DriverService.LogPath = LoggingPath;
+
+            logging.WriteEntry(MessageType.Verbose, "Driver", "Starting Driver Service");
+            DriverService.Start();
+
+            logging.WriteEntry(MessageType.Debugging, "Driver", $"Service URL: {DriverService.ServiceUrl}");
+            logging.WriteEntry(MessageType.Debugging, "Driver", $"Process ID: {DriverService.ProcessId}");
+            logging.WriteEntry(MessageType.Debugging, "Driver", $"Port: {DriverService.Port}");
+
+            logging.WriteEntry(MessageType.Verbose, "Driver", $"Connecting to '{DriverService.ServiceUrl}'");
+            RemoteDriver = new RemoteWebDriver(DriverService.ServiceUrl, DriverOptions);
+
+            logging.WriteEntry(MessageType.Information, "Driver", "Remote Driver Serivce Started");
         }
 
         public void Stop()

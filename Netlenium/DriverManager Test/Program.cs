@@ -11,16 +11,19 @@ namespace DriverManager_Test
     {
         static void Main(string[] args)
         {
-            var WebDriver = new Netlenium.Driver.Chrome.Driver();
+            var WebDriver = new Netlenium.Driver.Chrome.Driver()
+            {
+                Headless = true
+            };
 
             WebDriver.Logging.CommandLineLoggingEnabled = true;
-            WebDriver.Logging.DebuggingEntriesEnabled = false;
-            WebDriver.Logging.VerboseEntriesEnabled = false;
+            WebDriver.Logging.DebuggingEntriesEnabled = true;
+            WebDriver.Logging.VerboseEntriesEnabled = true;
             WebDriver.Logging.InformationEntriesEnabled = true;
             WebDriver.Logging.WarningEntriesEnabled = true;
             WebDriver.Logging.ErrorEntriesEnabled = true;
 
-            WebDriver.DriverManager.Initalize();
+            WebDriver.Start();
 
             Console.ReadLine();
         }

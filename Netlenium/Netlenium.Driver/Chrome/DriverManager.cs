@@ -296,7 +296,7 @@ namespace Netlenium.Driver.Chrome
 
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Copying '{DriverExecutableName}' to '{DriverDirectoryPath}'");
             var DriverSourcePath = $"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}{DriverExecutableName}";
-            var DriverDestinationPath = DriverExecutablePath
+            var DriverDestinationPath = DriverExecutablePath;
             driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Source Path: {DriverSourcePath}");
             driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Destination Path: {DriverDestinationPath}");
             File.Copy(DriverSourcePath, DriverDestinationPath);

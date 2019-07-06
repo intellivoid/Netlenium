@@ -39,6 +39,16 @@
         /// If the browser should run in headless mode before startingz
         /// </summary>
         bool Headless { get; set; }
+        
+        /// <summary>
+        /// If set to true, the driver will display logging details
+        /// </summary>
+        bool DriverLoggingEnabled { get; set; }
+
+        /// <summary>
+        /// If set to true, the driver will display verbose logging details if Logging is enabled
+        /// </summary>
+        bool DriverVerboseLoggingEnabled { get; set; }
 
         /// <summary>
         /// Starts the driver

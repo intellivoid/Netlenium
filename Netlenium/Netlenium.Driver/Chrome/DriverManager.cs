@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using Ionic.Zip;
 using Netlenium.Logging;
 
 namespace Netlenium.Driver.Chrome
@@ -140,12 +141,12 @@ namespace Netlenium.Driver.Chrome
         /// </summary>
         public void Initalize()
         {
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Checking driver resources");
+            driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Checking driver resources");
 
             if(IsInstalled == false)
             {
                 driver.Logging.WriteEntry(MessageType.Warning, "DriverManager", "Driver is not installed, attempting to install driver resources");
-                Install();
+                InstallLatestDriver();
                 return;
             }
 
@@ -156,25 +157,25 @@ namespace Netlenium.Driver.Chrome
             {
                 driver.Logging.WriteEntry(MessageType.Warning, "DriverManager", string.Format("The current driver ({0}) does not match the latest version {1}", CurrentVersion, LatestVersion));
                 driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Attempting to update the driver resources");
-                Update();
+                InstallLatestDriver();
                 return;
             }
 
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Driver resources check passed");
+            driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Driver resources are up to date");
             return;
         }
 
         /// <summary>
-        /// Installs the driver
+        /// Installs the latest driver
         /// </summary>
-        public void Install()
+        public void InstallLatestDriver()
         {
             WebAPI.Google.Content Resource;
             var LatestVersion = GetLatestVersion();
 
             var TemporaryFileDownloadPath = string.Format($"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}chromedriver_tmp.zip");
             var DriverExecutableName = string.Empty;
-            var DriverDirectoryPath = Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser);
+            var DriverDirectoryPath = $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)}";
             var DriverVersionFilePath = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}version";
             var PermissionsRequired = false;
 
@@ -237,18 +238,48 @@ namespace Netlenium.Driver.Chrome
                 Directory.CreateDirectory(DriverDirectoryPath);
             }
 
+            // Download archive and extract contents
             var webClient = new WebClient();
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Downloading archive from '{Resource.AccessLocation.ToString()}'");
             webClient.DownloadFile(Resource.AccessLocation.ToString(), TemporaryFileDownloadPath);
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Download completed");
-        }
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Download completed");
 
-        public void Update()
-        {
-            throw new NotImplementedException();
-        }
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Reading archive '{TemporaryFileDownloadPath}'");
+            var zip = ZipFile.Read(TemporaryFileDownloadPath);
 
-     
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Extracting driver resources from archive");
+            foreach (var entry in zip)
+            {
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Reading '{entry}'");
+                if (entry.FileName != DriverExecutableName) continue;
+                if (entry.IsDirectory) continue;
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Extracting '{entry}'");
+                entry.Extract(ApplicationPaths.TemporaryDirectory, ExtractExistingFileAction.OverwriteSilently);
+                break;
+            }
+
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", "Disposing acrhive object");
+            zip.Dispose();
+
+            // Copy the files over the destination
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Creating version file");
+            File.WriteAllText(DriverVersionFilePath, LatestVersion.ToString());
+
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Copying '{DriverExecutableName}' to '{DriverDirectoryPath}'");
+            var DriverSourcePath = $"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}{DriverExecutableName}";
+            var DriverDestinationPath = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}";
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Source Path: {DriverSourcePath}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Destination Path: {DriverDestinationPath}");
+            File.Copy(DriverSourcePath, DriverDestinationPath);
+
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{DriverSourcePath}'");
+            File.Delete(DriverSourcePath);
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{TemporaryFileDownloadPath}'");
+            File.Delete(DriverSourcePath);
+
+            driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "The driver installalation has completed successfully");
+        }
+        
         
     }
 }

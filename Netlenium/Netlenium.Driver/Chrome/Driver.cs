@@ -11,7 +11,7 @@ namespace Netlenium.Driver.Chrome
         private Service logging;
         public Service Logging => logging;
 
-        private IDriverManager driverManager;
+        private readonly IDriverManager driverManager;
         public IDriverManager DriverManager { get => driverManager; }
 
         public Browser TargetBrowser => Browser.Chrome;

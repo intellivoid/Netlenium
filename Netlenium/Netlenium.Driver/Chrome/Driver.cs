@@ -21,7 +21,8 @@ namespace Netlenium.Driver.Chrome
 
         public Browser TargetBrowser => Browser.Chrome;
 
-        public IActions Actions => throw new NotImplementedException();
+        private Actions actions;
+        public IActions Actions => actions;
 
         public IDocument Document => throw new NotImplementedException();
 
@@ -69,7 +70,7 @@ namespace Netlenium.Driver.Chrome
         /// <summary>
         /// Remote Driver Client for controlling the Driver Service
         /// </summary>
-        private RemoteWebDriver RemoteDriver { get; set; }
+        public RemoteWebDriver RemoteDriver { get; set; }
 
         /// <summary>
         /// The Window size that is set if running in headless mode
@@ -118,12 +119,22 @@ namespace Netlenium.Driver.Chrome
             HeadlessWindowSize = new Size(1920, 1080);
 
             driverManager = new DriverManager(this);
+            actions = new Actions(this);
             headless = true;
             targetPlatform = Platform.AutoDetect;
         }
 
         public void Start()
         {
+            if(DriverService != null)
+            {
+                if(DriverService.IsRunning == true)
+                {
+                    logging.WriteEntry(MessageType.Error, "Driver", "Remote Driver Service cannot be stopped because it is not running");
+                    throw new DriverAlreadyRunningException();
+                }
+            }
+
             DriverManager.Initalize();
 
             logging.WriteEntry(MessageType.Information, "Driver", "Starting remote driver service");
@@ -188,7 +199,20 @@ namespace Netlenium.Driver.Chrome
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            if (DriverService != null)
+            {
+                if (DriverService.IsRunning == true)
+                {
+                    logging.WriteEntry(MessageType.Information, "Driver", "Quitting remote driver");
+                    RemoteDriver.Quit();
+                    logging.WriteEntry(MessageType.Verbose, "Driver", "Disposing Driver Service");
+                    DriverService.Dispose();
+                    logging.WriteEntry(MessageType.Information, "Driver", "Remote Driver Service stopped");
+                }
+            }
+
+            logging.WriteEntry(MessageType.Error, "Driver", "Remote Driver Service cannot be stopped because it is not running");
+            throw new DriverNotRunningException();
         }
     }
 }

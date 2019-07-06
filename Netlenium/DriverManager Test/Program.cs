@@ -13,7 +13,9 @@ namespace DriverManager_Test
         {
             var WebDriver = new Netlenium.Driver.Chrome.Driver()
             {
-                Headless = true
+                Headless = false,
+                DriverLoggingEnabled = false,
+                DriverVerboseLoggingEnabled = false
             };
 
             WebDriver.Logging.CommandLineLoggingEnabled = true;
@@ -24,6 +26,7 @@ namespace DriverManager_Test
             WebDriver.Logging.ErrorEntriesEnabled = true;
 
             WebDriver.Start();
+            WebDriver.Actions.LoadURI("https://google.com");
 
             Console.ReadLine();
         }

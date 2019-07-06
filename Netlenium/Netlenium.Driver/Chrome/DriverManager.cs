@@ -75,6 +75,40 @@ namespace Netlenium.Driver.Chrome
             }
         }
 
+        public string DriverExecutableName
+        { 
+          get
+            {
+                switch (driver.TargetPlatform)
+                {
+                    case Platform.Windows:
+                        return "chromedriver.exe";
+
+                    case Platform.Linux32:
+                        return "chromedriver";
+
+                    case Platform.Linux64:
+                        return "chromedriver";
+
+                    default:
+                        driver.Logging.WriteEntry(MessageType.Error, "DriverManager", string.Format("The platform '{0}' is not supported for this driver", driver.TargetPlatform));
+                        throw new UnsupportedPlatformException();
+                }
+            }
+        }
+
+        public string DriverDirectoryPath
+        {
+            get
+            {
+                var DirectoryName = Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser);
+                return $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{DirectoryName}";
+            }
+        }
+
+
+        public string DriverExecutablePath => $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}";
+
         /// <summary>
         /// Public constructor
         /// </summary>
@@ -174,8 +208,6 @@ namespace Netlenium.Driver.Chrome
             var LatestVersion = GetLatestVersion();
 
             var TemporaryFileDownloadPath = string.Format($"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}chromedriver_tmp.zip");
-            var DriverExecutableName = string.Empty;
-            var DriverDirectoryPath = $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)}";
             var DriverVersionFilePath = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}version";
             var PermissionsRequired = false;
 
@@ -184,19 +216,16 @@ namespace Netlenium.Driver.Chrome
             {
                 case Platform.Windows:
                     Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_win32.zip");
-                    DriverExecutableName = "chromedriver.exe";
                     PermissionsRequired = false;
                     break;
 
                 case Platform.Linux32:
                     Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_linux32.zip");
-                    DriverExecutableName = "chromedriver.exe";
                     PermissionsRequired = true;
                     break;
 
                 case Platform.Linux64:
                     Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_linux64.zip");
-                    DriverExecutableName = "chromedriver.exe";
                     PermissionsRequired = true;
                     break;
 
@@ -267,7 +296,7 @@ namespace Netlenium.Driver.Chrome
 
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Copying '{DriverExecutableName}' to '{DriverDirectoryPath}'");
             var DriverSourcePath = $"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}{DriverExecutableName}";
-            var DriverDestinationPath = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}";
+            var DriverDestinationPath = DriverExecutablePath
             driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Source Path: {DriverSourcePath}");
             driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Destination Path: {DriverDestinationPath}");
             File.Copy(DriverSourcePath, DriverDestinationPath);

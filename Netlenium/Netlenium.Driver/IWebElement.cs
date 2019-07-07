@@ -28,5 +28,10 @@ namespace Netlenium.Driver
         /// <param name="attributeName"></param>
         /// <returns></returns>
         string GetAttribute(string attributeName);
+
+        /// <summary>
+        /// Moves current view to this element
+        /// </summary>
+        void MoveTo();
     }
 }

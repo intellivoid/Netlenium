@@ -11,13 +11,13 @@ namespace Netlenium.Driver.Chrome
         public Actions(Driver driver)
         {
             this.driver = driver;
-            javaScriptExecutor = (IJavaScriptExecutor)driver.RemoteDriver;
         }
 
         public string ExecuteJavascript(string code)
         {
             try
             {
+                javaScriptExecutor = (IJavaScriptExecutor)driver.RemoteDriver;
                 return (string)javaScriptExecutor.ExecuteScript(code);
             }
             catch(Exception)

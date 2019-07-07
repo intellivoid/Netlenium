@@ -55,6 +55,7 @@
     <Compile Include="Chrome\Actions.cs" />
     <Compile Include="Chrome\Document.cs" />
     <Compile Include="Chrome\Driver.cs" />
+    <Compile Include="JavascriptExecutionException.cs" />
     <Compile Include="NoElementsFoundException.cs" />
     <Compile Include="UnsupportedSearchMethodException.cs" />
     <Compile Include="Chrome\WebElement.cs" />

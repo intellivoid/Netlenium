@@ -32,7 +32,9 @@ namespace Netlenium.Driver.Chrome
 
         public void MoveTo()
         {
+            driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", "Moving to Element");
             new WebDriver.Interactions.Actions(driver.RemoteDriver).MoveToElement(webElement);
+            driver.Logging.WriteEntry(Logging.MessageType.Verbose, $"IWebElement[{webElement.ToString()}]", "Operation completed");
         }
 
         public void SendKeys(string input)

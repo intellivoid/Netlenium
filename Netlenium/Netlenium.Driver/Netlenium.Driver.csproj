@@ -53,10 +53,16 @@
     <Compile Include="ApplicationPaths.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="Chrome\Actions.cs" />
+    <Compile Include="Chrome\Document.cs" />
     <Compile Include="Chrome\Driver.cs" />
+    <Compile Include="NoElementsFoundException.cs" />
+    <Compile Include="UnsupportedSearchMethodException.cs" />
+    <Compile Include="Chrome\WebElement.cs" />
     <Compile Include="DriverNotRunningException.cs" />
     <Compile Include="DriverAlreadyRunningException.cs" />
     <Compile Include="Chrome\DriverManager.cs" />
+    <Compile Include="IWebElement.cs" />
+    <Compile Include="SearchBy.cs" />
     <Compile Include="WebRequestException.cs" />
     <Compile Include="DriverNotInstalledException.cs" />
     <Compile Include="UnsupportedPlatformException.cs" />

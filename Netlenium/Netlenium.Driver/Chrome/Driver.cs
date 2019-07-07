@@ -24,7 +24,8 @@ namespace Netlenium.Driver.Chrome
         private Actions actions;
         public IActions Actions => actions;
 
-        public IDocument Document => throw new NotImplementedException();
+        private Document document;
+        public IDocument Document => document;
 
         private bool headless;
         public bool Headless { get => headless; set => headless = value; }
@@ -120,6 +121,7 @@ namespace Netlenium.Driver.Chrome
 
             driverManager = new DriverManager(this);
             actions = new Actions(this);
+            document = new Document(this);
             headless = true;
             targetPlatform = Platform.AutoDetect;
         }

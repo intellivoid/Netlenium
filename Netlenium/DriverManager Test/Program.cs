@@ -18,7 +18,7 @@ namespace DriverManager_Test
                 DriverVerboseLoggingEnabled = false
             };
 
-            WebDriver.Logging.CommandLineLoggingEnabled = true;
+            WebDriver.Logging.CommandLineLoggingEnabled = false;
             WebDriver.Logging.DebuggingEntriesEnabled = true;
             WebDriver.Logging.VerboseEntriesEnabled = true;
             WebDriver.Logging.InformationEntriesEnabled = true;
@@ -27,6 +27,7 @@ namespace DriverManager_Test
 
             WebDriver.Start();
             WebDriver.Actions.LoadURI("https://google.com");
+            WebDriver.Document.GetElements(SearchBy.XPath, "//*[@id=\"tsf\"]/div[2]/div/div[1]/div/div[1]/input")[0].SendKeys("Hello World");
 
             Console.ReadLine();
         }

@@ -32,5 +32,6 @@ namespace Netlenium.Driver
         /// Gets the current URL that's currently loaded
         /// </summary>
         string Uri { get; }
+        
     }
 }

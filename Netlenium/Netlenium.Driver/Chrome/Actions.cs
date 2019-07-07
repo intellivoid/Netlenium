@@ -15,13 +15,17 @@ namespace Netlenium.Driver.Chrome
 
         public string ExecuteJavascript(string code)
         {
+            driver.Logging.WriteEntry(Logging.MessageType.Information, "Actions", $"Executing JS '{code}'");
             try
             {
                 javaScriptExecutor = (IJavaScriptExecutor)driver.RemoteDriver;
-                return (string)javaScriptExecutor.ExecuteScript(code);
+                var results = (string)javaScriptExecutor.ExecuteScript(code);
+                driver.Logging.WriteEntry(Logging.MessageType.Verbose, "Actions", $"Returned '{results}'");
+                return results;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, "Actions", $"Execution Error '{ex.Message}'");
                 throw new JavascriptExecutionException();
             }
         }

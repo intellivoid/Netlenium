@@ -33,5 +33,12 @@ namespace Netlenium.Driver
         /// Reloads the document in the browser element on which you call this method.
         /// </summary>
         void Reload();
+
+        /// <summary>
+        /// Executes Javascript code in the current document
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        string ExecuteJavascript(string code);
     }
 }

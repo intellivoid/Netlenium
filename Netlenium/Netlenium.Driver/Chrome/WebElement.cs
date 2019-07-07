@@ -39,6 +39,7 @@ namespace Netlenium.Driver.Chrome
 
         public void SendKeys(string input)
         {
+            MoveTo();
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", $"Entering '{input}' to element");
             webElement.SendKeys(input);
             driver.Logging.WriteEntry(Logging.MessageType.Verbose, $"IWebElement[{webElement.ToString()}]", "Operation completed");

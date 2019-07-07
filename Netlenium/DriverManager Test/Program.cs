@@ -18,7 +18,7 @@ namespace DriverManager_Test
                 DriverVerboseLoggingEnabled = false
             };
 
-            WebDriver.Logging.CommandLineLoggingEnabled = false;
+            WebDriver.Logging.CommandLineLoggingEnabled = true;
             WebDriver.Logging.DebuggingEntriesEnabled = true;
             WebDriver.Logging.VerboseEntriesEnabled = true;
             WebDriver.Logging.InformationEntriesEnabled = true;

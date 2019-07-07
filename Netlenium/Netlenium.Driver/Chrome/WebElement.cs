@@ -30,6 +30,11 @@ namespace Netlenium.Driver.Chrome
             return value;
         }
 
+        public void MoveTo()
+        {
+            new WebDriver.Interactions.Actions(driver.RemoteDriver).MoveToElement(webElement);
+        }
+
         public void SendKeys(string input)
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", $"Entering '{input}' to element");

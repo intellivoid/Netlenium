@@ -1,14 +1,29 @@
-﻿using System;
+﻿using Netlenium.Driver.WebDriver;
+using System;
 
 namespace Netlenium.Driver.Chrome
 {
     public class Actions : IActions
     {
         private Driver driver;
+        private IJavaScriptExecutor javaScriptExecutor;
 
         public Actions(Driver driver)
         {
             this.driver = driver;
+            javaScriptExecutor = (IJavaScriptExecutor)driver.RemoteDriver;
+        }
+
+        public string ExecuteJavascript(string code)
+        {
+            try
+            {
+                return (string)javaScriptExecutor.ExecuteScript(code);
+            }
+            catch(Exception)
+            {
+                throw new JavascriptExecutionException();
+            }
         }
 
         public void GoBack()

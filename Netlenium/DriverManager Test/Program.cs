@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Netlenium.Driver;
 
 namespace DriverManager_Test
@@ -25,12 +21,13 @@ namespace DriverManager_Test
             WebDriver.Logging.WarningEntriesEnabled = true;
             WebDriver.Logging.ErrorEntriesEnabled = true;
 
-            WebDriver.ProxyConfiguration.Enabled = true;
+            WebDriver.ProxyConfiguration.Enabled = false;
 
             WebDriver.Start();
+
             WebDriver.Actions.LoadURI("https://google.com");
             WebDriver.Document.GetElements(SearchBy.XPath, "//*[@id=\"tsf\"]/div[2]/div/div[1]/div/div[1]/input")[0].SendKeys("Hello World");
-            Console.WriteLine(WebDriver.Actions.ExecuteJavascript("return document.title;"));
+
 
             Console.ReadLine();
         }

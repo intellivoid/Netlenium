@@ -22,14 +22,14 @@ namespace DriverManager_Test
             WebDriver.Logging.ErrorEntriesEnabled = true;
 
             WebDriver.ProxyConfiguration.Enabled = false;
-
             WebDriver.Start();
 
             WebDriver.Actions.LoadURI("https://google.com");
-            WebDriver.Document.GetElements(SearchBy.XPath, "//*[@id=\"tsf\"]/div[2]/div/div[1]/div/div[1]/input")[0].SendKeys("Hello World");
-
-
-            Console.ReadLine();
+            while(true)
+            {
+                Console.ReadLine();
+                WebDriver.test();
+            }
         }
     }
 }

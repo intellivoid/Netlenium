@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Netlenium.Driver
 {
@@ -33,6 +34,12 @@ namespace Netlenium.Driver
         /// Reloads the document in the browser element on which you call this method.
         /// </summary>
         void Reload();
+
+        /// <summary>
+        /// Returns a collection of Windows that are currently opened
+        /// </summary>
+        /// <returns></returns>
+        List<IWindow> GetWindows();
 
         /// <summary>
         /// Executes Javascript code in the current document

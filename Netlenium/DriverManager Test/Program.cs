@@ -9,7 +9,7 @@ namespace DriverManager_Test
         {
             var WebDriver = new Netlenium.Driver.Chrome.Driver()
             {
-                Headless = false,
+                Headless = true,
                 DriverLoggingEnabled = false,
                 DriverVerboseLoggingEnabled = false
             };
@@ -28,7 +28,11 @@ namespace DriverManager_Test
             while(true)
             {
                 Console.ReadLine();
-                WebDriver.test();
+                foreach(IWindow window in WebDriver.Actions.GetWindows())
+                {
+                    Console.WriteLine(window.ID);
+                    window.SwitchTo();
+                }
             }
         }
     }

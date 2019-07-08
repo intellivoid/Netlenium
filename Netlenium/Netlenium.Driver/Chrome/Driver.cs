@@ -74,15 +74,6 @@ namespace Netlenium.Driver.Chrome
         /// </summary>
         public RemoteWebDriver RemoteDriver { get; set; }
 
-        public void test()
-        {
-            foreach (var handle in RemoteDriver.WindowHandles)
-            {
-                logging.WriteEntry(MessageType.Debugging, "Driver", handle.ToString());
-                RemoteDriver.SwitchTo().Window(handle);
-            }
-        }
-
         /// <summary>
         /// The Window size that is set if running in headless mode
         /// </summary>

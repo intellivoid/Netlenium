@@ -1,5 +1,6 @@
 ﻿using Netlenium.Driver.WebDriver;
 using System;
+using System.Collections.Generic;
 
 namespace Netlenium.Driver.Chrome
 {
@@ -28,6 +29,16 @@ namespace Netlenium.Driver.Chrome
                 driver.Logging.WriteEntry(Logging.MessageType.Error, "Actions", $"Execution Error '{ex.Message}'");
                 throw new JavascriptExecutionException();
             }
+        }
+
+        public List<IWindow> GetWindows()
+        {
+            List<IWindow> results = new List<IWindow>();
+            foreach (var WindowHandle in driver.RemoteDriver.WindowHandles)
+            {
+                results.Add(new Window(driver, WindowHandle));
+            }
+            return results;
         }
 
         public void GoBack()

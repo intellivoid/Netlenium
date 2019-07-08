@@ -22,6 +22,13 @@ namespace Netlenium.Driver.Chrome
             this.driver = driver;
         }
 
+        public void Click()
+        {
+            driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", "Simulating Click on Event");
+            webElement.Click();
+            driver.Logging.WriteEntry(Logging.MessageType.Verbose, $"IWebElement[{webElement.ToString()}]", "Operation completed");
+        }
+
         public string GetAttribute(string attributeName)
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", $"Getting value of attribute '{attributeName}'");

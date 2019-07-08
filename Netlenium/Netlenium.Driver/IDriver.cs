@@ -36,6 +36,11 @@
         IDocument Document { get; }
 
         /// <summary>
+        /// The proxy configuration for the browser
+        /// </summary>
+        IProxy ProxyConfiguration { get; }
+
+        /// <summary>
         /// If the browser should run in headless mode before startingz
         /// </summary>
         bool Headless { get; set; }

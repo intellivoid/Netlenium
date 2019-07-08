@@ -84,6 +84,9 @@ namespace Netlenium.Driver.Chrome
         private bool driverVerboseLoggingEnabled;
         public bool DriverVerboseLoggingEnabled { get => driverVerboseLoggingEnabled; set => driverVerboseLoggingEnabled = value; }
 
+        private IProxy proxyConfiguration;
+        public IProxy ProxyConfiguration => proxyConfiguration;
+
         /// <summary>
         /// Sets the current options for Chrome Driver
         /// </summary>
@@ -122,6 +125,7 @@ namespace Netlenium.Driver.Chrome
             driverManager = new DriverManager(this);
             actions = new Actions(this);
             document = new Document(this);
+            proxyConfiguration = new Proxy(this);
             headless = true;
             targetPlatform = Platform.AutoDetect;
         }

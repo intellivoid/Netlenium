@@ -55,8 +55,11 @@
     <Compile Include="Chrome\Actions.cs" />
     <Compile Include="Chrome\Document.cs" />
     <Compile Include="Chrome\Driver.cs" />
+    <Compile Include="Chrome\Proxy.cs" />
+    <Compile Include="IProxy.cs" />
     <Compile Include="JavascriptExecutionException.cs" />
     <Compile Include="NoElementsFoundException.cs" />
+    <Compile Include="ProxyScheme.cs" />
     <Compile Include="UnsupportedSearchMethodException.cs" />
     <Compile Include="Chrome\WebElement.cs" />
     <Compile Include="DriverNotRunningException.cs" />
@@ -324,14 +327,21 @@
     <Compile Include="WebDriver\XPathLookupException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="extensions\chrome\background.js" />
+    <Content Include="extensions\chrome\background.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ServiceExtensions\Chrome\background.js" />
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_128.png" />
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_16.png" />
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_48.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="extensions\chrome\manifest.json" />
+    <None Include="extensions\chrome\manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Netlenium.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="ServiceExtensions\Chrome\manifest.json" />
   </ItemGroup>

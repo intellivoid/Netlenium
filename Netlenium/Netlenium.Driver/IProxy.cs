@@ -11,6 +11,11 @@
         bool Enabled { get; set; }
 
         /// <summary>
+        /// The supported scheme that this proxy uses
+        /// </summary>
+        ProxyScheme Scheme { get; set; }
+
+        /// <summary>
         /// The host to connect to
         /// </summary>
         string Host { get; set; }

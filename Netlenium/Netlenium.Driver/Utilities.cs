@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 
 namespace Netlenium.Driver
 
@@ -23,6 +25,24 @@ namespace Netlenium.Driver
             }
 
             return Platform.Windows;
+        }
+
+        /// <summary>
+        /// The directory of this current executable
+        /// </summary>
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(
+                    File.Exists($"{Path.GetDirectoryName(path)}{Path.DirectorySeparatorChar}Netlenium.so") 
+                    ?
+                    path : Process.GetCurrentProcess().MainModule.FileName
+                );
+            }
         }
 
         /// <summary>
@@ -85,5 +105,5 @@ namespace Netlenium.Driver
 
             return Results;
         }
-    }
+    }]
 }

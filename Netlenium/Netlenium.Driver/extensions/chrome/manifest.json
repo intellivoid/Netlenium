@@ -1,7 +1,12 @@
 ﻿{
-  "version": "0.1.0",
+  "background": {
+    "scripts": [ "background.js" ]
+  },
+  "description": "Handles the process of Proxy Configuration and Authentication from the Netlenium Driver",
   "manifest_version": 2,
+  "minimum_chrome_version": "22.0.0",
   "name": "Netlenium Proxy",
+  "author": "Intellivoid",
   "permissions": [
     "proxy",
     "tabs",
@@ -11,8 +16,5 @@
     "webRequest",
     "webRequestBlocking"
   ],
-  "background": {
-    "scripts": [ "background.js" ]
-  },
-  "minimum_chrome_version": "22.0.0"
+  "version": "0.1.0"
 }

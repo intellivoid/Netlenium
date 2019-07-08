@@ -7,7 +7,7 @@ namespace DriverManager_Test
     {
         static void Main(string[] args)
         {
-            var WebDriver = new Netlenium.Driver.Chrome.Driver()
+            IDriver WebDriver = new Netlenium.Driver.Chrome.Driver()
             {
                 Headless = true,
                 DriverLoggingEnabled = false,
@@ -23,17 +23,9 @@ namespace DriverManager_Test
 
             WebDriver.ProxyConfiguration.Enabled = false;
             WebDriver.Start();
-
+            
             WebDriver.Actions.LoadURI("https://google.com");
-            while(true)
-            {
-                Console.ReadLine();
-                foreach(IWindow window in WebDriver.Actions.GetWindows())
-                {
-                    Console.WriteLine(window.ID);
-                    window.SwitchTo();
-                }
-            }
+            Console.ReadLine();
         }
     }
 }

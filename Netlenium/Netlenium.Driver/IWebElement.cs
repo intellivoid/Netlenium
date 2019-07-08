@@ -30,6 +30,11 @@ namespace Netlenium.Driver
         string GetAttribute(string attributeName);
 
         /// <summary>
+        /// Simulates a MouseClick event on the element
+        /// </summary>
+        void Click();
+
+        /// <summary>
         /// Moves current view to this element
         /// </summary>
         void MoveTo();

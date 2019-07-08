@@ -143,11 +143,6 @@ namespace Netlenium.Driver.Chrome
 
             DriverManager.Initalize();
 
-            if(proxyConfiguration.Enabled == true)
-            {
-                proxyConfiguration.BuildExtension();
-            }
-
             logging.WriteEntry(MessageType.Information, "Driver", "Starting remote driver service");
 
             logging.WriteEntry(MessageType.Debugging, "Driver", $"Working Directory: {DriverManager.DriverDirectoryPath}");
@@ -164,6 +159,13 @@ namespace Netlenium.Driver.Chrome
                 logging.WriteEntry(MessageType.Debugging, "Driver", $"Headless mode with window-size of {HeadlessWindowSize.Width}x{HeadlessWindowSize.Height}");
                 options.Add("headless", string.Empty);
                 options.Add("window-size", $"{HeadlessWindowSize.Width}x{HeadlessWindowSize.Height}");
+            }
+
+
+            if (proxyConfiguration.Enabled == true)
+            {
+                var ProxyExtensionPath = proxyConfiguration.BuildExtension();
+                options.Add("load-extension", ProxyExtensionPath);
             }
 
             if (driverLoggingEnabled == false)

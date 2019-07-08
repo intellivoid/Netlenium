@@ -105,5 +105,5 @@ namespace Netlenium.Driver
 
             return Results;
         }
-    }]
+    }
 }

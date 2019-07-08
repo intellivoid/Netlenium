@@ -89,7 +89,7 @@ namespace Netlenium.Driver.Chrome
             FileContents[0] = FileContents[0].Replace("%HOST%", Host);
 
             driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Replacing '%PORT%' with '{Port}'");
-            FileContents[0] = FileContents[0].Replace("%PORT%", Host);
+            FileContents[0] = FileContents[0].Replace("%PORT%", Port.ToString());
 
             switch(Scheme)
             {

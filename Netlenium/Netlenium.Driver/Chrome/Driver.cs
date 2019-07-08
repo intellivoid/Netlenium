@@ -84,7 +84,7 @@ namespace Netlenium.Driver.Chrome
         private bool driverVerboseLoggingEnabled;
         public bool DriverVerboseLoggingEnabled { get => driverVerboseLoggingEnabled; set => driverVerboseLoggingEnabled = value; }
 
-        private IProxy proxyConfiguration;
+        private Proxy proxyConfiguration;
         public IProxy ProxyConfiguration => proxyConfiguration;
 
         /// <summary>
@@ -142,6 +142,11 @@ namespace Netlenium.Driver.Chrome
             }
 
             DriverManager.Initalize();
+
+            if(proxyConfiguration.Enabled == true)
+            {
+                proxyConfiguration.BuildExtension();
+            }
 
             logging.WriteEntry(MessageType.Information, "Driver", "Starting remote driver service");
 

@@ -324,12 +324,14 @@
     <Compile Include="WebDriver\XPathLookupException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="extensions\chrome\background.js" />
     <Content Include="ServiceExtensions\Chrome\background.js" />
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_128.png" />
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_16.png" />
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_48.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="extensions\chrome\manifest.json" />
     <None Include="packages.config" />
     <None Include="ServiceExtensions\Chrome\manifest.json" />
   </ItemGroup>
@@ -343,6 +345,5 @@
       <Name>Netlenium.WebAPI</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

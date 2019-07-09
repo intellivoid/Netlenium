@@ -33,6 +33,41 @@ namespace NetleniumServer
                     Driver = new Netlenium.Driver.Chrome.Driver();
                     break;
             }
+
+            switch(CommandLineParameters.DriverLoggingLevel)
+            {
+                case 0:
+                    Driver.Logging.InformationEntriesEnabled = false;
+                    Driver.Logging.WarningEntriesEnabled = false;
+                    Driver.Logging.ErrorEntriesEnabled = false;
+                    Driver.Logging.VerboseEntriesEnabled = false;
+                    Driver.Logging.DebuggingEntriesEnabled = false;
+                    break;
+
+                case 1:
+                    Driver.Logging.InformationEntriesEnabled = true;
+                    Driver.Logging.WarningEntriesEnabled = true;
+                    Driver.Logging.ErrorEntriesEnabled = true;
+                    Driver.Logging.VerboseEntriesEnabled = false;
+                    Driver.Logging.DebuggingEntriesEnabled = false;
+                    break;
+
+                case 2:
+                    Driver.Logging.InformationEntriesEnabled = true;
+                    Driver.Logging.WarningEntriesEnabled = true;
+                    Driver.Logging.ErrorEntriesEnabled = true;
+                    Driver.Logging.VerboseEntriesEnabled = true;
+                    Driver.Logging.DebuggingEntriesEnabled = false;
+                    break;
+
+                case 3:
+                    Driver.Logging.InformationEntriesEnabled = true;
+                    Driver.Logging.WarningEntriesEnabled = true;
+                    Driver.Logging.ErrorEntriesEnabled = true;
+                    Driver.Logging.VerboseEntriesEnabled = true;
+                    Driver.Logging.DebuggingEntriesEnabled = true;
+                    break;
+            }
         }
     }
 }

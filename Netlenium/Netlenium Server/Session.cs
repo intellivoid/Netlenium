@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace NetleniumServer
 {
+    /// <summary>
+    /// Session Object
+    /// </summary>
     public class Session
     {
         /// <summary>

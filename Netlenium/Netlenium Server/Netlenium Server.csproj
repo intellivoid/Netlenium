@@ -79,11 +79,16 @@
     <Compile Include="IResponse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Responses\MissingParameterResponse.cs" />
     <Compile Include="Responses\NotFoundResponse.cs" />
     <Compile Include="Responses\RootResponse.cs" />
+    <Compile Include="Responses\SessionCreatedResponse.cs" />
+    <Compile Include="Responses\UnsupportedBrowserResponse.cs" />
     <Compile Include="Responses\UnsupportedRequestMethodResponse.cs" />
+    <Compile Include="Session.cs" />
     <Compile Include="SessionManager.cs" />
     <Compile Include="UnsupportedRequestMethodException.cs" />
+    <Compile Include="Utilities.cs" />
     <Compile Include="WebService.cs" />
   </ItemGroup>
   <ItemGroup>

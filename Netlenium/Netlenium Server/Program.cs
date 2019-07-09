@@ -44,8 +44,15 @@ namespace Netlenium_Server
         public string AccessPassword { get; set; }
     }
 
+    /// <summary>
+    /// Main Program Class
+    /// </summary>
     class Program
     {
+        /// <summary>
+        /// Main Execution Pointer
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             // Parse the command-line arguments
@@ -87,18 +94,63 @@ namespace Netlenium_Server
                 ShowHelp();
                 Environment.Exit(0);
             }
+            
+            WebService.logging.Name = "Netlenium.Server";
+            switch (CommandLineParameters.ServerLoggingLevel)
+            {
+                case 0:
+                    WebService.logging.InformationEntriesEnabled = false;
+                    WebService.logging.WarningEntriesEnabled = false;
+                    WebService.logging.ErrorEntriesEnabled = false;
+                    WebService.logging.VerboseEntriesEnabled = false;
+                    WebService.logging.DebuggingEntriesEnabled = false;
+                    break;
+
+                case 1:
+                    WebService.logging.InformationEntriesEnabled = true;
+                    WebService.logging.WarningEntriesEnabled = true;
+                    WebService.logging.ErrorEntriesEnabled = true;
+                    WebService.logging.VerboseEntriesEnabled = false;
+                    WebService.logging.DebuggingEntriesEnabled = false;
+                    break;
+
+                case 2:
+                    WebService.logging.InformationEntriesEnabled = true;
+                    WebService.logging.WarningEntriesEnabled = true;
+                    WebService.logging.ErrorEntriesEnabled = true;
+                    WebService.logging.VerboseEntriesEnabled = true;
+                    WebService.logging.DebuggingEntriesEnabled = false;
+                    break;
+
+                case 3:
+                    WebService.logging.InformationEntriesEnabled = true;
+                    WebService.logging.WarningEntriesEnabled = true;
+                    WebService.logging.ErrorEntriesEnabled = true;
+                    WebService.logging.VerboseEntriesEnabled = true;
+                    WebService.logging.DebuggingEntriesEnabled = true;
+                    break;
+
+                default:
+                    Console.WriteLine("The parameter 'server-logging-level' must have a value between 0-3");
+                    Environment.Exit(1);
+                    break;
+            }
+
+            if(CommandLineParameters.DriverLoggingLevel < 0)
+            {
+                Console.WriteLine("The parameter 'driver-logging-level' must have a value between 0-3");
+                Environment.Exit(1);
+            }
+
+            if(CommandLineParameters.DriverLoggingLevel > 3)
+            {
+                Console.WriteLine("The parameter 'driver-logging-level' must have a value between 0-3");
+                Environment.Exit(1);
+            }
 
             Console.Title = "Netlenium Server";
             Console.WriteLine("Written by Zi Xing Narrakas");
             Console.WriteLine();
-
-            WebService.logging.Name = "Netlenium.Server";
-            WebService.logging.CommandLineLoggingEnabled = true;
-            WebService.logging.DebuggingEntriesEnabled = true;
-            WebService.logging.ErrorEntriesEnabled = true;
-            WebService.logging.InformationEntriesEnabled = true;
-            WebService.logging.VerboseEntriesEnabled = true;
-            WebService.logging.WarningEntriesEnabled = true;
 
             WebService.Start(CommandLineParameters.Port);
             
@@ -107,6 +159,9 @@ namespace Netlenium_Server
 
         }
 
+        /// <summary>
+        /// Displays the Help Menu
+        /// </summary>
         static void ShowHelp()
         {
             Console.WriteLine("usage: netlenium [options]");

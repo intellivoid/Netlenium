@@ -257,14 +257,12 @@ namespace Intellivoid.HyperWS
             }
             catch (ObjectDisposedException ex)
             {
-                //Logging.WriteEntry(LogType.Information, "HyperWS", $"Failed to read {ex}");
-
+                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", $"Failed to read {ex}");
                 Dispose();
             }
             catch (Exception ex)
             {
-                //Logging.WriteEntry(LogType.Information, "HyperWS", $"Failed to read from the HTTP connection {ex}");
-
+                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", $"Failed to read from the HTTP connection {ex}");
                 ProcessException(ex);
             }
         }
@@ -524,13 +522,13 @@ namespace Intellivoid.HyperWS
             }
             catch (IOException)
             {
-                //Logging.WriteEntry(LogType.Verbose, "HyperWS", $"The HTTP server wasn't able to write to the stream because the stream was terminated by the client/host machine. Priority=NORMAL");
-
+                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HyperWS", $"The HTTP server wasn't able to write to the stream because the stream was terminated by the client/host machine. Priority=NORMAL");
+                
                 Dispose();
             }
             catch (Exception ex)
             {
-                //Logging.WriteEntry(LogType.Error, "HyperWS", $"BeginWrite failed {ex}");
+                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "HyperWS", $"BeginWrite failed {ex}");
 
                 Dispose();
             }
@@ -597,7 +595,7 @@ namespace Intellivoid.HyperWS
             }
             catch (Exception ex)
             {
-                //Logging.WriteEntry(LogType.Information, "HyperWS", $"Failed to write {ex}");
+                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HyperWS", $"Failed to write {ex}");
 
                 Dispose();
             }
@@ -610,7 +608,7 @@ namespace Intellivoid.HyperWS
         {
             _context = new HttpContext(this);
 
-            //Logging.WriteVerboseEntry("HyperWS", $"Accepted request {_context.Request.RawUrl.Replace(Environment.NewLine, string.Empty)}");
+            NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Verbose, "HyperWS", $"Accepted request {_context.Request.RawUrl.Replace(Environment.NewLine, string.Empty)}");
 
             Server.RaiseRequest(_context);
 
@@ -831,7 +829,7 @@ namespace Intellivoid.HyperWS
             }
             catch (Exception ex)
             {
-                //Logging.WriteEntry(LogType.Information, "HyperWS", $"Failed to process internal server error response {ex}");
+                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HyperWS", $"Failed to process internal server error response {ex}");
 
                 Dispose();
             }

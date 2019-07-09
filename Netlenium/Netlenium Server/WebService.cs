@@ -19,6 +19,10 @@ namespace NetleniumServer
         /// </summary>
         private static HttpServer Server;
 
+        /// <summary>
+        /// Logging configuration for the Web Server
+        /// </summary>
+        public static Netlenium.Logging.Service logging = new Netlenium.Logging.Service();
 
         /// <summary>
         /// The directory of the executing 
@@ -123,7 +127,8 @@ namespace NetleniumServer
         /// Raised when a request is received
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="httpRequest"></param>
+        /// <param name="
+        /// "></param>
         public static void RequestReceived(object sender, HttpRequestEventArgs httpRequest)
         {
             if (httpRequest.Request.RequestType.ToUpper() != "GET" && httpRequest.Request.RequestType.ToUpper() != "POST")

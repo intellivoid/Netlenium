@@ -15,6 +15,14 @@ namespace Netlenium_Server
             Console.WriteLine("Written by Zi Xing Narrakas");
             Console.WriteLine();
             
+            WebService.logging.Name = "Netlenium.Server";
+            WebService.logging.CommandLineLoggingEnabled = true;
+            WebService.logging.DebuggingEntriesEnabled = true;
+            WebService.logging.ErrorEntriesEnabled = true;
+            WebService.logging.InformationEntriesEnabled = true;
+            WebService.logging.VerboseEntriesEnabled = true;
+            WebService.logging.WarningEntriesEnabled = true;
+
             Console.WriteLine(WebService.Start(8080));
 
             Console.ReadLine();

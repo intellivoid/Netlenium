@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace NetleniumServer.Responses
 {
     [Serializable]
-    public class RootResponse
+    public class RootResponse : IResponse
     {
         public bool Status { get; set; }
 

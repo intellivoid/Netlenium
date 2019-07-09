@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetleniumServer.Responses
 {
-    [Serializable]
-    public class NotFoundResponse : IResponse
+    public class UnsupportedRequestMethodResponse : IResponse
     {
         public bool Status { get; set; }
 
@@ -15,11 +14,11 @@ namespace NetleniumServer.Responses
 
         public string Message { get; set; }
 
-        public NotFoundResponse()
+        public UnsupportedRequestMethodResponse()
         {
             Status = false;
-            ResponseCode = 404;
-            Message = "The requested resource was not found";
+            ResponseCode = 400;
+            Message = "The request method used is not supported for this Web Service";
         }
     }
 }

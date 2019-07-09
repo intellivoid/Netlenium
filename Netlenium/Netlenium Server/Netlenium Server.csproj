@@ -75,10 +75,12 @@
     <Compile Include="Intellivoid\HyperWS.cs" />
     <Compile Include="Intellivoid\ProtocolException.cs" />
     <Compile Include="Intellivoid\WebServerException.cs" />
+    <Compile Include="IResponse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\NotFoundResponse.cs" />
     <Compile Include="Responses\RootResponse.cs" />
+    <Compile Include="Responses\UnsupportedRequestMethodResponse.cs" />
     <Compile Include="UnsupportedRequestMethodException.cs" />
     <Compile Include="WebService.cs" />
   </ItemGroup>

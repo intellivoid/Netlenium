@@ -67,7 +67,7 @@ namespace NetleniumServer
         /// <param name="content"></param>
         public static void SendResponse(HttpResponse httpResponse, string content)
         {
-            httpResponse.Headers.Add("X-Powered-By", "Netlenium Framework");
+            httpResponse.Headers.Add("X-Powered-By", "Netlenium");
             using (var writer = new StreamWriter(httpResponse.OutputStream))
             {
                 writer.Write(content);

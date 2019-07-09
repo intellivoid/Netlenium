@@ -32,6 +32,16 @@ namespace Netlenium_Server
         /// The port that the Web Service will run on
         /// </summary>
         public int Port { get; set; }
+
+        /// <summary>
+        /// The maximum amount of sessions that can be created
+        /// </summary>
+        public int MaxSessions { get; set; }
+
+        /// <summary>
+        /// Access Password for Web Service access
+        /// </summary>
+        public string AccessPassword { get; set; }
     }
 
     class Program
@@ -44,7 +54,9 @@ namespace Netlenium_Server
                 Help = false,
                 DriverLoggingLevel = 1,
                 ServerLoggingLevel = 1,
-                Port = 8080
+                Port = 8080,
+                MaxSessions = 0,
+                AccessPassword = string.Empty
             };
 
             var p = new OptionSet() {
@@ -58,8 +70,14 @@ namespace Netlenium_Server
                 { "server-logging-level=", "The logging level for the Web Serivce",
                   v => { if (v != null) CommandLineParameters.ServerLoggingLevel = Convert.ToInt32(v); } },
                 
-                { "p|port=", "the number of times to repeat the greeting.",
+                { "p|port=", "The port that the Web Service will run on",
                   v => { if (v != null) CommandLineParameters.Port = Convert.ToInt32(v); } },
+
+                { "max-sessions=", "The maximum amount of sessions that can be created",
+                  v => { if (v != null) CommandLineParameters.MaxSessions = Convert.ToInt32(v); } },
+
+                { "access-password=", "Access Password for Web Service access",
+                  v => { if (v != null) CommandLineParameters.AccessPassword = v; } },
 
             };
             p.Parse(args);
@@ -91,7 +109,28 @@ namespace Netlenium_Server
 
         static void ShowHelp()
         {
-
+            Console.WriteLine("usage: netlenium [options]");
+            Console.WriteLine(" options:");
+            Console.WriteLine("     -h, --help                      Displays the help menu and exits");
+            Console.WriteLine();
+            Console.WriteLine("     --driver-logging-level [0-3]    Logging level for Driver Sessions");
+            Console.WriteLine("         0 = Silent");
+            Console.WriteLine("         1 = Information, Warning & Errors (Default)");
+            Console.WriteLine("         2 = Verbose");
+            Console.WriteLine("         3 = Debugging");
+            Console.WriteLine();
+            Console.WriteLine("     --server-logging-level [0-3]    Logging level for the Web Service");
+            Console.WriteLine("         0 = Silent");
+            Console.WriteLine("         1 = Information, Warning & Errors (Default)");
+            Console.WriteLine("         2 = Verbose");
+            Console.WriteLine("         3 = Debugging");
+            Console.WriteLine();
+            Console.WriteLine("     -p, --port [Default: 8080]    The port to run the Web Service on");
+            Console.WriteLine();
+            Console.WriteLine("     --max-sessions [Optional]     The max amount of sessions that are");
+            Console.WriteLine("                                   allowed to be created");
+            Console.WriteLine();
+            Console.WriteLine("     --access-password [Optional]  Access Password for Web Service access");
         }
     }
 }

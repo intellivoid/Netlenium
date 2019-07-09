@@ -100,7 +100,7 @@ namespace Intellivoid.HyperWS
 
             State = HttpServerState.Starting;
 
-            Logging.WriteEntry(LogType.Information, "HyperWS", $"Starting HTTP server at {EndPoint}");
+            //Logging.WriteEntry(LogType.Information, "HyperWS", $"Starting HTTP server at {EndPoint}");
 
             TimeoutManager = new HttpTimeoutManager(this);
 
@@ -118,13 +118,13 @@ namespace Intellivoid.HyperWS
 
                 ServerUtility = new HttpServerUtility();
 
-                Logging.WriteEntry(LogType.Information, "HyperWS", String.Format("HTTP server running at {0}", EndPoint));
+                //Logging.WriteEntry(LogType.Information, "HyperWS", String.Format("HTTP server running at {0}", EndPoint));
             }
             catch (Exception ex)
             {
                 State = HttpServerState.Stopped;
 
-                Logging.WriteEntry(LogType.Error, "HyperWS", $"Failed to start HTTP server {ex}");
+                //Logging.WriteEntry(LogType.Error, "HyperWS", $"Failed to start HTTP server {ex}");
 
                 throw new WebServerException("Failed to start HTTP server", ex);
             }
@@ -137,7 +137,7 @@ namespace Intellivoid.HyperWS
         public void Stop()
         {
             VerifyState(HttpServerState.Started);
-            Logging.WriteEntry(LogType.Information, "HyperWS", "Stopping HTTP Server");
+            //Logging.WriteEntry(LogType.Information, "HyperWS", "Stopping HTTP Server");
 
             State = HttpServerState.Stopping;
 
@@ -153,7 +153,7 @@ namespace Intellivoid.HyperWS
             }
             catch (Exception ex)
             {
-                Logging.WriteEntry(LogType.Error, "HyperWS", $"Failed to stop HTTP server; {ex}");
+                //Logging.WriteEntry(LogType.Error, "HyperWS", $"Failed to stop HTTP server; {ex}");
                 throw new WebServerException("Failed to stop HTTP server", ex);
             }
             finally
@@ -162,7 +162,7 @@ namespace Intellivoid.HyperWS
 
                 State = HttpServerState.Stopped;
 
-                Logging.WriteEntry(LogType.Information, "HyperWS", "Stopped HTTP server");
+                //Logging.WriteEntry(LogType.Information, "HyperWS", "Stopped HTTP server");
             }
         }
 
@@ -277,7 +277,7 @@ namespace Intellivoid.HyperWS
             }
             catch (Exception ex)
             {
-                Logging.WriteEntry(LogType.Information, "HyperWS", $"Failed to accept TCP client {ex}");
+                //Logging.WriteEntry(LogType.Information, "HyperWS", $"Failed to accept TCP client {ex}");
             }
         }
 
@@ -311,7 +311,7 @@ namespace Intellivoid.HyperWS
             }
             catch(Exception exception)
             {
-                Logging.WriteEntry(LogType.Warning, "HyperWS", $"Cannot unregister client; {exception.Message}");
+                //Logging.WriteEntry(LogType.Warning, "HyperWS", $"Cannot unregister client; {exception.Message}");
             }
         }
 

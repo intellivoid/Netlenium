@@ -211,7 +211,7 @@ namespace Intellivoid.HyperWS
 
                 if (name == null)
                 {
-                    Logging.WriteEntry(LogType.Information, "HyperWS", "Received multipart item without name");
+                    //Logging.WriteEntry(LogType.Information, "HyperWS", "Received multipart item without name");
                     continue;
                 }
 

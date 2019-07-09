@@ -133,14 +133,18 @@ namespace NetleniumServer
         {
             if (httpRequest.Request.RequestType.ToUpper() != "GET" && httpRequest.Request.RequestType.ToUpper() != "POST")
             {
-                //APIHandler.UnsupportedRequestMethod(httpRequest);
+                SendJsonResponse(httpRequest.Response, new UnsupportedRequestMethodException(), 400);
                 return;
             }
 
             switch (httpRequest.Request.Path.ToLower())
             {
                 case "/":
-                    APIHandler.Root(httpRequest);
+                    SendJsonResponse(httpRequest.Response, new Responses.RootResponse(), 200);
+                    break;
+
+                case "/create_session":
+                    APIHandler.CreateSession(httpRequest);
                     break;
 
                 case "/favicon.ico":

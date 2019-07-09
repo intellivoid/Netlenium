@@ -1,48 +1,9 @@
 ﻿using Mono.Options;
 using NetleniumServer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Netlenium_Server
 {
-    /// <summary>
-    /// The Parameters used for this Application
-    /// </summary>
-    internal class CommandLineParameters
-    {
-        /// <summary>
-        /// Indiciates if the Help menu should only be displayed
-        /// </summary>
-        public bool Help { get; set; }
-
-        /// <summary>
-        /// The logging level for Netlenium Drivers
-        /// </summary>
-        public int DriverLoggingLevel { get; set; }
-
-        /// <summary>
-        /// The logging level for the Web Serivce
-        /// </summary>
-        public int ServerLoggingLevel { get; set; }
-
-        /// <summary>
-        /// The port that the Web Service will run on
-        /// </summary>
-        public int Port { get; set; }
-
-        /// <summary>
-        /// The maximum amount of sessions that can be created
-        /// </summary>
-        public int MaxSessions { get; set; }
-
-        /// <summary>
-        /// Access Password for Web Service access
-        /// </summary>
-        public string AccessPassword { get; set; }
-    }
 
     /// <summary>
     /// Main Program Class
@@ -56,15 +17,14 @@ namespace Netlenium_Server
         static void Main(string[] args)
         {
             // Parse the command-line arguments
-            var CommandLineParameters = new CommandLineParameters()
-            {
-                Help = false,
-                DriverLoggingLevel = 1,
-                ServerLoggingLevel = 1,
-                Port = 8080,
-                MaxSessions = 0,
-                AccessPassword = string.Empty
-            };
+
+            CommandLineParameters.Help = false;
+            CommandLineParameters.DriverLoggingLevel = 1;
+            CommandLineParameters.ServerLoggingLevel = 1;
+            CommandLineParameters.Port = 6410;
+            CommandLineParameters.MaxSessions = 0;
+            CommandLineParameters.AccessPassword = string.Empty;
+            
 
             var p = new OptionSet() {
 
@@ -96,6 +56,8 @@ namespace Netlenium_Server
             }
             
             WebService.logging.Name = "Netlenium.Server";
+            WebService.logging.CommandLineLoggingEnabled = true;
+
             switch (CommandLineParameters.ServerLoggingLevel)
             {
                 case 0:
@@ -153,7 +115,7 @@ namespace Netlenium_Server
             Console.WriteLine();
 
             WebService.Start(CommandLineParameters.Port);
-            
+
             Console.ReadLine();
             Environment.Exit(0);
 
@@ -180,7 +142,7 @@ namespace Netlenium_Server
             Console.WriteLine("         2 = Verbose");
             Console.WriteLine("         3 = Debugging");
             Console.WriteLine();
-            Console.WriteLine("     -p, --port [Default: 8080]    The port to run the Web Service on");
+            Console.WriteLine("     -p, --port [Default: 6410]    The port to run the Web Service on");
             Console.WriteLine();
             Console.WriteLine("     --max-sessions [Optional]     The max amount of sessions that are");
             Console.WriteLine("                                   allowed to be created");

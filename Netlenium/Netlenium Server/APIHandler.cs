@@ -10,12 +10,12 @@ namespace NetleniumServer
     public static class APIHandler
     {
         /// <summary>
-        /// The root request
+        /// Creates a new Driver Session
         /// </summary>
         /// <param name="httpRequest"></param>
-        public static void Root(HttpRequestEventArgs httpRequest)
+        public static void CreateSession(HttpRequestEventArgs httpRequest)
         {
-            WebService.SendJsonResponse(httpRequest.Response, new Responses.RootResponse(), 200);
+            WebService.SendJsonResponse();
         }
 
 

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APIHandler.cs" />
+    <Compile Include="CommandLineParameters.cs" />
     <Compile Include="Intellivoid\HttpClient.cs" />
     <Compile Include="Intellivoid\HttpContext.cs" />
     <Compile Include="Intellivoid\HttpCookie.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Responses\NotFoundResponse.cs" />
     <Compile Include="Responses\RootResponse.cs" />
     <Compile Include="Responses\UnsupportedRequestMethodResponse.cs" />
+    <Compile Include="SessionManager.cs" />
     <Compile Include="UnsupportedRequestMethodException.cs" />
     <Compile Include="WebService.cs" />
   </ItemGroup>

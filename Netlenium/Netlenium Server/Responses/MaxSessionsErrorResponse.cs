@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NetleniumServer.Responses
+﻿namespace NetleniumServer.Responses
 {
     /// <summary>
     /// A Response for when the maximum sessions are maxed out

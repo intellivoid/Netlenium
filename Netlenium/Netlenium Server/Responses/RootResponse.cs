@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetleniumServer.Responses
 {
+    /// <summary>
+    /// Generic Response for the root request
+    /// </summary>
     [Serializable]
     public class RootResponse : IResponse
     {
@@ -15,6 +14,9 @@ namespace NetleniumServer.Responses
 
         public string ServerName { get; set; }
 
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
         public RootResponse()
         {
             Status = true;

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetleniumServer.Responses
 {
+    /// <summary>
+    /// Generic 404 Response
+    /// </summary>
     [Serializable]
     public class NotFoundResponse : IResponse
     {
@@ -15,6 +14,9 @@ namespace NetleniumServer.Responses
 
         public string Message { get; set; }
 
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
         public NotFoundResponse()
         {
             Status = false;

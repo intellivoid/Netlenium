@@ -1,12 +1,12 @@
 ﻿using Netlenium.Driver;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetleniumServer
 {
+    /// <summary>
+    /// Manages driver sessions to mantain resources
+    /// </summary>
     public static class SessionManager
     {
         /// <summary>
@@ -39,6 +39,8 @@ namespace NetleniumServer
         /// <returns></returns>
         public static Session CreateSession(Browser targetBrowser)
         {
+           
+
             WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Creating new session for '{targetBrowser.ToString()}'");
 
             var SessionObject = new Session(targetBrowser)

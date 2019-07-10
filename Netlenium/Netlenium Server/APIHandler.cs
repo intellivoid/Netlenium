@@ -21,6 +21,14 @@ namespace NetleniumServer
                 return;
             }
 
+            if (CommandLineParameters.MaxSessions > 0)
+            {
+                if (SessionManager.activeSessions.Count == CommandLineParameters.MaxSessions)
+                {
+                    WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "SessionManager", $"Cannot create session for '{targetBrowser.ToString()}', {CommandLineParameters.MaxSessions} Session(s) are allowed at the same time");
+                }
+            }
+
             Session SessionObject = null;
 
             switch(targetBrowser)

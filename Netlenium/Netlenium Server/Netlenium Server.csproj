@@ -79,6 +79,7 @@
     <Compile Include="IResponse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Responses\MaxSessionsErrorResponse.cs" />
     <Compile Include="Responses\MissingParameterResponse.cs" />
     <Compile Include="Responses\NotFoundResponse.cs" />
     <Compile Include="Responses\RootResponse.cs" />

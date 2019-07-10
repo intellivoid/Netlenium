@@ -2,6 +2,9 @@
 
 namespace NetleniumServer.Responses
 {
+    /// <summary>
+    /// This response is returned when the given Request Method is not supported on this Web Service
+    /// </summary>
     [Serializable]
     public class UnsupportedRequestMethodResponse : IResponse
     {
@@ -11,6 +14,9 @@ namespace NetleniumServer.Responses
 
         public string Message { get; set; }
 
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
         public UnsupportedRequestMethodResponse()
         {
             Status = false;

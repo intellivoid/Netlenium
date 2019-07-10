@@ -39,8 +39,6 @@ namespace NetleniumServer
         /// <returns></returns>
         public static Session CreateSession(Browser targetBrowser)
         {
-           
-
             WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Creating new session for '{targetBrowser.ToString()}'");
 
             var SessionObject = new Session(targetBrowser)
@@ -55,12 +53,33 @@ namespace NetleniumServer
 
             WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Session '{SessionObject.ID}' created, starting driver");
             SessionObject.Driver.Start();
-            
+
             WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Session ready");
             activeSessions.Add(SessionObject.ID, SessionObject);
 
             return SessionObject;
         }
 
+        /// <summary>
+        /// Determines if the given Session ID exists
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <returns></returns>
+        public static bool SessionExists(string sessionId)
+        {
+            if (activeSessions == null)
+            {
+                return false;
+            }
+
+            if (activeSessions.ContainsKey(sessionId))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+       
     }
 }

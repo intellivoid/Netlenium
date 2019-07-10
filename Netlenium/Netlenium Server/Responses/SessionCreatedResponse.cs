@@ -2,6 +2,9 @@
 
 namespace NetleniumServer.Responses
 {
+    /// <summary>
+    /// Response for when a session was created, returning the session ID
+    /// </summary>
     [Serializable]
     public class SessionCreatedResponse : IResponse
     {
@@ -11,6 +14,10 @@ namespace NetleniumServer.Responses
 
         public string SessionID { get; set; }
 
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
+        /// <param name="sessionId"></param>
         public SessionCreatedResponse(string sessionId)
         {
             Status = true;

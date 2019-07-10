@@ -15,7 +15,8 @@ namespace NetleniumServer
         /// <param name="httpRequest"></param>
         public static void CreateSession(HttpRequestEventArgs httpRequest)
         {
-            var targetBrowser = Utilities.GetParameter(httpRequest, "target_browser");
+            var targetBrowser = WebService.GetParameter(httpRequest.Request, "target_browser");
+
             if(targetBrowser == null)
             {
                 WebService.SendJsonResponse(httpRequest.Response, new Responses.MissingParameterResponse("target_browser"), 400);

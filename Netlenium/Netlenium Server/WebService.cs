@@ -89,26 +89,6 @@ namespace NetleniumServer
         }
 
         /// <summary>
-        /// Returns a error response as a JSON Payload
-        /// </summary>
-        /// <param name="httpResponse"></param>
-        /// <param name="errorType"></param>
-        /// <param name="message"></param>
-        /// <param name="responseCode"></param>
-        public static void SendJsonErrorResponse(HttpResponse httpResponse, string errorType, string message, int responseCode)
-        {
-            SendJsonResponse(
-                httpResponse, new
-                {
-                    Status = false,
-                    ResponseCode = responseCode,
-                    ErrorType = errorType,
-                    Message = message
-                }, responseCode
-            );
-        }
-
-        /// <summary>
         /// Sends a response back to the client as a file
         /// </summary>
         /// <param name="httpResponse"></param>
@@ -169,7 +149,7 @@ namespace NetleniumServer
         /// <param name="httpRequest"></param>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        public static string GetParamerter(HttpRequest httpRequest, string parameter)
+        public static string GetParameter(HttpRequest httpRequest, string parameter)
         {
             switch (httpRequest.RequestType.ToUpper())
             {

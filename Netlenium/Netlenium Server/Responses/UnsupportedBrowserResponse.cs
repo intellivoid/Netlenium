@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetleniumServer.Responses
 {
+    [Serializable]
     public class UnsupportedBrowserResponse : IResponse
 
     {

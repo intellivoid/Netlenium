@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetleniumServer.Responses
 {
+    /// <summary>
+    /// Response for when a paramerter is missing
+    /// </summary>
     [Serializable]
     public class MissingParameterResponse : IResponse
     {
@@ -15,6 +14,10 @@ namespace NetleniumServer.Responses
 
         public string Message { get; set; }
 
+        /// <summary>
+        /// Public Consturctor
+        /// </summary>
+        /// <param name="parameterName"></param>
         public MissingParameterResponse(string parameterName)
         {
             Status = false;

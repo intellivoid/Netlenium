@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetleniumServer.Responses
 {
+    /// <summary>
+    /// A response when the given target browser is unsupported
+    /// </summary>
     [Serializable]
     public class UnsupportedBrowserResponse : IResponse
 
@@ -16,6 +15,9 @@ namespace NetleniumServer.Responses
 
         public string Message { get; set; }
 
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
         public UnsupportedBrowserResponse()
         {
             Status = false;

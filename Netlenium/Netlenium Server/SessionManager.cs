@@ -80,6 +80,31 @@ namespace NetleniumServer
             return false;
         }
 
-       
+        /// <summary>
+        /// Stops an existing session
+        /// </summary>
+        /// <param name="sessionID"></param>
+        public static void StopSession(string sessionId)
+        {
+            WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Closing session '{sessionId}'");
+
+            if(SessionExists(sessionId) == false)
+            {
+                WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "SessionManager", $"Cannot close session '{sessionId}', it does not exist or it has already been closed");
+                throw new SessionNotFoundException();
+            }
+
+            try
+            {
+                activeSessions[sessionId].Driver.Stop();
+                activeSessions.Remove(sessionId);
+                WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"The session '{sessionId}' has been closed");
+            }
+            catch (Exception exception)
+            {
+                WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "SessionManager", $"Cannot close session '{sessionId}', {exception.Message}");
+                throw;
+            }
+        }
     }
 }

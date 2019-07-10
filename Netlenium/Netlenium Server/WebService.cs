@@ -104,41 +104,84 @@ namespace NetleniumServer
         }
 
         /// <summary>
+        /// Determines if the request is authorized
+        /// </summary>
+        /// <param name="httpRequestEvent"></param>
+        /// <returns></returns>
+        public static bool IsAuthorized(HttpRequestEventArgs httpRequestEvent)
+        {
+            if(CommandLineParameters.AuthPassword == string.Empty)
+            {
+                return true;
+            }
+
+            var AuthenticationPassword = GetParameter(httpRequestEvent.Request, "auth");
+
+            if (AuthenticationPassword == null)
+            {
+                logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "WebService", "Authentication Failed, Reason: Missing Parameter 'auth'");
+                return false;
+            }
+
+            if(AuthenticationPassword != CommandLineParameters.AuthPassword)
+            {
+                logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "WebService", "Authentication Failed, Reason: Incorrect Password");
+                return false;
+            }
+
+            return true;
+        }
+        
+        /// <summary>
         /// Raised when a request is received
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="
         /// "></param>
-        public static void RequestReceived(object sender, HttpRequestEventArgs httpRequest)
+        public static void RequestReceived(object sender, HttpRequestEventArgs httpRequestEvent)
         {
-            if (httpRequest.Request.RequestType.ToUpper() != "GET" && httpRequest.Request.RequestType.ToUpper() != "POST")
+            if (httpRequestEvent.Request.RequestType.ToUpper() != "GET" && httpRequestEvent.Request.RequestType.ToUpper() != "POST")
             {
-                SendJsonResponse(httpRequest.Response, new UnsupportedRequestMethodException(), 400);
+                SendJsonResponse(httpRequestEvent.Response, new UnsupportedRequestMethodException(), 400);
                 return;
             }
-
-            switch (httpRequest.Request.Path.ToLower())
+            
+            switch (httpRequestEvent.Request.Path.ToLower())
             {
                 case "/":
-                    SendJsonResponse(httpRequest.Response, new Responses.RootResponse(), 200);
+
+                    if (IsAuthorized(httpRequestEvent) == false)
+                    {
+                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                        break;
+                    }
+
+                    SendJsonResponse(httpRequestEvent.Response, new Responses.RootResponse(), 200);
                     break;
 
                 case "/create_session":
-                    APIHandler.CreateSession(httpRequest);
+
+                    if (IsAuthorized(httpRequestEvent) == false)
+                    {
+                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                        break;
+                    }
+
+                    APIHandler.CreateSession(httpRequestEvent);
                     break;
 
                 case "/favicon.ico":
                     var FaviconLocation = $"{AssemblyDirectory}{Path.DirectorySeparatorChar}WebResources{Path.DirectorySeparatorChar}favicon.ico";
                     if (File.Exists(FaviconLocation))
                     {
-                        httpRequest.Response.Headers.Add("Content-Type", "image/ico");
-                        SendFile(httpRequest.Response, FaviconLocation);
+                        httpRequestEvent.Response.Headers.Add("Content-Type", "image/ico");
+                        SendFile(httpRequestEvent.Response, FaviconLocation);
                     }
                     break;
 
 
                 default:
-                    SendJsonResponse(httpRequest.Response, new Responses.NotFoundResponse(), 404);
+                    SendJsonResponse(httpRequestEvent.Response, new Responses.NotFoundResponse(), 404);
                     break;
             }
         }

@@ -31,8 +31,8 @@
         public static int MaxSessions { get; set; }
 
         /// <summary>
-        /// Access Password for Web Service access
+        /// Authenticaiton Password for Web Service access
         /// </summary>
-        public static string AccessPassword { get; set; }
+        public static string AuthPassword { get; set; }
     }
 }

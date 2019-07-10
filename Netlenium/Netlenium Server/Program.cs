@@ -23,7 +23,7 @@ namespace Netlenium_Server
             CommandLineParameters.ServerLoggingLevel = 1;
             CommandLineParameters.Port = 6410;
             CommandLineParameters.MaxSessions = 0;
-            CommandLineParameters.AccessPassword = string.Empty;
+            CommandLineParameters.AuthPassword = string.Empty;
             
 
             var p = new OptionSet() {
@@ -43,8 +43,8 @@ namespace Netlenium_Server
                 { "max-sessions=", "The maximum amount of sessions that can be created",
                   v => { if (v != null) CommandLineParameters.MaxSessions = Convert.ToInt32(v); } },
 
-                { "access-password=", "Access Password for Web Service access",
-                  v => { if (v != null) CommandLineParameters.AccessPassword = v; } },
+                { "auth-password=", "Authentication Password for Web Service access",
+                  v => { if (v != null) CommandLineParameters.AuthPassword = v; } },
 
             };
             p.Parse(args);
@@ -147,7 +147,7 @@ namespace Netlenium_Server
             Console.WriteLine("     --max-sessions [Optional]     The max amount of sessions that are");
             Console.WriteLine("                                   allowed to be created");
             Console.WriteLine();
-            Console.WriteLine("     --access-password [Optional]  Access Password for Web Service access");
+            Console.WriteLine("     --auth-password [Optional]    Authentication Password for Web Service access");
         }
     }
 }

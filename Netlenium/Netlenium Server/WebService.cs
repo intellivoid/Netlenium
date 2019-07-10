@@ -7,11 +7,12 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetleniumServer
 {
+    /// <summary>
+    /// The main Web Service that handles requests
+    /// </summary>
     public class WebService
     {
         /// <summary>

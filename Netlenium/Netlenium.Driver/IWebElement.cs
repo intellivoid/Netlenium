@@ -23,7 +23,11 @@ namespace Netlenium.Driver
         /// Get the Element's current location
         /// </summary>
         Point Location { get; }
-
+        
+        /// <summary>
+        /// Determines if the Element is currently selected or not
+        /// </summary>
+        bool IsSelected { get; }
 
         /// <summary>
         /// Simulates typing text into the element

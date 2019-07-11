@@ -29,6 +29,8 @@ namespace Netlenium.Driver.Chrome
 
         public Point Location => this.webElement.Location;
 
+        public bool IsSelected => this.webElement.Selected;
+
         public void Click()
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", "Simulating Click on Event");

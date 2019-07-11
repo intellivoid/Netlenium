@@ -1,11 +1,12 @@
 ﻿using System;
+
 namespace NetleniumServer.Responses
 {
     /// <summary>
     /// This response is returned when the given SearchBy Paramerter is invalid
     /// </summary>
     [Serializable]
-    class InvalidSearchByValueResponse : IResponse
+    public class InvalidSearchByValueResponse : IResponse
     {
         public bool Status { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using Intellivoid.HyperWS;
+using Netlenium.Driver;
 using System;
 
 namespace NetleniumServer
@@ -99,6 +100,18 @@ namespace NetleniumServer
                 return;
             }
 
+            if (searchBy == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("by"), 400);
+                return;
+            }
+
+            if (searchValue == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("value"), 400);
+                return;
+            }
+            
             if (SessionManager.SessionExists(sessionId) == false)
             {
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
@@ -108,7 +121,22 @@ namespace NetleniumServer
             try
             {
                 var WebServiceResponse = new Responses.ElementsResultsResponse();
-                foreach(Session)
+                foreach(IWebElement webElement in SessionManager.activeSessions[sessionId].Driver.Document.GetElements(Utilities.ParseSearchBy(searchBy), searchValue))
+                {
+                    WebServiceResponse.Elements.Add(new Objects.WebElement(webElement));
+                }
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, WebServiceResponse, 200);
+                return;
+            }
+            catch(InvalidSearchByValueException)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.InvalidSearchByValueResponse(), 400);
+                return;
+            }
+            catch(Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
             }
         }
     }

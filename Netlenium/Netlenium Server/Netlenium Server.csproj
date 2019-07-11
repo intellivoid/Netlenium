@@ -84,6 +84,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\ElementsResultsResponse.cs" />
+    <Compile Include="Responses\InvalidSearchByValueResponse.cs" />
     <Compile Include="Responses\MaxSessionsErrorResponse.cs" />
     <Compile Include="Responses\MissingParameterResponse.cs" />
     <Compile Include="Responses\NotFoundResponse.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Responses\SessionNotFoundResponse.cs" />
     <Compile Include="Responses\SessionStoppedResponse.cs" />
     <Compile Include="Responses\UnauthorizedRequestResponse.cs" />
+    <Compile Include="Responses\UnexpectedErrorResponse.cs" />
     <Compile Include="Responses\UnsupportedBrowserResponse.cs" />
     <Compile Include="Responses\UnsupportedRequestMethodResponse.cs" />
     <Compile Include="Session.cs" />

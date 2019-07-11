@@ -77,6 +77,7 @@
     <Compile Include="Intellivoid\HyperWS.cs" />
     <Compile Include="Intellivoid\ProtocolException.cs" />
     <Compile Include="Intellivoid\WebServerException.cs" />
+    <Compile Include="InvalidSearchByValueException.cs" />
     <Compile Include="IResponse.cs" />
     <Compile Include="Objects\LocationProperty.cs" />
     <Compile Include="Objects\SizeProperty.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Responses\MaxSessionsErrorResponse.cs" />
     <Compile Include="Responses\MissingParameterResponse.cs" />
     <Compile Include="Responses\NotFoundResponse.cs" />
+    <Compile Include="Responses\RequestSuccessResponse.cs" />
     <Compile Include="Responses\RootResponse.cs" />
     <Compile Include="Responses\SessionCreatedResponse.cs" />
     <Compile Include="Responses\SessionErrorResponse.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="SessionManager.cs" />
     <Compile Include="SessionNotFoundException.cs" />
     <Compile Include="UnsupportedRequestMethodException.cs" />
+    <Compile Include="Utilities.cs" />
     <Compile Include="WebService.cs" />
   </ItemGroup>
   <ItemGroup>

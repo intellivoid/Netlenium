@@ -9,9 +9,7 @@ namespace NetleniumServer.Objects
     [Serializable]
     public class WebElement
     {
-
-        public bool Displayed { get; private set; }
-
+        
         public bool Enabled { get; private set; }
 
         public bool IsSelected { get; private set; }
@@ -30,7 +28,6 @@ namespace NetleniumServer.Objects
         /// <param name="webElement"></param>
         public WebElement(IWebElement webElement)
         {
-            Displayed = webElement.Displayed;
             Enabled = webElement.Enabled;
             IsSelected = webElement.IsSelected;
             ElementLocation = new LocationProperty(webElement.Location);

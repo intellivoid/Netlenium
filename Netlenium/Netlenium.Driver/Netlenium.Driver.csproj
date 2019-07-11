@@ -59,6 +59,11 @@
     <Compile Include="Chrome\Proxy.cs" />
     <Compile Include="Chrome\Window.cs" />
     <Compile Include="IWindow.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UnsupportedSchemeException.cs" />
     <Compile Include="IProxy.cs" />
     <Compile Include="JavascriptExecutionException.cs" />
@@ -334,6 +339,7 @@
     <Content Include="extensions\chrome\background.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\isDisplayed.js" />
     <Content Include="ServiceExtensions\Chrome\background.js" />
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_128.png" />
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_16.png" />
@@ -358,6 +364,12 @@
       <Project>{d0f19dd7-ebbb-4bec-9a02-79db0a99bfbb}</Project>
       <Name>Netlenium.WebAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

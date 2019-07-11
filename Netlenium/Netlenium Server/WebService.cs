@@ -86,7 +86,7 @@ namespace NetleniumServer
             httpResponse.StatusCode = statusCode;
             httpResponse.Headers.Add("content-Type", "application/json");
 
-            SendResponse(httpResponse, JsonConvert.SerializeObject(content, Formatting.Indented));
+            SendResponse(httpResponse, JsonConvert.SerializeObject(content, Formatting.None));
         }
 
         /// <summary>
@@ -191,6 +191,17 @@ namespace NetleniumServer
                     }
 
                     APIHandler.GetElements(httpRequestEvent);
+                    break;
+
+                case "/navigate/load_url":
+
+                    if (IsAuthorized(httpRequestEvent) == false)
+                    {
+                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                        break;
+                    }
+
+                    APIHandler.LoadURL(httpRequestEvent);
                     break;
 
                 case "/favicon.ico":

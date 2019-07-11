@@ -133,7 +133,39 @@ namespace NetleniumServer
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.InvalidSearchByValueResponse(), 400);
                 return;
             }
-            catch(Exception exception)
+            
+        }
+
+        public static void LoadURL(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+            var url = WebService.GetParameter(httpRequestEventArgs.Request, "url");
+
+            if (sessionId == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("session_id"), 400);
+                return;
+            }
+
+            if (url == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("url"), 400);
+                return;
+            }
+
+            if (SessionManager.SessionExists(sessionId) == false)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
+                return;
+            }
+
+            try
+            {
+                SessionManager.activeSessions[sessionId].Driver.Actions.LoadURI(url);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
+                return;
+            }
+            catch (Exception exception)
             {
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
                 return;

@@ -133,7 +133,11 @@ namespace NetleniumServer
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.InvalidSearchByValueResponse(), 400);
                 return;
             }
-            
+            catch(Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
         }
 
         public static void LoadURL(HttpRequestEventArgs httpRequestEventArgs)

@@ -210,8 +210,7 @@ namespace Netlenium.Driver.Chrome
 
             logging.WriteEntry(MessageType.Information, "Driver", "Remote Driver Serivce Started");
         }
-
-        [SecurityPermission(SecurityAction.Demand)]
+        
         public void Stop()
         {
             if (DriverService != null)
@@ -223,6 +222,7 @@ namespace Netlenium.Driver.Chrome
                     logging.WriteEntry(MessageType.Verbose, "Driver", "Disposing Driver Service");
                     DriverService.Dispose();
                     logging.WriteEntry(MessageType.Information, "Driver", "Remote Driver Service stopped");
+                    return;
                 }
             }
 

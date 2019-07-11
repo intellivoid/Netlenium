@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Drawing;
 
 namespace NetleniumServer.Objects
 {
     [Serializable]
-    public class Size
+    public class SizeProperty
     {
         public int Width { get; set; }
 
@@ -13,7 +14,7 @@ namespace NetleniumServer.Objects
         /// Public Constructor
         /// </summary>
         /// <param name="size"></param>
-        public Size(Size size)
+        public SizeProperty(Size size)
         {
             Width = size.Width;
             Height = size.Height;

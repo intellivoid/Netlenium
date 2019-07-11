@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class UnsupportedPlatformException : Exception
+    public class UnsupportedPlatformException : Exception
     {
         public UnsupportedPlatformException()
         {

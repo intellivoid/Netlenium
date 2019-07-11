@@ -84,11 +84,15 @@
     <Compile Include="Responses\NotFoundResponse.cs" />
     <Compile Include="Responses\RootResponse.cs" />
     <Compile Include="Responses\SessionCreatedResponse.cs" />
+    <Compile Include="Responses\SessionErrorResponse.cs" />
+    <Compile Include="Responses\SessionNotFoundResponse.cs" />
+    <Compile Include="Responses\SessionStoppedResponse.cs" />
     <Compile Include="Responses\UnauthorizedRequestResponse.cs" />
     <Compile Include="Responses\UnsupportedBrowserResponse.cs" />
     <Compile Include="Responses\UnsupportedRequestMethodResponse.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="SessionManager.cs" />
+    <Compile Include="SessionNotFoundException.cs" />
     <Compile Include="UnsupportedRequestMethodException.cs" />
     <Compile Include="WebService.cs" />
   </ItemGroup>

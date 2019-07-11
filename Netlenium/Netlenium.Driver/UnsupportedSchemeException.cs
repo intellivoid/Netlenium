@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class UnsupportedSchemeException : Exception
+    public class UnsupportedSchemeException : Exception
     {
         public UnsupportedSchemeException()
         {

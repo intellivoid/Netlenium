@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class NoElementsFoundException : Exception
+    public class NoElementsFoundException : Exception
     {
         public NoElementsFoundException()
         {

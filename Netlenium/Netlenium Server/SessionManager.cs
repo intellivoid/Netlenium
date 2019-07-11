@@ -96,7 +96,16 @@ namespace NetleniumServer
 
             try
             {
-                activeSessions[sessionId].Driver.Stop();
+
+                try
+                {
+                    activeSessions[sessionId].Driver.Stop();
+                }
+                catch(DriverNotRunningException)
+                {
+                    WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "SessionManager", $"The driver for '{sessionId}' cannot be stopped because it is not running");
+                }
+
                 activeSessions.Remove(sessionId);
                 WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"The session '{sessionId}' has been closed");
             }

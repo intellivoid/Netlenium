@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class WebRequestException : Exception
+    public class WebRequestException : Exception
     {
         public WebRequestException()
         {

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class JavascriptExecutionException : Exception
+    public class JavascriptExecutionException : Exception
     {
         public JavascriptExecutionException()
         {

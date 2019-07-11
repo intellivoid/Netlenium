@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class DriverNotInstalledException : Exception
+    public class DriverNotInstalledException : Exception
     {
         public DriverNotInstalledException()
         {

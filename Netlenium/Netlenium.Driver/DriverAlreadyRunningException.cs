@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class DriverAlreadyRunningException : Exception
+    public class DriverAlreadyRunningException : Exception
     {
         public DriverAlreadyRunningException()
         {

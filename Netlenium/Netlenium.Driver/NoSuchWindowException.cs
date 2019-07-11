@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class NoSuchWindowException : Exception
+    public class NoSuchWindowException : Exception
     {
         public NoSuchWindowException()
         {

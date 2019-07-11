@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class UnsupportedSearchMethodException : Exception
+    public class UnsupportedSearchMethodException : Exception
     {
         public UnsupportedSearchMethodException()
         {

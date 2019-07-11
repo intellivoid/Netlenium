@@ -15,9 +15,15 @@ namespace Netlenium.Driver
         string Text { get; }
 
         /// <summary>
-        /// Gets the element's size
+        /// Gets the Element's size
         /// </summary>
         Size Size { get; }
+
+        /// <summary>
+        /// Get the Element's current location
+        /// </summary>
+        Point Location { get; }
+
 
         /// <summary>
         /// Simulates typing text into the element

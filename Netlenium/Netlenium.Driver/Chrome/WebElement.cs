@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,10 @@ namespace Netlenium.Driver.Chrome
         }
 
         public string Text => this.webElement.Text;
+
+        public Size Size => this.webElement.Size;
+
+        public Point Location => this.webElement.Location;
 
         public void Click()
         {

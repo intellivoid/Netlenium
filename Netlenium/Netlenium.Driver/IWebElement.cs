@@ -71,6 +71,11 @@ namespace Netlenium.Driver
         void Click();
 
         /// <summary>
+        /// Clears the content of the Element
+        /// </summary>
+        void Clear();
+
+        /// <summary>
         /// Moves current view to this element
         /// </summary>
         void MoveTo();

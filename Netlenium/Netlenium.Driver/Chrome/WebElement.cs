@@ -23,19 +23,26 @@ namespace Netlenium.Driver.Chrome
             this.driver = driver;
         }
 
-        public string Text => this.webElement.Text;
+        public string Text => webElement.Text;
 
-        public Size Size => this.webElement.Size;
+        public Size Size => webElement.Size;
 
-        public Point Location => this.webElement.Location;
+        public Point Location => webElement.Location;
 
-        public bool IsSelected => this.webElement.Selected;
+        public bool IsSelected => webElement.Selected;
 
-        public string TagName => this.webElement.TagName;
+        public string TagName => webElement.TagName;
 
-        public bool Enabled => this.webElement.Enabled;
+        public bool Enabled => webElement.Enabled;
 
-        public bool Displayed => this.webElement.Displayed;
+        public bool Displayed => webElement.Displayed;
+
+        public void Clear()
+        {
+            driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", "Clearing contents on Event");
+            webElement.Clear();
+            driver.Logging.WriteEntry(Logging.MessageType.Verbose, $"IWebElement[{webElement.ToString()}]", "Operation completed");
+        }
 
         public void Click()
         {
@@ -43,7 +50,7 @@ namespace Netlenium.Driver.Chrome
             webElement.Click();
             driver.Logging.WriteEntry(Logging.MessageType.Verbose, $"IWebElement[{webElement.ToString()}]", "Operation completed");
         }
-
+        
         public string GetAttribute(string attributeName)
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", $"Getting value of attribute '{attributeName}'");

@@ -159,6 +159,7 @@ namespace Netlenium.Driver.Chrome
             {
                 logging.WriteEntry(MessageType.Debugging, "Driver", $"Headless mode with window-size of {HeadlessWindowSize.Width}x{HeadlessWindowSize.Height}");
                 options.Add("headless", string.Empty);
+                options.Add("mute-audio", string.Empty);
                 options.Add("window-size", $"{HeadlessWindowSize.Width}x{HeadlessWindowSize.Height}");
             }
 

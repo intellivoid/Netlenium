@@ -35,6 +35,8 @@ namespace Netlenium.Driver.Chrome
 
         public bool Enabled => this.webElement.Enabled;
 
+        public bool Displayed => this.webElement.Displayed;
+
         public void Click()
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", "Simulating Click on Event");

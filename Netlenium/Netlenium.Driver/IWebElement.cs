@@ -34,9 +34,15 @@ namespace Netlenium.Driver
         /// </summary>
         string TagName { get; }
 
+        /// <summary>
         /// Determines if the Element is enabled or not
         /// </summary>
         bool Enabled { get; }
+
+        /// <summary>
+        /// Determines if the Element is displayed or not
+        /// </summary>
+        bool Displayed { get; }
 
         /// <summary>
         /// Simulates typing text into the element

@@ -22,6 +22,8 @@ namespace Netlenium.Driver.Chrome
             this.driver = driver;
         }
 
+        public string Text => this.webElement.Text;
+
         public void Click()
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", "Simulating Click on Event");

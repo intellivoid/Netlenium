@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+
 namespace Netlenium.Driver
 {
     /// <summary>
@@ -11,6 +13,11 @@ namespace Netlenium.Driver
         /// Get the Element's innerText
         /// </summary>
         string Text { get; }
+
+        /// <summary>
+        /// Gets the element's size
+        /// </summary>
+        Size Size { get; }
 
         /// <summary>
         /// Simulates typing text into the element

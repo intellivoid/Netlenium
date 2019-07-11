@@ -82,5 +82,26 @@ namespace NetleniumServer
 
             return;
         }
+
+        /// <summary>
+        /// Returns a list of Elements that are in the DOM
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void GetElements(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+
+            if (sessionId == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("session_id"), 400);
+                return;
+            }
+
+            if (SessionManager.SessionExists(sessionId) == false)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
+                return;
+            }
+        }
     }
 }

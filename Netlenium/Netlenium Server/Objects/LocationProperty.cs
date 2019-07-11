@@ -4,7 +4,7 @@ using System.Drawing;
 namespace NetleniumServer.Objects
 {
     [Serializable]
-    public class Location
+    public class LocationProperty
     {
         public int X { get; set; }
 
@@ -14,7 +14,7 @@ namespace NetleniumServer.Objects
         /// Public Constructor
         /// </summary>
         /// <param name="point"></param>
-        public Location(Point point)
+        public LocationProperty(Point point)
         {
             X = point.X;
             Y = point.Y;

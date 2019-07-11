@@ -90,6 +90,8 @@ namespace NetleniumServer
         public static void GetElements(HttpRequestEventArgs httpRequestEventArgs)
         {
             var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+            var searchBy = WebService.GetParameter(httpRequestEventArgs.Request, "by");
+            var searchValue = WebService.GetParameter(httpRequestEventArgs.Request, "value");
 
             if (sessionId == null)
             {
@@ -101,6 +103,12 @@ namespace NetleniumServer
             {
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
                 return;
+            }
+
+            try
+            {
+                var WebServiceResponse = new Responses.ElementsResultsResponse();
+                foreach(Session)
             }
         }
     }

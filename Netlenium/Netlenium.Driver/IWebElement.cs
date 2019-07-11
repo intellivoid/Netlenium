@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Netlenium.Driver
 {
+    /// <summary>
+    /// Web Element returned from the DOM
+    /// </summary>
     public interface IWebElement
     {
+        /// <summary>
+        /// Get the Element's innerText
+        /// </summary>
+        string Text { get; }
+
         /// <summary>
         /// Simulates typing text into the element
         /// </summary>

@@ -30,6 +30,11 @@ namespace Netlenium.Driver
         bool IsSelected { get; }
 
         /// <summary>
+        /// Get's the Element's Tag Name
+        /// </summary>
+        string TagName { get; }
+
+        /// <summary>
         /// Simulates typing text into the element
         /// </summary>
         /// <param name="input"></param>

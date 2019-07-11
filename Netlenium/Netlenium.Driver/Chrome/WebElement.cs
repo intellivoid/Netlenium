@@ -80,5 +80,12 @@ namespace Netlenium.Driver.Chrome
             driver.Logging.WriteEntry(Logging.MessageType.Debugging, $"IWebElement[{webElement.ToString()}]", $"Executing eval; arguments[0].setAttribute(arguments[{attributeName}], arguments[{value}]);");
             driver.RemoteDriver.ExecuteScript("arguments[0].setAttribute(arguments[1], arguments[2]);", webElement, attributeName, value);
         }
+
+        public void Submit()
+        {
+            driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", "Submitting to Web Server");
+            webElement.Submit();
+            driver.Logging.WriteEntry(Logging.MessageType.Verbose, $"IWebElement[{webElement.ToString()}]", "Operation completed");
+        }
     }
 }

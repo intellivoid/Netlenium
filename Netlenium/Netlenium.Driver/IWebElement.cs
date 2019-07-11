@@ -66,6 +66,11 @@ namespace Netlenium.Driver
         string GetAttribute(string attributeName);
 
         /// <summary>
+        /// Submits the element to the Web Server
+        /// </summary>
+        void Submit();
+
+        /// <summary>
         /// Simulates a MouseClick event on the element
         /// </summary>
         void Click();

@@ -15,6 +15,11 @@ namespace NetleniumServer
         public static Dictionary<string, Session> activeSessions;
 
         /// <summary>
+        /// Current list of expired sessions, this list will be cleared over time
+        /// </summary>
+        public static IDictionary<string, DateTime> expiredSessions;
+
+        /// <summary>
         /// Generates a new Session ID
         /// </summary>
         /// <returns></returns>
@@ -81,6 +86,26 @@ namespace NetleniumServer
         }
 
         /// <summary>
+        /// Determines if the given session has expired
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <returns></returns>
+        public static bool SessionExpired(string sessionId)
+        {
+            if (expiredSessions == null)
+            {
+                return false;
+            }
+
+            if (expiredSessions.ContainsKey(sessionId))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Stops an existing session
         /// </summary>
         /// <param name="sessionID"></param>
@@ -115,5 +140,46 @@ namespace NetleniumServer
                 throw;
             }
         }
+
+        /// <summary>
+        /// Syncs the current active sessions and manages the expired ones
+        /// </summary>
+        public static void Sync()
+        {
+            var current_time = DateTime.Now;
+
+            if (activeSessions != null)
+            {
+                foreach (KeyValuePair<string, Session> active_session in activeSessions)
+                {
+                    var session_id = active_session.Key;
+                    var total_inactivity = Convert.ToInt32((current_time - active_session.Value.LastActivity).TotalMinutes);
+                    if (total_inactivity > CommandLineParameters.SessionInactivityLimit)
+                    {
+                        WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "SessionManager", $"The session '{session_id}' has expired due to {total_inactivity} minute(s) of inactivity");
+                        StopSession(session_id);
+                        if(expiredSessions == null)
+                        {
+                            expiredSessions = new Dictionary<string, DateTime>();
+                        }
+                        expiredSessions.Add(session_id, DateTime.Now);
+                    }
+                }
+            }
+
+            if (expiredSessions != null)
+            {
+                foreach (KeyValuePair<string, DateTime> expired_session in expiredSessions)
+                {
+                    var session_id = expired_session.Key;
+                    if (Convert.ToInt32((current_time - expired_session.Value).TotalMinutes) > 10)
+                    {
+                        expiredSessions.Remove(session_id);
+                    }
+                }
+            }
+            
+        }
+        
     }
 }

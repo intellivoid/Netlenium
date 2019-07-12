@@ -1,9 +1,5 @@
 ﻿using Netlenium.Driver;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetleniumServer
 {
@@ -12,15 +8,38 @@ namespace NetleniumServer
     /// </summary>
     public class Session
     {
+
+        /// <summary>
+        /// Internal Driver Object
+        /// </summary>
+        private IDriver driver;
+
         /// <summary>
         /// The driver associated with this session
         /// </summary>
-        public IDriver Driver { get; }
+        public IDriver Driver
+        {
+            get
+            {
+                LastActivity = DateTime.Now;
+                return driver;
+            }
+        }
 
         /// <summary>
         /// The session ID
         /// </summary>
         public string ID { get; set; }
+
+        /// <summary>
+        /// The timestamp that this session has started
+        /// </summary>
+        public DateTime SessionStarted { get; set; }
+
+        /// <summary>
+        /// The session's last activity
+        /// </summary>
+        public DateTime LastActivity { get; set; }
 
         /// <summary>
         /// Public Constructor
@@ -30,7 +49,7 @@ namespace NetleniumServer
             switch(targetBrowser)
             {
                 case Browser.Chrome:
-                    Driver = new Netlenium.Driver.Chrome.Driver();
+                    driver = new Netlenium.Driver.Chrome.Driver();
                     break;
             }
 
@@ -68,6 +87,9 @@ namespace NetleniumServer
                     Driver.Logging.DebuggingEntriesEnabled = true;
                     break;
             }
+            
+            SessionStarted = DateTime.Now;
+            LastActivity = SessionStarted;
         }
     }
 }

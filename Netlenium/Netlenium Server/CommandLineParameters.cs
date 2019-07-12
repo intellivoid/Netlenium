@@ -31,8 +31,14 @@
         public static int MaxSessions { get; set; }
 
         /// <summary>
+        /// The amount of minutes the session is allowed to be inactive before it gets closed
+        /// </summary>
+        public static int SessionInactivityLimit { get; set; }
+
+        /// <summary>
         /// Authenticaiton Password for Web Service access
         /// </summary>
         public static string AuthPassword { get; set; }
+        
     }
 }

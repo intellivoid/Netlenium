@@ -57,19 +57,13 @@ namespace NetleniumServer
         /// <param name="httpRequestEventArgs"></param>
         public static void StopSession(HttpRequestEventArgs httpRequestEventArgs)
         {
+            if(WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
             var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
-
-            if (sessionId == null)
-            {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("session_id"), 400);
-                return;
-            }
-
-            if(SessionManager.SessionExists(sessionId) == false)
-            {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
-                return;
-            }
+            
 
             try
             {
@@ -90,16 +84,15 @@ namespace NetleniumServer
         /// <param name="httpRequestEventArgs"></param>
         public static void GetElements(HttpRequestEventArgs httpRequestEventArgs)
         {
-            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
-            var searchBy = WebService.GetParameter(httpRequestEventArgs.Request, "by");
-            var searchValue = WebService.GetParameter(httpRequestEventArgs.Request, "value");
-
-            if (sessionId == null)
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("session_id"), 400);
                 return;
             }
 
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+            var searchBy = WebService.GetParameter(httpRequestEventArgs.Request, "by");
+            var searchValue = WebService.GetParameter(httpRequestEventArgs.Request, "value");
+            
             if (searchBy == null)
             {
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("by"), 400);
@@ -109,12 +102,6 @@ namespace NetleniumServer
             if (searchValue == null)
             {
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("value"), 400);
-                return;
-            }
-            
-            if (SessionManager.SessionExists(sessionId) == false)
-            {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
                 return;
             }
 
@@ -146,24 +133,17 @@ namespace NetleniumServer
         /// <param name="httpRequestEventArgs"></param>
         public static void LoadURL(HttpRequestEventArgs httpRequestEventArgs)
         {
-            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
-            var url = WebService.GetParameter(httpRequestEventArgs.Request, "url");
-
-            if (sessionId == null)
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("session_id"), 400);
                 return;
             }
 
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+            var url = WebService.GetParameter(httpRequestEventArgs.Request, "url");
+            
             if (url == null)
             {
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("url"), 400);
-                return;
-            }
-
-            if (SessionManager.SessionExists(sessionId) == false)
-            {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
                 return;
             }
 
@@ -186,19 +166,12 @@ namespace NetleniumServer
         /// <param name="httpRequestEventArgs"></param>
         public static void GoBack(HttpRequestEventArgs httpRequestEventArgs)
         {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
             var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
-
-            if (sessionId == null)
-            {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("session_id"), 400);
-                return;
-            }
-
-            if (SessionManager.SessionExists(sessionId) == false)
-            {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
-                return;
-            }
 
             try
             {
@@ -219,19 +192,12 @@ namespace NetleniumServer
         /// <param name="httpRequestEventArgs"></param>
         public static void GoForward(HttpRequestEventArgs httpRequestEventArgs)
         {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
             var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
-
-            if (sessionId == null)
-            {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("session_id"), 400);
-                return;
-            }
-
-            if (SessionManager.SessionExists(sessionId) == false)
-            {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
-                return;
-            }
 
             try
             {

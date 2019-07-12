@@ -139,6 +139,41 @@ namespace NetleniumServer
         }
         
         /// <summary>
+        /// Verifies if the given session is valid
+        /// </summary>
+        /// <param name="httpRequestEvent"></param>
+        /// <param name="session_id"></param>
+        /// <returns></returns>
+        public static bool VerifySession(HttpRequestEventArgs httpRequestEvent)
+        {
+            var sessionId = GetParameter(httpRequestEvent.Request, "session_id");
+
+            if (sessionId == null)
+            {
+                SendJsonResponse(httpRequestEvent.Response, new Responses.MissingParameterResponse("session_id"), 400);
+                return false;
+            }
+
+            if (SessionManager.SessionExpired(sessionId) == true)
+            {
+                SendJsonResponse(httpRequestEvent.Response, new Responses.SessionExpiredResponse(), 400);
+                return false;
+            }
+
+            if(SessionManager.SessionExists(sessionId) == false)
+            {
+                SendJsonResponse(httpRequestEvent.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
+                return false;
+            }
+
+            SessionManager.activeSessions[sessionId].LastActivity = DateTime.Now;
+
+            // TODO: Check if the driver is still running on the session
+
+            return true;
+        }
+
+        /// <summary>
         /// Raised when a request is received
         /// </summary>
         /// <param name="sender"></param>
@@ -259,7 +294,7 @@ namespace NetleniumServer
             {
                 while (true)
                 {
-                    
+                    SessionManager.Sync();
                     await Task.Delay(5000, cancellationToken);
                     if (cancellationToken.IsCancellationRequested) break;
                 }

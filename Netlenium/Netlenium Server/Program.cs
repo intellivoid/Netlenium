@@ -17,12 +17,12 @@ namespace Netlenium_Server
         static void Main(string[] args)
         {
             // Parse the command-line arguments
-
             CommandLineParameters.Help = false;
             CommandLineParameters.DriverLoggingLevel = 1;
             CommandLineParameters.ServerLoggingLevel = 1;
             CommandLineParameters.Port = 6410;
             CommandLineParameters.MaxSessions = 0;
+            CommandLineParameters.SessionInactivityLimit = 5;
             CommandLineParameters.AuthPassword = string.Empty;
             
 

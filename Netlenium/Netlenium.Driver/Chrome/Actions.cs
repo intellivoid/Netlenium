@@ -14,6 +14,31 @@ namespace Netlenium.Driver.Chrome
             this.driver = driver;
         }
 
+        public IWindow CurrentWindow => new Window(driver, driver.RemoteDriver.CurrentWindowHandle);
+
+        public void Close()
+        {
+            driver.Logging.WriteEntry(Logging.MessageType.Information, "Actions", $"Closing current window handle '{CurrentWindow}'");
+            try
+            {
+                driver.RemoteDriver.Close();
+            }
+            catch(Exception ex)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, "Actions", $"Cannot close window handle, {ex.Message}");
+                throw new WindowHandleException();
+            }
+
+            var CurrentWindows = GetWindows();
+            if(CurrentWindows.Count > 0)
+            {
+                CurrentWindows[0].SwitchTo();
+                return;
+            }
+
+            driver.Logging.WriteEntry(Logging.MessageType.Warning, "Actions", "There are no available window handles to switch to");
+        }
+
         public string ExecuteJavascript(string code)
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, "Actions", $"Executing JS '{code}'");

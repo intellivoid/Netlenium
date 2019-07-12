@@ -1,12 +1,12 @@
 ﻿using Intellivoid.HyperWS;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NetleniumServer
 {
@@ -24,6 +24,8 @@ namespace NetleniumServer
         /// Logging configuration for the Web Server
         /// </summary>
         public static Netlenium.Logging.Service logging = new Netlenium.Logging.Service();
+
+        private static CancellationToken cancellationToken;
 
         /// <summary>
         /// The directory of the executing 
@@ -56,6 +58,9 @@ namespace NetleniumServer
 
             Server.RequestReceived += (s, e) => { RequestReceived(s, e); };
             Server.Start();
+
+            cancellationToken = new CancellationToken();
+            Task.Run(async () => await BackgroundTasks(cancellationToken));
 
             return $"http://{Server.EndPoint}/";
         }
@@ -240,6 +245,26 @@ namespace NetleniumServer
                     SendJsonResponse(httpRequestEvent.Response, new Responses.NotFoundResponse(), 404);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Async tasks that run in the background of the Web Server
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static async Task BackgroundTasks(CancellationToken cancellationToken)
+        {
+
+            await Task.Run(async () =>
+            {
+                while (true)
+                {
+                    
+                    await Task.Delay(5000, cancellationToken);
+                    if (cancellationToken.IsCancellationRequested) break;
+                }
+            });
+
         }
 
         /// <summary>

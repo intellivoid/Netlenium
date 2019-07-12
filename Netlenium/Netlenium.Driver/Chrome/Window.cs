@@ -26,13 +26,20 @@ namespace Netlenium.Driver.Chrome
 
         public void SwitchTo()
         {
+            driver.Logging.WriteEntry(Logging.MessageType.Information, $"Window[{this.id}]", "Switching to this window handle");
             try
             {
                 driver.RemoteDriver.SwitchTo().Window(id);
             }
-            catch(Exception)
+            catch(WebDriver.NoSuchWindowException)
             {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"Window[{this.id}]", "Cannot switch to this window handle, no such window exists.");
                 throw new NoSuchWindowException();
+            }
+            catch (Exception exception)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"Window[{this.id}]", $"Cannot switch to this window handle, {exception.Message}");
+                throw exception;
             }
         }
     }

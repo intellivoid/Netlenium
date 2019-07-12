@@ -213,6 +213,38 @@ namespace NetleniumServer
             }
         }
 
+        /// <summary>
+        /// Goes forward on item in the history
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void GoForward(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+
+            if (sessionId == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("session_id"), 400);
+                return;
+            }
+
+            if (SessionManager.SessionExists(sessionId) == false)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
+                return;
+            }
+
+            try
+            {
+                SessionManager.activeSessions[sessionId].Driver.Actions.GoForward();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
 
     }
 }

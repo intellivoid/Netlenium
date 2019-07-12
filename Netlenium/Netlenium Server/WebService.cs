@@ -215,6 +215,17 @@ namespace NetleniumServer
                     APIHandler.GoBack(httpRequestEvent);
                     break;
 
+                case "/navigate/go_forward":
+
+                    if (IsAuthorized(httpRequestEvent) == false)
+                    {
+                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                        break;
+                    }
+
+                    APIHandler.GoForward(httpRequestEvent);
+                    break;
+
                 case "/favicon.ico":
                     var FaviconLocation = $"{AssemblyDirectory}{Path.DirectorySeparatorChar}WebResources{Path.DirectorySeparatorChar}favicon.ico";
                     if (File.Exists(FaviconLocation))

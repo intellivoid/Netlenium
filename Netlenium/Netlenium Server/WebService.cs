@@ -182,7 +182,7 @@ namespace NetleniumServer
                     APIHandler.StopSession(httpRequestEvent);
                     break;
 
-                case "/get_elements":
+                case "/actions/get_elements":
 
                     if (IsAuthorized(httpRequestEvent) == false)
                     {
@@ -194,6 +194,17 @@ namespace NetleniumServer
                     break;
 
                 case "/navigate/load_url":
+
+                    if (IsAuthorized(httpRequestEvent) == false)
+                    {
+                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                        break;
+                    }
+
+                    APIHandler.LoadURL(httpRequestEvent);
+                    break;
+
+                case "/navigate/go_back":
 
                     if (IsAuthorized(httpRequestEvent) == false)
                     {

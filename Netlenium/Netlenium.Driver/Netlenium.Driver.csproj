@@ -55,6 +55,7 @@
     <Compile Include="Chrome\Actions.cs" />
     <Compile Include="Chrome\Document.cs" />
     <Compile Include="Chrome\Driver.cs" />
+    <Compile Include="WindowHandleException.cs" />
     <Compile Include="NoSuchWindowException.cs" />
     <Compile Include="Chrome\Proxy.cs" />
     <Compile Include="Chrome\Window.cs" />

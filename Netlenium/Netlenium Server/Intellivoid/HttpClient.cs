@@ -312,7 +312,10 @@ namespace Intellivoid.HyperWS
             var match = PrologRegex.Match(line);
 
             if (!match.Success)
-                throw new ProtocolException($"Could not parse prolog '{line}'");
+            {
+                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HttpClient", $"Could not parse prolog '{line}'");
+                return;
+            }
 
             Method = match.Groups[1].Value;
             Request = match.Groups[2].Value;

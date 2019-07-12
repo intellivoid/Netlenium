@@ -212,7 +212,7 @@ namespace NetleniumServer
                         break;
                     }
 
-                    APIHandler.LoadURL(httpRequestEvent);
+                    APIHandler.GoBack(httpRequestEvent);
                     break;
 
                 case "/favicon.ico":

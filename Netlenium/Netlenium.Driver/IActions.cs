@@ -45,7 +45,13 @@ namespace Netlenium.Driver
         /// </summary>
         /// <returns></returns>
         List<IWindow> GetWindows();
-        
+
+        /// <summary>
+        /// Switches to a Window object
+        /// </summary>
+        /// <param name="window"></param>
+        void SwitchToWindow(IWindow window);
+
         /// <summary>
         /// Executes Javascript code in the current document
         /// </summary>

@@ -140,6 +140,10 @@ namespace NetleniumServer
             }
         }
 
+        /// <summary>
+        /// Navigates to the given URL
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
         public static void LoadURL(HttpRequestEventArgs httpRequestEventArgs)
         {
             var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");

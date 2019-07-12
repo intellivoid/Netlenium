@@ -9,6 +9,11 @@ namespace Netlenium.Driver
     public interface IActions
     {
         /// <summary>
+        /// Gets the current window handle
+        /// </summary>
+        IWindow CurrentWindow { get; }
+
+        /// <summary>
         /// Load a URL into the document
         /// </summary>
         /// <param name="location"></param>
@@ -40,12 +45,17 @@ namespace Netlenium.Driver
         /// </summary>
         /// <returns></returns>
         List<IWindow> GetWindows();
-
+        
         /// <summary>
         /// Executes Javascript code in the current document
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
         string ExecuteJavascript(string code);
+
+        /// <summary>
+        /// Closes the current window handle and switches back to an active handle
+        /// </summary>
+        void Close();
     }
 }

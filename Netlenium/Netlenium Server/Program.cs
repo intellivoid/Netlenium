@@ -22,27 +22,30 @@ namespace Netlenium_Server
             CommandLineParameters.DriverLoggingLevel = 1;
             CommandLineParameters.ServerLoggingLevel = 1;
             CommandLineParameters.Port = 6410;
-            CommandLineParameters.MaxSessions = 0;
-            CommandLineParameters.SessionInactivityLimit = 5;
+            CommandLineParameters.MaxSessions = 100;
+            CommandLineParameters.SessionInactivityLimit = 10;
             CommandLineParameters.AuthPassword = string.Empty;
             
 
             var p = new OptionSet() {
 
-                { "h|help",  "Indiciates if the Help menu should only be displayed",
+                { "h|help",  "Displays the help menu and exit",
                   v => CommandLineParameters.Help = v != null },
 
-                { "driver-logging-level=", "The logging level for Netlenium Drivers",
+                { "driver-logging-level=", "Logging level for Driver Sessions",
                   v => { if (v != null) CommandLineParameters.DriverLoggingLevel = Convert.ToInt32(v); } },
 
-                { "server-logging-level=", "The logging level for the Web Serivce",
+                { "server-logging-level=", "Logging level for the Web Service",
                   v => { if (v != null) CommandLineParameters.ServerLoggingLevel = Convert.ToInt32(v); } },
                 
-                { "p|port=", "The port that the Web Service will run on",
+                { "p|port=", "The port to run the Web Service on",
                   v => { if (v != null) CommandLineParameters.Port = Convert.ToInt32(v); } },
 
                 { "max-sessions=", "The maximum amount of sessions that can be created",
                   v => { if (v != null) CommandLineParameters.MaxSessions = Convert.ToInt32(v); } },
+
+                { "session-inactivity-limit=", "The amount of minutes that a session is allowed to be inactive",
+                  v => { if (v != null) CommandLineParameters.SessionInactivityLimit = Convert.ToInt32(v); } },
 
                 { "auth-password=", "Authentication Password for Web Service access",
                   v => { if (v != null) CommandLineParameters.AuthPassword = v; } },
@@ -55,7 +58,9 @@ namespace Netlenium_Server
                 ShowHelp();
                 Environment.Exit(0);
             }
-            
+
+            VerifyValues();
+
             WebService.logging.Name = "Netlenium.Server";
             WebService.logging.CommandLineLoggingEnabled = true;
 
@@ -122,9 +127,50 @@ namespace Netlenium_Server
                 Environment.Exit(1);
             }
 
-            Console.ReadLine();
-            Environment.Exit(0);
+            while (true)
+            {
+                Console.ReadKey(true);
+            };
 
+        }
+
+        /// <summary>
+        /// Verifies the values in the given arguments
+        /// </summary>
+        static void VerifyValues()
+        {
+            if (CommandLineParameters.MaxSessions < 1)
+            {
+                Console.WriteLine("The parameter 'max-sessions' cannot have a value that's less than 1");
+                Environment.Exit(64);
+            }
+
+            if (CommandLineParameters.MaxSessions > 99999)
+            {
+                Console.WriteLine("The parameter 'max-sessions' cannot have a value that's greater than 99999");
+                Environment.Exit(64);
+            }
+
+            if(CommandLineParameters.SessionInactivityLimit < 0)
+            {
+                Console.WriteLine("The parameter 'session-inactivity-limit' cannot have a value that's less than 0");
+                Environment.Exit(64);
+            }
+
+            if (CommandLineParameters.SessionInactivityLimit > 99999)
+            {
+                Console.WriteLine("The parameter 'session-inactivity-limit' cannot have a value that's greater than 99999");
+                Environment.Exit(64);
+            }
+            
+            if(CommandLineParameters.AuthPassword != string.Empty)
+            {
+                if(CommandLineParameters.AuthPassword.Length < 6)
+                {
+                    Console.WriteLine("The parameter 'auth-password' is invalid, the password must be greater than 6 characters");
+                    Environment.Exit(64);
+                }
+            }
         }
 
         /// <summary>
@@ -132,28 +178,40 @@ namespace Netlenium_Server
         /// </summary>
         static void ShowHelp()
         {
-            Console.WriteLine("usage: netlenium [options]");
-            Console.WriteLine(" options:");
-            Console.WriteLine("     -h, --help                      Displays the help menu and exits");
+            Console.WriteLine(" USAGE:");
+            Console.WriteLine("     netlenium [OPTIONS]         (main server)");
             Console.WriteLine();
-            Console.WriteLine("     --driver-logging-level [0-3]    Logging level for Driver Sessions");
+            Console.WriteLine(" OPTIONS:");
+            Console.WriteLine("     -h, --help");
+            Console.WriteLine("         Displays the help menu and exits");
+            Console.WriteLine();
+            Console.WriteLine("     --driver-logging-level [0-3]");
+            Console.WriteLine("         Logging level for Driver Sessions");
             Console.WriteLine("         0 = Silent");
             Console.WriteLine("         1 = Information, Warning & Errors (Default)");
             Console.WriteLine("         2 = Verbose");
             Console.WriteLine("         3 = Debugging");
             Console.WriteLine();
-            Console.WriteLine("     --server-logging-level [0-3]    Logging level for the Web Service");
+            Console.WriteLine("     --server-logging-level [0-3]");
+            Console.WriteLine("         Logging level for the Web Service");
             Console.WriteLine("         0 = Silent");
             Console.WriteLine("         1 = Information, Warning & Errors (Default)");
             Console.WriteLine("         2 = Verbose");
             Console.WriteLine("         3 = Debugging");
             Console.WriteLine();
-            Console.WriteLine("     -p, --port [Default: 6410]    The port to run the Web Service on");
+            Console.WriteLine("     -p, --port [Default: 6410]");
+            Console.WriteLine("         The port to run the Web Service on");
             Console.WriteLine();
-            Console.WriteLine("     --max-sessions [Optional]     The max amount of sessions that are");
-            Console.WriteLine("                                   allowed to be created");
+            Console.WriteLine("     --max-sessions [Default: 100]");
+            Console.WriteLine("         The max amount of sessions that are allowed to be created");
             Console.WriteLine();
-            Console.WriteLine("     --auth-password [Optional]    Authentication Password for Web Service access");
+            Console.WriteLine("     --session-inactivity-limit [Default: 10]");
+            Console.WriteLine("         The amount of minutes that a session is allowed to be inactive");
+            Console.WriteLine("         before it gets closed. Using 0 as the value will never close");
+            Console.WriteLine("         inactive session");
+            Console.WriteLine();
+            Console.WriteLine("     --auth-password [Optional]");
+            Console.WriteLine("         Authentication Password for Web Service access");
         }
     }
 }

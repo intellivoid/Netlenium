@@ -23,7 +23,7 @@ namespace NetleniumServer
                 return;
             }
 
-            if (CommandLineParameters.MaxSessions > 0)
+            if(SessionManager.activeSessions != null)
             {
                 if (SessionManager.activeSessions.Count == CommandLineParameters.MaxSessions)
                 {

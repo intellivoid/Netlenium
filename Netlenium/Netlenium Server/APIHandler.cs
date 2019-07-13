@@ -427,5 +427,36 @@ namespace NetleniumServer
             }
         }
 
+        /// <summary>
+        /// Clears the innerHTML of the element
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void Clear(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var Element = Utilities.GetElement(httpRequestEventArgs);
+
+            if (Element == null)
+            {
+                return;
+            }
+
+            try
+            {
+                Element.Clear();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
+
     }
 }

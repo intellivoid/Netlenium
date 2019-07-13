@@ -335,6 +335,18 @@ namespace NetleniumServer
                     APIHandler.Submit(httpRequestEvent);
                     break;
 
+                case "/webelement/clear":
+
+                    if (IsAuthorized(httpRequestEvent) == false)
+                    {
+                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                        break;
+                    }
+
+
+                    APIHandler.Clear(httpRequestEvent);
+                    break;
+
                 case "/favicon.ico":
                     var FaviconLocation = $"{AssemblyDirectory}{Path.DirectorySeparatorChar}WebResources{Path.DirectorySeparatorChar}favicon.ico";
                     if (File.Exists(FaviconLocation))

@@ -53,6 +53,7 @@
     <Compile Include="ApplicationPaths.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="Chrome\Actions.cs" />
+    <Compile Include="AttributeNotFoundException.cs" />
     <Compile Include="Chrome\Document.cs" />
     <Compile Include="Chrome\Driver.cs" />
     <Compile Include="StaleElementReferenceException.cs" />

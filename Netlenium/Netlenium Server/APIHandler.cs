@@ -350,5 +350,50 @@ namespace NetleniumServer
             }
         }
 
+        /// <summary>
+        /// Sets a value to a WebElement's attribute, creates attribute if it doesn't exist
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void SetAttribute(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var Element = Utilities.GetElement(httpRequestEventArgs);
+            var AttributeName = WebService.GetParameter(httpRequestEventArgs.Request, "attribute_name");
+            var AttributeValue = WebService.GetParameter(httpRequestEventArgs.Request, "attribute_value");
+
+            if (AttributeName == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("attribute_name"), 400);
+                return;
+            }
+
+            if (AttributeValue == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("attribute_value"), 400);
+                return;
+            }
+
+            if (Element == null)
+            {
+                return;
+            }
+
+            try
+            {
+                Element.SetAttribute(AttributeName, AttributeValue);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
+
     }
 }

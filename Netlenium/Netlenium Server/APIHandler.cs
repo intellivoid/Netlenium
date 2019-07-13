@@ -307,5 +307,43 @@ namespace NetleniumServer
             }
         }
 
+        /// <summary>
+        /// Gets the value of an attribute from the given element
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void GetAttribute(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if(WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var Element = Utilities.GetElement(httpRequestEventArgs);
+            var AttributeName = WebService.GetParameter(httpRequestEventArgs.Request, "attribute_name");
+
+            if (AttributeName == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("attribute_name"), 400);
+                return;
+            }
+
+            if (Element == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var AttributeValue = Element.GetAttribute(AttributeName);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.AttributeValueResponse(AttributeValue), 200);
+                return;
+            }
+            catch(Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
+
     }
 }

@@ -68,8 +68,31 @@ namespace Netlenium.Driver.Chrome
         {
             MoveTo();
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", $"Entering '{input}' to element");
-            webElement.SendKeys(input);
-            driver.Logging.WriteEntry(Logging.MessageType.Verbose, $"IWebElement[{webElement.ToString()}]", "Operation completed");
+            try
+            {
+                webElement.SendKeys(input);
+                driver.Logging.WriteEntry(Logging.MessageType.Verbose, $"IWebElement[{webElement.ToString()}]", "Operation completed");
+            }
+            catch (WebDriver.ElementNotVisibleException)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement.ToString()}]", "The WebElement is not visible");
+                throw new ElementNotVisibleException("The WebElement is not visible");
+            }
+            catch (WebDriver.ElementNotInteractableException)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement.ToString()}]", "The WebElement is not interactable");
+                throw new ElementNotInteractableException("The WebElement is not interactable");
+            }
+            catch(WebDriver.ElementNotSelectableException)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement.ToString()}]", "The WebElement is not selectable");
+                throw new ElementNotSelectableException("The WebElement is not selectable");
+            }
+            catch(Exception ex)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement.ToString()}]", ex.Message);
+                throw new DriverException(ex.Message);
+            }
         }
 
         public void SetAttribute(string attributeName, string value)

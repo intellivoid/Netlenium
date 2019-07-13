@@ -208,7 +208,7 @@ namespace NetleniumServer
                         break;
                     }
 
-                    APIHandler.CreateSession(httpRequestEvent);
+                    Handlers.Sessions.CreateSession(httpRequestEvent);
                     break;
 
                 case "/stop_session":
@@ -219,7 +219,7 @@ namespace NetleniumServer
                         break;
                     }
 
-                    APIHandler.StopSession(httpRequestEvent);
+                    Handlers.Sessions.StopSession(httpRequestEvent);
                     break;
 
                 case "/actions/get_elements":
@@ -230,7 +230,7 @@ namespace NetleniumServer
                         break;
                     }
 
-                    APIHandler.GetElements(httpRequestEvent);
+                    Handlers.Actions.GetElements(httpRequestEvent);
                     break;
 
                 case "/navigate/load_url":
@@ -241,7 +241,7 @@ namespace NetleniumServer
                         break;
                     }
 
-                    APIHandler.LoadURL(httpRequestEvent);
+                    Handlers.Navigation.LoadURL(httpRequestEvent);
                     break;
 
                 case "/navigate/go_back":
@@ -252,7 +252,7 @@ namespace NetleniumServer
                         break;
                     }
 
-                    APIHandler.GoBack(httpRequestEvent);
+                    Handlers.Navigation.GoBack(httpRequestEvent);
                     break;
 
                 case "/navigate/go_forward":
@@ -263,7 +263,7 @@ namespace NetleniumServer
                         break;
                     }
 
-                    APIHandler.GoForward(httpRequestEvent);
+                    Handlers.Navigation.GoForward(httpRequestEvent);
                     break;
 
                 case "/navigate/reload":
@@ -274,7 +274,7 @@ namespace NetleniumServer
                         break;
                     }
 
-                    APIHandler.Reload(httpRequestEvent);
+                    Handlers.Navigation.Reload(httpRequestEvent);
                     break;
 
                 case "/webelement/send_keys":
@@ -285,7 +285,7 @@ namespace NetleniumServer
                         break;
                     }
 
-                    APIHandler.SendKeys(httpRequestEvent);
+                    Handlers.WebElement.SendKeys(httpRequestEvent);
                     break;
 
                 case "/webelement/click":
@@ -296,7 +296,7 @@ namespace NetleniumServer
                         break;
                     }
 
-                    APIHandler.Click(httpRequestEvent);
+                    Handlers.WebElement.Click(httpRequestEvent);
                     break;
 
                 case "/webelement/get_attribute":
@@ -308,7 +308,7 @@ namespace NetleniumServer
                     }
 
 
-                    APIHandler.GetAttribute(httpRequestEvent);
+                    Handlers.WebElement.GetAttribute(httpRequestEvent);
                     break;
 
                 case "/webelement/set_attribute":
@@ -320,7 +320,7 @@ namespace NetleniumServer
                     }
 
 
-                    APIHandler.SetAttribute(httpRequestEvent);
+                    Handlers.WebElement.SetAttribute(httpRequestEvent);
                     break;
 
                 case "/webelement/submit":
@@ -332,7 +332,7 @@ namespace NetleniumServer
                     }
 
 
-                    APIHandler.Submit(httpRequestEvent);
+                    Handlers.WebElement.Submit(httpRequestEvent);
                     break;
 
                 case "/webelement/clear":
@@ -344,7 +344,7 @@ namespace NetleniumServer
                     }
 
 
-                    APIHandler.Clear(httpRequestEvent);
+                    Handlers.WebElement.Clear(httpRequestEvent);
                     break;
 
                 case "/favicon.ico":

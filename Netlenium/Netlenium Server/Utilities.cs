@@ -1,4 +1,6 @@
-﻿using Netlenium.Driver;
+﻿using Intellivoid.HyperWS;
+using Netlenium.Driver;
+using System;
 
 namespace NetleniumServer
 {
@@ -37,6 +39,70 @@ namespace NetleniumServer
                 default:
                     throw new InvalidSearchByValueException();
             }
+        }
+
+        /// <summary>
+        /// Parses the Http Request to return the Element
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        /// <returns></returns>
+        public static IWebElement GetElement(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+            var searchBy = WebService.GetParameter(httpRequestEventArgs.Request, "by");
+            var searchValue = WebService.GetParameter(httpRequestEventArgs.Request, "value");
+            var indexValue = WebService.GetParameter(httpRequestEventArgs.Request, "index");
+
+            if (searchBy == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("by"), 400);
+                return null;
+            }
+
+            if (searchValue == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("value"), 400);
+                return null;
+            }
+
+            if (indexValue == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("index"), 400);
+                return null;
+            }
+
+            try
+            {
+                var Elements = SessionManager.activeSessions[sessionId].Driver.Document.GetElements(Utilities.ParseSearchBy(searchBy), searchValue);
+
+                if (Elements.Count == 0)
+                {
+                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.ElementNotFoundResponse(), 404);
+                    return null;
+                }
+
+                if (Convert.ToInt32(indexValue) >= 0 && Convert.ToInt32(indexValue) < Elements.Count)
+                {
+                    return Elements[Convert.ToInt32(indexValue)];
+                }
+                else
+                {
+                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.ElementNotFoundResponse(), 404);
+                }
+
+                return null;
+            }
+            catch (InvalidSearchByValueException)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.InvalidSearchByValueResponse(), 400);
+                return null;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return null;
+            }
+
         }
     }
 }

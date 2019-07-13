@@ -238,5 +238,43 @@ namespace NetleniumServer
             }
         }
 
+        /// <summary>
+        /// Simulates key strokes on the Element
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void SendKeys(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var Element = Utilities.GetElement(httpRequestEventArgs);
+            var keysValue = WebService.GetParameter(httpRequestEventArgs.Request, "input");
+
+            if (Element == null)
+            {
+                return;
+            }
+
+            if (keysValue == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("input"), 400);
+                return;
+            }
+
+            try
+            {
+                Element.SendKeys(keysValue);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
+
     }
 }

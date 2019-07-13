@@ -84,6 +84,7 @@
     <Compile Include="Objects\WebElement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Responses\ElementNotFoundResponse.cs" />
     <Compile Include="Responses\ElementsResultsResponse.cs" />
     <Compile Include="Responses\InvalidSearchByValueResponse.cs" />
     <Compile Include="Responses\MaxSessionsErrorResponse.cs" />

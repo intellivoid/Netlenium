@@ -288,7 +288,7 @@ namespace NetleniumServer
                     APIHandler.SendKeys(httpRequestEvent);
                     break;
 
-                case "webelement/click":
+                case "/webelement/click":
 
                     if(IsAuthorized(httpRequestEvent) == false)
                     {
@@ -299,7 +299,7 @@ namespace NetleniumServer
                     APIHandler.Click(httpRequestEvent);
                     break;
 
-                case "webelement/get_attribute":
+                case "/webelement/get_attribute":
 
                     if(IsAuthorized(httpRequestEvent) == false)
                     {
@@ -311,7 +311,7 @@ namespace NetleniumServer
                     APIHandler.GetAttribute(httpRequestEvent);
                     break;
 
-                case "webelement/set_attribute":
+                case "/webelement/set_attribute":
 
                     if (IsAuthorized(httpRequestEvent) == false)
                     {

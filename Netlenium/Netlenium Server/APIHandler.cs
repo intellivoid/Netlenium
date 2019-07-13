@@ -68,7 +68,7 @@ namespace NetleniumServer
             try
             {
                 SessionManager.StopSession(sessionId);
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionStoppedResponse(), 200);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
             }
             catch(Exception ex)
             {

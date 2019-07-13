@@ -53,6 +53,11 @@ namespace Netlenium.Driver.Chrome
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", $"Getting value of attribute '{attributeName}'");
             var value = webElement.GetAttribute(attributeName);
+            if(value == null)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement.ToString()}]", $"The attribute '{attributeName}' was not found in the element");
+                throw new AttributeNotFoundException("The given attribute name was not found in the element");
+            }
             driver.Logging.WriteEntry(Logging.MessageType.Debugging, $"IWebElement[{webElement.ToString()}]", $"Returned value '{attributeName}'");
             return value;
         }

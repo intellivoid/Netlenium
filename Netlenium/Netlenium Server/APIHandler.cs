@@ -338,6 +338,11 @@ namespace NetleniumServer
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.AttributeValueResponse(AttributeValue), 200);
                 return;
             }
+            catch(AttributeNotFoundException)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.AttributeNotFoundResponse(AttributeName), 404);
+                return;
+            }
             catch(Exception exception)
             {
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);

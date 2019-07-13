@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class ElementNotVisibleException : Exception
+    public class ElementNotVisibleException : Exception
     {
         public ElementNotVisibleException()
         {

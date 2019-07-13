@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class StaleElementReferenceException : Exception
+    public class StaleElementReferenceException : Exception
     {
         public StaleElementReferenceException()
         {

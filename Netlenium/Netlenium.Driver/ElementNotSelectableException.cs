@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Netlenium.Driver
 {
     [Serializable]
-    internal class ElementNotSelectableException : Exception
+    public class ElementNotSelectableException : Exception
     {
         public ElementNotSelectableException()
         {

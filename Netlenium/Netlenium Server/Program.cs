@@ -1,4 +1,5 @@
-﻿using Mono.Options;
+﻿using Intellivoid.HyperWS;
+using Mono.Options;
 using NetleniumServer;
 using System;
 
@@ -111,10 +112,15 @@ namespace Netlenium_Server
             }
 
             Console.Title = "Netlenium Server";
-            Console.WriteLine("Written by Zi Xing Narrakas");
-            Console.WriteLine();
 
-            WebService.Start(CommandLineParameters.Port);
+            try
+            {
+                WebService.Start(CommandLineParameters.Port);
+            }
+            catch(Exception)
+            {
+                Environment.Exit(1);
+            }
 
             Console.ReadLine();
             Environment.Exit(0);

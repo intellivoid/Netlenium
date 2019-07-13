@@ -55,6 +55,11 @@
     <Compile Include="Chrome\Actions.cs" />
     <Compile Include="Chrome\Document.cs" />
     <Compile Include="Chrome\Driver.cs" />
+    <Compile Include="StaleElementReferenceException.cs" />
+    <Compile Include="DriverException.cs" />
+    <Compile Include="ElementNotSelectableException.cs" />
+    <Compile Include="ElementNotInteractableException.cs" />
+    <Compile Include="ElementNotVisibleException.cs" />
     <Compile Include="WindowHandleException.cs" />
     <Compile Include="NoSuchWindowException.cs" />
     <Compile Include="Chrome\Proxy.cs" />

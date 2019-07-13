@@ -123,7 +123,7 @@ namespace Intellivoid.HyperWS
             catch (Exception ex)
             {
                 State = HttpServerState.Stopped;
-                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "HyperWS", $"Failed to start HTTP server, {ex}");
+                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "HyperWS", $"Failed to start HTTP server, {ex.Message}");
                 throw new WebServerException("Failed to start HTTP server", ex);
             }
 

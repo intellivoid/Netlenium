@@ -348,6 +348,7 @@ namespace NetleniumServer
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
                 return;
             }
+
         }
 
         /// <summary>

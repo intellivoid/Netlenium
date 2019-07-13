@@ -98,7 +98,6 @@
     <Compile Include="Responses\SessionErrorResponse.cs" />
     <Compile Include="Responses\SessionExpiredResponse.cs" />
     <Compile Include="Responses\SessionNotFoundResponse.cs" />
-    <Compile Include="Responses\SessionStoppedResponse.cs" />
     <Compile Include="Responses\UnauthorizedRequestResponse.cs" />
     <Compile Include="Responses\UnexpectedErrorResponse.cs" />
     <Compile Include="Responses\UnsupportedBrowserResponse.cs" />

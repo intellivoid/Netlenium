@@ -57,6 +57,7 @@ namespace NetleniumServer
             }
 
             WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Session '{SessionObject.ID}' created, starting driver");
+            SessionObject.Driver.Headless = false;
             SessionObject.Driver.Start();
 
             WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Session ready");

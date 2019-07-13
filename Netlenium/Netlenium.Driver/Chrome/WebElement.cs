@@ -45,7 +45,35 @@ namespace Netlenium.Driver.Chrome
         public void Click()
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", "Simulating Click on Event");
-            webElement.Click();
+            try
+            {
+                webElement.Click();
+            }
+            catch (WebDriver.ElementNotVisibleException)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement.ToString()}]", "The WebElement is not visible");
+                throw new ElementNotVisibleException("The WebElement is not visible");
+            }
+            catch (WebDriver.ElementNotInteractableException)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement.ToString()}]", "The WebElement is not interactable");
+                throw new ElementNotInteractableException("The WebElement is not interactable");
+            }
+            catch (WebDriver.ElementNotSelectableException)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement.ToString()}]", "The WebElement is not selectable");
+                throw new ElementNotSelectableException("The WebElement is not selectable");
+            }
+            catch (WebDriver.StaleElementReferenceException)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement.ToString()}]", "The WebElement is no longer valid in the document DOM");
+                throw new StaleElementReferenceException("The WebElement is no longer valid in the document DOM");
+            }
+            catch (Exception ex)
+            {
+                driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement.ToString()}]", ex.Message);
+                throw new DriverException(ex.Message);
+            }
             driver.Logging.WriteEntry(Logging.MessageType.Verbose, $"IWebElement[{webElement.ToString()}]", "Operation completed");
         }
         

@@ -1,5 +1,4 @@
-﻿using Intellivoid.HyperWS;
-using Mono.Options;
+﻿using Mono.Options;
 using NetleniumServer;
 using System;
 

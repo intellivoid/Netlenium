@@ -212,5 +212,31 @@ namespace NetleniumServer
             }
         }
 
+        /// <summary>
+        /// Reloads the current document that's loaded
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void Reload(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+
+            try
+            {
+                SessionManager.activeSessions[sessionId].Driver.Actions.Reload();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
+
     }
 }

@@ -396,5 +396,36 @@ namespace NetleniumServer
             }
         }
 
+        /// <summary>
+        /// Submits the given element to the Web Server
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void Submit(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var Element = Utilities.GetElement(httpRequestEventArgs);
+
+            if (Element == null)
+            {
+                return;
+            }
+
+            try
+            {
+                Element.Submit();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
+
     }
 }

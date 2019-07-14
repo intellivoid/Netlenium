@@ -9,6 +9,32 @@ namespace NetleniumServer.Handlers
     /// </summary>
     public static class Actions
     {
+        // <summary>
+        /// Handles the incoming request for this API Handler
+        /// </summary>
+        /// <param name="requestPath"></param>
+        /// <param name="httpRequestEventArg"></param>
+        public static void HandleRequest(string[] requestPath, HttpRequestEventArgs httpRequestEventArg)
+        {
+            if (requestPath.Length < 1)
+            {
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+            }
+
+            switch (requestPath[1])
+            {
+                case "get_elements":
+                    GetElements(httpRequestEventArg);
+                    break;
+                    
+                default:
+                    WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                    break;
+            }
+
+            return;
+        }
+
         /// <summary>
         /// Returns a list of Elements that are in the DOM
         /// </summary>

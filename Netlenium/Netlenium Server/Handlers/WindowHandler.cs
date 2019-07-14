@@ -1,5 +1,7 @@
 ﻿using Intellivoid.HyperWS;
+using Netlenium.Driver;
 using System;
+using System.Collections.Generic;
 
 namespace NetleniumServer.Handlers
 {
@@ -62,6 +64,36 @@ namespace NetleniumServer.Handlers
                     URL = SessionManager.activeSessions[sessionId].Driver.Document.Uri
                 };
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.CurrentWindowResponse(CurrentWindowObject), 200);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of opened Window Handles
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void ListWindowHandles(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+
+            try
+            {
+                var WindowHandlesList = new List<string>();
+                foreach(IWindow WindowHandler in SessionManager.activeSessions[sessionId].Driver.Actions.GetWindows())
+                {
+                    WindowHandlesList.Add(WindowHandler.ID);
+                }
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.ListWindowHandlesResponse(WindowHandlesList), 200);
                 return;
             }
             catch (Exception exception)

@@ -22,6 +22,8 @@ namespace NetleniumServer.Objects
 
         public string InnerText { get; private set; }
 
+        public string InnerHTML { get; private set; }
+
         /// <summary>
         /// Public Consturctor
         /// </summary>
@@ -34,6 +36,7 @@ namespace NetleniumServer.Objects
             ElementSize = new SizeProperty(webElement.Size);
             TagName = webElement.TagName;
             InnerText = webElement.Text;
+            InnerHTML = webElement.InnerHTML;
         }
     }
 }

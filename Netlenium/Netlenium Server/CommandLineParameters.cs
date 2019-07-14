@@ -11,6 +11,11 @@
         public static bool Help { get; set; }
 
         /// <summary>
+        /// Disables standard output
+        /// </summary>
+        public static bool DisabledStdout { get; set; }
+
+        /// <summary>
         /// The logging level for Netlenium Drivers
         /// </summary>
         public static int DriverLoggingLevel { get; set; }

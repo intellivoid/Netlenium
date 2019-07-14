@@ -109,6 +109,7 @@
     <Compile Include="Responses\UnexpectedErrorResponse.cs" />
     <Compile Include="Responses\UnsupportedBrowserResponse.cs" />
     <Compile Include="Responses\UnsupportedRequestMethodResponse.cs" />
+    <Compile Include="Responses\WindowNotFoundResponse.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="SessionManager.cs" />
     <Compile Include="SessionNotFoundException.cs" />

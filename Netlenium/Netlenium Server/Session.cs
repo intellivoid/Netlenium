@@ -53,7 +53,16 @@ namespace NetleniumServer
                     break;
             }
 
-            switch(CommandLineParameters.DriverLoggingLevel)
+            if (CommandLineParameters.DisabledStdout == true)
+            {
+                Driver.Logging.CommandLineLoggingEnabled = false;
+            }
+            else
+            {
+                Driver.Logging.CommandLineLoggingEnabled = true;
+            }
+
+            switch (CommandLineParameters.DriverLoggingLevel)
             {
                 case 0:
                     Driver.Logging.InformationEntriesEnabled = false;

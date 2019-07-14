@@ -31,6 +31,9 @@ namespace Netlenium_Server
                 { "h|help",  "Displays the help menu and exit",
                   v => CommandLineParameters.Help = v != null },
 
+                { "disable-stdout",  "Disables standard output",
+                  v => CommandLineParameters.DisabledStdout = v != null },
+
                 { "driver-logging-level=", "Logging level for Driver Sessions",
                   v => { if (v != null) CommandLineParameters.DriverLoggingLevel = Convert.ToInt32(v); } },
 
@@ -57,11 +60,10 @@ namespace Netlenium_Server
                 ShowHelp();
                 Environment.Exit(0);
             }
-
+            
             VerifyValues();
 
             WebService.logging.Name = "Netlenium.Server";
-            WebService.logging.CommandLineLoggingEnabled = true;
 
             switch (CommandLineParameters.ServerLoggingLevel)
             {
@@ -170,6 +172,15 @@ namespace Netlenium_Server
                     Environment.Exit(64);
                 }
             }
+
+            if(CommandLineParameters.DisabledStdout == true)
+            {
+                WebService.logging.CommandLineLoggingEnabled = false;
+            }
+            else
+            {
+                WebService.logging.CommandLineLoggingEnabled = true;
+            }
         }
 
         /// <summary>
@@ -183,6 +194,9 @@ namespace Netlenium_Server
             Console.WriteLine(" OPTIONS:");
             Console.WriteLine("     -h, --help");
             Console.WriteLine("         Displays the help menu and exits");
+            Console.WriteLine();
+            Console.WriteLine("     --disable-stdout");
+            Console.WriteLine("         Disables standard output");
             Console.WriteLine();
             Console.WriteLine("     --driver-logging-level [0-3]");
             Console.WriteLine("         Logging level for Driver Sessions");

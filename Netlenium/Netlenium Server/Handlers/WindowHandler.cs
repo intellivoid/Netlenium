@@ -106,5 +106,38 @@ namespace NetleniumServer.Handlers
                 return;
             }
         }
+
+        /// <summary>
+        /// Switches to another Window Handle
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void SwitchTo(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+            var windowId = WebService.GetParameter(httpRequestEventArgs.Request, "id");
+
+            try
+            {
+                var WindowHandle = SessionManager.activeSessions[sessionId].Driver.Actions.GetWindow(windowId);
+                WindowHandle.SwitchTo();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
+                return;
+            }
+            catch(NoSuchWindowException)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.Not(exception.Message), 500);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
     }
 }

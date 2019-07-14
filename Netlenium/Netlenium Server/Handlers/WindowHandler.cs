@@ -38,6 +38,10 @@ namespace NetleniumServer.Handlers
                     ListWindowHandles(httpRequestEventArg);
                     break;
 
+                case "switch_to":
+                    SwitchTo(httpRequestEventArg);
+                    break;
+
                 default:
                     WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
                     break;
@@ -120,6 +124,12 @@ namespace NetleniumServer.Handlers
 
             var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
             var windowId = WebService.GetParameter(httpRequestEventArgs.Request, "id");
+
+            if (windowId == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("id"), 400);
+                return;
+            }
 
             try
             {

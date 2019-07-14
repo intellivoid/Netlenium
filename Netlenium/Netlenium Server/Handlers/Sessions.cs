@@ -9,6 +9,36 @@ namespace NetleniumServer.Handlers
     public static class Sessions
     {
         /// <summary>
+        /// Handles the incoming request for this API Handler
+        /// </summary>
+        /// <param name="requestPath"></param>
+        /// <param name="httpRequestEventArg"></param>
+        public static void HandleRequest(string[] requestPath, HttpRequestEventArgs httpRequestEventArg)
+        {
+            if(requestPath.Length < 1)
+            {
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+            }
+
+            switch(requestPath[1])
+            {
+                case "create":
+                    CreateSession(httpRequestEventArg);
+                    break;
+
+                case "close":
+                    CloseSession(httpRequestEventArg);
+                    break;
+
+                default:
+                    WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                    break;
+            }
+
+            return;
+        }
+
+        /// <summary>
         /// Creates a new Driver Session
         /// </summary>
         /// <param name="httpRequest"></param>
@@ -50,11 +80,11 @@ namespace NetleniumServer.Handlers
         }
 
         /// <summary>
-        /// Stops an existing session by killing the driver process and cleaning up
+        /// Closes a existing session by killing the driver process and cleaning up
         /// used resources
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void StopSession(HttpRequestEventArgs httpRequestEventArgs)
+        public static void CloseSession(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {

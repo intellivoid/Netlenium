@@ -208,6 +208,10 @@ namespace NetleniumServer
                         Handlers.WebElement.HandleRequest(RequestPath, httpRequestEvent);
                         break;
 
+                    case "window_handler":
+                        Handlers.WindowHandler.HandleRequest(RequestPath, httpRequestEvent);
+                        break;
+
                     case "favicon.ico":
                         var FaviconLocation = $"{AssemblyDirectory}{Path.DirectorySeparatorChar}WebResources{Path.DirectorySeparatorChar}favicon.ico";
                         if (File.Exists(FaviconLocation))

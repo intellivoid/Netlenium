@@ -55,6 +55,7 @@
     <Compile Include="Handlers\Navigation.cs" />
     <Compile Include="Handlers\Sessions.cs" />
     <Compile Include="Handlers\WebElement.cs" />
+    <Compile Include="Handlers\WindowHandler.cs" />
     <Compile Include="Intellivoid\HttpClient.cs" />
     <Compile Include="Intellivoid\HttpContext.cs" />
     <Compile Include="Intellivoid\HttpCookie.cs" />
@@ -82,7 +83,7 @@
     <Compile Include="Intellivoid\WebServerException.cs" />
     <Compile Include="InvalidSearchByValueException.cs" />
     <Compile Include="IResponse.cs" />
-    <Compile Include="Objects\Document.cs" />
+    <Compile Include="Objects\CurrentWindow.cs" />
     <Compile Include="Objects\LocationProperty.cs" />
     <Compile Include="Objects\SizeProperty.cs" />
     <Compile Include="Objects\WebElement.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\AttributeNotFoundResponse.cs" />
     <Compile Include="Responses\AttributeValueResponse.cs" />
+    <Compile Include="Responses\CurrentWindowResponse.cs" />
     <Compile Include="Responses\ElementNotFoundResponse.cs" />
     <Compile Include="Responses\ElementsResultsResponse.cs" />
     <Compile Include="Responses\InvalidSearchByValueResponse.cs" />

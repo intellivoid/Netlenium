@@ -9,6 +9,53 @@ namespace NetleniumServer.Handlers
     /// </summary>
     public static class WebElement
     {
+
+        /// <summary>
+        /// Handles the incoming request for this API Handler
+        /// </summary>
+        /// <param name="requestPath"></param>
+        /// <param name="httpRequestEventArg"></param>
+        public static void HandleRequest(string[] requestPath, HttpRequestEventArgs httpRequestEventArg)
+        {
+            if (requestPath.Length < 1)
+            {
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+            }
+
+            switch (requestPath[1])
+            {
+                case "clear":
+                    Clear(httpRequestEventArg);
+                    break;
+
+                case "click":
+                    Click(httpRequestEventArg);
+                    break;
+
+                case "get_attribute":
+                    GetAttribute(httpRequestEventArg);
+                    break;
+
+                case "set_attribute":
+                    SetAttribute(httpRequestEventArg);
+                    break;
+
+                case "send_keys":
+                    SendKeys(httpRequestEventArg);
+                    break;
+
+                case "submit":
+                    Submit(httpRequestEventArg);
+                    break;
+
+                default:
+                    WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                    break;
+            }
+
+            return;
+        }
+
         /// <summary>
         /// Simulates key strokes on the Element
         /// </summary>

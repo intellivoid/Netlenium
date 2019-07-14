@@ -50,8 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="APIHandler.cs" />
     <Compile Include="CommandLineParameters.cs" />
+    <Compile Include="Handlers\Actions.cs" />
+    <Compile Include="Handlers\Navigation.cs" />
+    <Compile Include="Handlers\Sessions.cs" />
+    <Compile Include="Handlers\WebElement.cs" />
     <Compile Include="Intellivoid\HttpClient.cs" />
     <Compile Include="Intellivoid\HttpContext.cs" />
     <Compile Include="Intellivoid\HttpCookie.cs" />

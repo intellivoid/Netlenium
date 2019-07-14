@@ -130,7 +130,7 @@ namespace NetleniumServer.Handlers
             }
             catch(NoSuchWindowException)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.Not(exception.Message), 500);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.WindowNotFoundResponse(), 404);
                 return;
             }
             catch (Exception exception)

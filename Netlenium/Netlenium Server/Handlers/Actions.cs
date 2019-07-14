@@ -26,7 +26,7 @@ namespace NetleniumServer.Handlers
                 case "get_elements":
                     GetElements(httpRequestEventArg);
                     break;
-                    
+
                 default:
                     WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
                     break;

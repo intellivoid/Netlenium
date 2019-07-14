@@ -20,6 +20,12 @@ namespace NetleniumServer.Handlers
                 WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
             }
 
+            if (WebService.IsAuthorized(httpRequestEventArg) == false)
+            {
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                return;
+            }
+
             switch (requestPath[1])
             {
                 case "current_window":

@@ -34,7 +34,9 @@ namespace Netlenium.Driver.Chrome
         public string TagName => webElement.TagName;
 
         public bool Enabled => webElement.Enabled;
-        
+
+        public string InnerHTML => webElement.GetAttribute("innerHTML");
+
         public void Clear()
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, $"IWebElement[{webElement.ToString()}]", "Clearing contents on Event");

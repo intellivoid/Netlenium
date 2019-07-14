@@ -82,6 +82,7 @@
     <Compile Include="Intellivoid\WebServerException.cs" />
     <Compile Include="InvalidSearchByValueException.cs" />
     <Compile Include="IResponse.cs" />
+    <Compile Include="Objects\Document.cs" />
     <Compile Include="Objects\LocationProperty.cs" />
     <Compile Include="Objects\SizeProperty.cs" />
     <Compile Include="Objects\WebElement.cs" />

@@ -15,6 +15,11 @@ namespace Netlenium.Driver
         string Text { get; }
 
         /// <summary>
+        /// Gets the Element's innerHTML Contents
+        /// </summary>
+        string InnerHTML { get; }
+
+        /// <summary>
         /// Gets the Element's size
         /// </summary>
         Size Size { get; }

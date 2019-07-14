@@ -56,6 +56,17 @@ namespace Netlenium.Driver.Chrome
             }
         }
 
+        public IWindow GetWindow(string Id)
+        {
+            var WindowHandles = driver.RemoteDriver.WindowHandles;
+            if(WindowHandles.Contains(Id) == false)
+            {
+                throw new NoSuchWindowException();
+            }
+
+            return new Window(driver, WindowHandles[WindowHandles.IndexOf(Id)]);
+        }
+
         public List<IWindow> GetWindows()
         {
             List<IWindow> results = new List<IWindow>();

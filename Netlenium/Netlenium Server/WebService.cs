@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading;
@@ -186,180 +187,54 @@ namespace NetleniumServer
                 SendJsonResponse(httpRequestEvent.Response, new UnsupportedRequestMethodException(), 400);
                 return;
             }
-            
-            switch (httpRequestEvent.Request.Path.ToLower())
+
+            var RequestPath = httpRequestEvent.Request.Path.ToLower().Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+            if(RequestPath.Length > 0)
             {
-                case "/":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                switch(RequestPath[0])
+                {
+                    case "actions":
+                        Handlers.Actions.HandleRequest(RequestPath, httpRequestEvent);
                         break;
-                    }
 
-                    SendJsonResponse(httpRequestEvent.Response, new Responses.RootResponse(), 200);
-                    break;
-
-                case "/create_session":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                    case "navigation":
+                        Handlers.Navigation.HandleRequest(RequestPath, httpRequestEvent);
                         break;
-                    }
 
-                    Handlers.Sessions.CreateSession(httpRequestEvent);
-                    break;
-
-                case "/stop_session":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                    case "sessions":
+                        Handlers.Sessions.HandleRequest(RequestPath, httpRequestEvent);
                         break;
-                    }
 
-                    Handlers.Sessions.StopSession(httpRequestEvent);
-                    break;
-
-                case "/actions/get_elements":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                    case "web_element":
+                        Handlers.Sessions.HandleRequest(RequestPath, httpRequestEvent);
                         break;
-                    }
 
-                    Handlers.Actions.GetElements(httpRequestEvent);
-                    break;
-
-                case "/navigate/load_url":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                    case "favicon.ico":
+                        var FaviconLocation = $"{AssemblyDirectory}{Path.DirectorySeparatorChar}WebResources{Path.DirectorySeparatorChar}favicon.ico";
+                        if (File.Exists(FaviconLocation))
+                        {
+                            httpRequestEvent.Response.Headers.Add("Content-Type", "image/ico");
+                            SendFile(httpRequestEvent.Response, FaviconLocation);
+                        }
                         break;
-                    }
 
-                    Handlers.Navigation.LoadURL(httpRequestEvent);
-                    break;
-
-                case "/navigate/go_back":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                    default:
+                        SendJsonResponse(httpRequestEvent.Response, new Responses.NotFoundResponse(), 404);
                         break;
-                    }
+                }
 
-                    Handlers.Navigation.GoBack(httpRequestEvent);
-                    break;
+                return;
+            }
+            else
+            {
+                if (IsAuthorized(httpRequestEvent) == false)
+                {
+                    SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                    return;
+                }
 
-                case "/navigate/go_forward":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
-                        break;
-                    }
-
-                    Handlers.Navigation.GoForward(httpRequestEvent);
-                    break;
-
-                case "/navigate/reload":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
-                        break;
-                    }
-
-                    Handlers.Navigation.Reload(httpRequestEvent);
-                    break;
-
-                case "/webelement/send_keys":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
-                        break;
-                    }
-
-                    Handlers.WebElement.SendKeys(httpRequestEvent);
-                    break;
-
-                case "/webelement/click":
-
-                    if(IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
-                        break;
-                    }
-
-                    Handlers.WebElement.Click(httpRequestEvent);
-                    break;
-
-                case "/webelement/get_attribute":
-
-                    if(IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
-                        break;
-                    }
-
-
-                    Handlers.WebElement.GetAttribute(httpRequestEvent);
-                    break;
-
-                case "/webelement/set_attribute":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
-                        break;
-                    }
-
-
-                    Handlers.WebElement.SetAttribute(httpRequestEvent);
-                    break;
-
-                case "/webelement/submit":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
-                        break;
-                    }
-
-
-                    Handlers.WebElement.Submit(httpRequestEvent);
-                    break;
-
-                case "/webelement/clear":
-
-                    if (IsAuthorized(httpRequestEvent) == false)
-                    {
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
-                        break;
-                    }
-
-
-                    Handlers.WebElement.Clear(httpRequestEvent);
-                    break;
-
-                case "/favicon.ico":
-                    var FaviconLocation = $"{AssemblyDirectory}{Path.DirectorySeparatorChar}WebResources{Path.DirectorySeparatorChar}favicon.ico";
-                    if (File.Exists(FaviconLocation))
-                    {
-                        httpRequestEvent.Response.Headers.Add("Content-Type", "image/ico");
-                        SendFile(httpRequestEvent.Response, FaviconLocation);
-                    }
-                    break;
-
-
-                default:
-                    SendJsonResponse(httpRequestEvent.Response, new Responses.NotFoundResponse(), 404);
-                    break;
+                SendJsonResponse(httpRequestEvent.Response, new Responses.RootResponse(), 200);
+                return;
             }
         }
 

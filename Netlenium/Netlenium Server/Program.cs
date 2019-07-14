@@ -18,6 +18,8 @@ namespace Netlenium_Server
         {
             // Parse the command-line arguments
             CommandLineParameters.Help = false;
+            CommandLineParameters.DisabledStdout = false;
+            CommandLineParameters.DisableFileLogging = false;
             CommandLineParameters.DriverLoggingLevel = 1;
             CommandLineParameters.ServerLoggingLevel = 1;
             CommandLineParameters.Port = 6410;
@@ -33,6 +35,9 @@ namespace Netlenium_Server
 
                 { "disable-stdout",  "Disables standard output",
                   v => CommandLineParameters.DisabledStdout = v != null },
+
+                { "disable-file-logging",  "Disables logging to files",
+                  v => CommandLineParameters.DisableFileLogging = v != null },
 
                 { "driver-logging-level=", "Logging level for Driver Sessions",
                   v => { if (v != null) CommandLineParameters.DriverLoggingLevel = Convert.ToInt32(v); } },
@@ -181,6 +186,15 @@ namespace Netlenium_Server
             {
                 WebService.logging.CommandLineLoggingEnabled = true;
             }
+
+            if(CommandLineParameters.DisableFileLogging == true)
+            {
+                WebService.logging.FileLoggingEnabled = false;
+            }
+            else
+            {
+                WebService.logging.FileLoggingEnabled = true;
+            }
         }
 
         /// <summary>
@@ -197,6 +211,9 @@ namespace Netlenium_Server
             Console.WriteLine();
             Console.WriteLine("     --disable-stdout");
             Console.WriteLine("         Disables standard output");
+            Console.WriteLine();
+            Console.WriteLine("     --disable-file-logging");
+            Console.WriteLine("         Disables logging to files");
             Console.WriteLine();
             Console.WriteLine("     --driver-logging-level [0-3]");
             Console.WriteLine("         Logging level for Driver Sessions");

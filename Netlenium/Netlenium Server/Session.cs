@@ -62,6 +62,15 @@ namespace NetleniumServer
                 Driver.Logging.CommandLineLoggingEnabled = true;
             }
 
+            if(CommandLineParameters.DisableFileLogging == true)
+            {
+                Driver.Logging.FileLoggingEnabled = false;
+            }
+            else
+            {
+                Driver.Logging.FileLoggingEnabled = true;
+            }
+
             switch (CommandLineParameters.DriverLoggingLevel)
             {
                 case 0:

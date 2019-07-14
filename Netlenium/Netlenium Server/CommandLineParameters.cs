@@ -16,6 +16,11 @@
         public static bool DisabledStdout { get; set; }
 
         /// <summary>
+        /// Disables logging to files
+        /// </summary>
+        public static bool DisableFileLogging { get; set; }
+
+        /// <summary>
         /// The logging level for Netlenium Drivers
         /// </summary>
         public static int DriverLoggingLevel { get; set; }

@@ -48,6 +48,11 @@ namespace Netlenium.Logging
         public bool DebuggingOutputEnabled { get; set; }
 
         /// <summary>
+        /// If enabled, all entried will be logged to a file
+        /// </summary>
+        public bool FileLoggingEnabled { get; set; }
+
+        /// <summary>
         /// Writes a log entry
         /// </summary>
         /// <param name="messageType"></param>
@@ -97,6 +102,15 @@ namespace Netlenium.Logging
             {
                 CommandLine.PrintEntry(
                     messageType: messageType,
+                    serviceName: Name,
+                    moduleName: moduleName,
+                    entry: message
+                );
+            }
+
+            if(FileLoggingEnabled == true)
+            {
+                FileLogging.WriteEntry(messageType: messageType,
                     serviceName: Name,
                     moduleName: moduleName,
                     entry: message

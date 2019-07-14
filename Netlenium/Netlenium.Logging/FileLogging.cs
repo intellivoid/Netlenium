@@ -43,7 +43,7 @@ namespace Netlenium.Logging
                     break;
 
                 case MessageType.Information:
-                    Output.Append(" {INFO} ");
+                    Output.Append(" {INFO}  ");
                     break;
 
                 case MessageType.Verbose:
@@ -51,11 +51,11 @@ namespace Netlenium.Logging
                     break;
 
                 case MessageType.Warning:
-                    Output.Append(" {WARN} ");
+                    Output.Append(" {WARN}  ");
                     break;
             }
 
-            Output.Append($"=> {serviceName}.{moduleName} ::   {entry}");
+            Output.Append($"=> {serviceName}.{moduleName} ::   {entry}{Environment.NewLine}");
             File.AppendAllText(GetLoggingFilepath(serviceName), Output.ToString());
         }
 

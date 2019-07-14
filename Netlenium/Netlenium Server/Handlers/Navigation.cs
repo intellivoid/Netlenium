@@ -9,6 +9,44 @@ namespace NetleniumServer.Handlers
     public static class Navigation
     {
         /// <summary>
+        /// Handles the incoming request for this API Handler
+        /// </summary>
+        /// <param name="requestPath"></param>
+        /// <param name="httpRequestEventArg"></param>
+        public static void HandleRequest(string[] requestPath, HttpRequestEventArgs httpRequestEventArg)
+        {
+            if (requestPath.Length < 1)
+            {
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+            }
+
+            switch (requestPath[1])
+            {
+                case "load_url":
+                    LoadURL(httpRequestEventArg);
+                    break;
+
+                case "go_forward":
+                    GoForward(httpRequestEventArg);
+                    break;
+
+                case "go_back":
+                    GoBack(httpRequestEventArg);
+                    break;
+
+                case "reload":
+                    Reload(httpRequestEventArg);
+                    break;
+
+                default:
+                    WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                    break;
+            }
+
+            return;
+        }
+
+        /// <summary>
         /// Navigates to the given URL
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>

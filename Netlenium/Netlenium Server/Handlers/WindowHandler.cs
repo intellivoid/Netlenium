@@ -34,6 +34,10 @@ namespace NetleniumServer.Handlers
                     CurrentWindow(httpRequestEventArg);
                     break;
 
+                case "list_windows":
+                    ListWindowHandles(httpRequestEventArg);
+                    break;
+
                 default:
                     WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
                     break;

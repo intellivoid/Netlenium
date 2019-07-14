@@ -45,6 +45,13 @@ namespace Netlenium.Driver
         /// </summary>
         /// <returns></returns>
         List<IWindow> GetWindows();
+
+        /// <summary>
+        /// Gets a Window Handle from a ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        IWindow GetWindow(string Id);
         
         /// <summary>
         /// Executes Javascript code in the current document

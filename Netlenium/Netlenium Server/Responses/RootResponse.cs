@@ -21,7 +21,7 @@ namespace NetleniumServer.Responses
         {
             Status = true;
             ResponseCode = 200;
-            ServerName = "Netlenium Server";
+            ServerName = CommandLineParameters.ServerName;
         }
     }
 }

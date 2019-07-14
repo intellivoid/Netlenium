@@ -36,6 +36,11 @@
         public static int Port { get; set; }
 
         /// <summary>
+        /// Optional custom name for this server
+        /// </summary>
+        public static string ServerName { get; set; }
+
+        /// <summary>
         /// The maximum amount of sessions that can be created
         /// </summary>
         public static int MaxSessions { get; set; }

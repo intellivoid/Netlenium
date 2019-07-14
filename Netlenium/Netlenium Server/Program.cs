@@ -23,6 +23,7 @@ namespace Netlenium_Server
             CommandLineParameters.DriverLoggingLevel = 1;
             CommandLineParameters.ServerLoggingLevel = 1;
             CommandLineParameters.Port = 6410;
+            CommandLineParameters.ServerName = "Netlenium Server";
             CommandLineParameters.MaxSessions = 100;
             CommandLineParameters.SessionInactivityLimit = 10;
             CommandLineParameters.AuthPassword = string.Empty;
@@ -47,6 +48,9 @@ namespace Netlenium_Server
                 
                 { "p|port=", "The port to run the Web Service on",
                   v => { if (v != null) CommandLineParameters.Port = Convert.ToInt32(v); } },
+
+                { "server-name=", "The port to run the Web Service on",
+                  v => { if (v != null) CommandLineParameters.ServerName = v; } },
 
                 { "max-sessions=", "The maximum amount of sessions that can be created",
                   v => { if (v != null) CommandLineParameters.MaxSessions = Convert.ToInt32(v); } },
@@ -163,6 +167,12 @@ namespace Netlenium_Server
                 Environment.Exit(64);
             }
 
+            if(CommandLineParameters.ServerName.Length < 1)
+            {
+                Console.WriteLine("The parameter 'server-name' cannot be empty");
+                Environment.Exit(64);
+            }
+
             if (CommandLineParameters.SessionInactivityLimit > 99999)
             {
                 Console.WriteLine("The parameter 'session-inactivity-limit' cannot have a value that's greater than 99999");
@@ -231,6 +241,9 @@ namespace Netlenium_Server
             Console.WriteLine();
             Console.WriteLine("     -p, --port [Default: 6410]");
             Console.WriteLine("         The port to run the Web Service on");
+            Console.WriteLine();
+            Console.WriteLine("     --server-name [Default: 'Netlenium Server']");
+            Console.WriteLine("         Optional custom name for this server");
             Console.WriteLine();
             Console.WriteLine("     --max-sessions [Default: 100]");
             Console.WriteLine("         The max amount of sessions that are allowed to be created");

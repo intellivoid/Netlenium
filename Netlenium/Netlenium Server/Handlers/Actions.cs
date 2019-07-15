@@ -34,7 +34,7 @@ namespace NetleniumServer.Handlers
                     break;
 
                 case "execute_javascript":
-                    GetElements(httpRequestEventArg);
+                    ExecuteJavascript(httpRequestEventArg);
                     break;
 
                 default:

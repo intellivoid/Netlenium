@@ -38,6 +38,10 @@ namespace NetleniumServer.Handlers
                     Click(httpRequestEventArg);
                     break;
 
+                case "move_to":
+                    MoveTo(httpRequestEventArg);
+                    break;
+
                 case "get_attribute":
                     GetAttribute(httpRequestEventArg);
                     break;

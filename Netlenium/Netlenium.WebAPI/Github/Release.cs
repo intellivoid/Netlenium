@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Netlenium.WebAPI.Github
+namespace Netlenium.WebAPI.GitHub
 {
     /// <summary>
     /// Release Object from GitHub

@@ -52,7 +52,7 @@ namespace Netlenium.Driver.Chrome
             catch(Exception ex)
             {
                 driver.Logging.WriteEntry(Logging.MessageType.Error, "Actions", $"Execution Error '{ex.Message}'");
-                throw new JavascriptExecutionException();
+                throw new JavascriptExecutionException(ex.Message);
             }
         }
 

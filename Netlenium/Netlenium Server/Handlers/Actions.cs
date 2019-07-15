@@ -33,6 +33,10 @@ namespace NetleniumServer.Handlers
                     GetElements(httpRequestEventArg);
                     break;
 
+                case "execute_javascript":
+                    GetElements(httpRequestEventArg);
+                    break;
+
                 default:
                     WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
                     break;
@@ -81,6 +85,44 @@ namespace NetleniumServer.Handlers
             catch (InvalidSearchByValueException)
             {
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.InvalidSearchByValueResponse(), 400);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Executes Javascript Code and returns the results
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void ExecuteJavascript(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+            var code = WebService.GetParameter(httpRequestEventArgs.Request, "code");
+            
+            if (code == null)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("code"), 400);
+                return;
+            }
+
+            try
+            {
+                var output = SessionManager.activeSessions[sessionId].Driver.Actions.ExecuteJavascript(code);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.JavascriptExecutionResponse(output), 200);
+                return;
+            }
+            catch (JavascriptExecutionException js_exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.JavascriptExecutionErrorResponse(js_exception.Messag), 500);
                 return;
             }
             catch (Exception exception)

@@ -32,7 +32,11 @@ namespace NetleniumServer.Handlers
                 case "get_elements":
                     GetElements(httpRequestEventArg);
                     break;
-                    
+
+                case "close":
+                    Close(httpRequestEventArg);
+                    break;
+
                 case "execute_javascript":
                     ExecuteJavascript(httpRequestEventArg);
                     break;

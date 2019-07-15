@@ -45,29 +45,15 @@ namespace Netlenium.Driver.Chrome
 
                 switch(driver.TargetPlatform)
                 {
-                    case Platform.Linux32:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "chromedriver")) == false)
+                    case Platform.Linux32 | Platform.Linux64:
+                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, DriverExecutableName)) == false)
                         {
                             return false;
                         }
                         break;
 
-                    case Platform.Linux64:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "chromedriver")) == false)
-                        {
-                            return false;
-                        }
-                        break;
-
-                    case Platform.Windows32:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "chromedriver.exe")) == false)
-                        {
-                            return false;
-                        }
-                        break;
-
-                    case Platform.Windows64:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "chromedriver.exe")) == false)
+                    case Platform.Windows32 | Platform.Windows64:
+                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, DriverExecutableName)) == false)
                         {
                             return false;
                         }
@@ -87,16 +73,10 @@ namespace Netlenium.Driver.Chrome
             {
                 switch (driver.TargetPlatform)
                 {
-                    case Platform.Windows32:
+                    case Platform.Windows32 | Platform.Windows64:
                         return "chromedriver.exe";
-
-                    case Platform.Windows64:
-                        return "chromedriver.exe";
-
-                    case Platform.Linux32:
-                        return "chromedriver";
-
-                    case Platform.Linux64:
+                        
+                    case Platform.Linux32 | Platform.Linux64:
                         return "chromedriver";
 
                     default:

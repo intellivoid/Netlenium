@@ -43,29 +43,15 @@ namespace Netlenium.Driver.Firefox
 
                 switch (driver.TargetPlatform)
                 {
-                    case Platform.Linux32:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "gecko")) == false)
+                    case Platform.Linux32 | Platform.Linux64:
+                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, DriverExecutableName)) == false)
                         {
                             return false;
                         }
                         break;
 
-                    case Platform.Linux64:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "gecko")) == false)
-                        {
-                            return false;
-                        }
-                        break;
-
-                    case Platform.Windows32:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "gecko.exe")) == false)
-                        {
-                            return false;
-                        }
-                        break;
-
-                    case Platform.Windows64:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "gecko.exe")) == false)
+                    case Platform.Windows32 | Platform.Windows64:
+                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, DriverExecutableName)) == false)
                         {
                             return false;
                         }
@@ -85,16 +71,10 @@ namespace Netlenium.Driver.Firefox
             {
                 switch (driver.TargetPlatform)
                 {
-                    case Platform.Windows32:
+                    case Platform.Windows32 | Platform.Windows64:
                         return "geckodriver.exe";
 
-                    case Platform.Windows64:
-                        return "geckodriver.exe";
-
-                    case Platform.Linux32:
-                        return "geckodriver";
-
-                    case Platform.Linux64:
+                    case Platform.Linux32 | Platform.Linux64:
                         return "geckodriver";
 
                     default:

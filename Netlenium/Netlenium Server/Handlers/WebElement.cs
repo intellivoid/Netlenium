@@ -132,6 +132,37 @@ namespace NetleniumServer.Handlers
         }
 
         /// <summary>
+        /// Moves to the selected Element
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void MoveTo(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var Element = Utilities.GetElement(httpRequestEventArgs);
+
+            if (Element == null)
+            {
+                return;
+            }
+
+            try
+            {
+                Element.MoveTo();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
+
+        /// <summary>
         /// Gets the value of an attribute from the given element
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>

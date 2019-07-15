@@ -122,7 +122,7 @@ namespace NetleniumServer.Handlers
             }
             catch (JavascriptExecutionException js_exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.JavascriptExecutionErrorResponse(js_exception.Messag), 500);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.JavascriptExecutionErrorResponse(js_exception.Message), 500);
                 return;
             }
             catch (Exception exception)

@@ -90,7 +90,6 @@
     <Compile Include="IDocument.cs" />
     <Compile Include="IDriver.cs" />
     <Compile Include="IDriverManager.cs" />
-    <Compile Include="IElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="Utilities.cs" />

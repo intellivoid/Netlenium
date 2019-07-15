@@ -95,6 +95,8 @@
     <Compile Include="Responses\ElementNotFoundResponse.cs" />
     <Compile Include="Responses\ElementsResultsResponse.cs" />
     <Compile Include="Responses\InvalidSearchByValueResponse.cs" />
+    <Compile Include="Responses\JavascriptExecutionErrorResponse.cs" />
+    <Compile Include="Responses\JavascriptExecutionResponse.cs" />
     <Compile Include="Responses\ListWindowHandlesResponse.cs" />
     <Compile Include="Responses\MaxSessionsErrorResponse.cs" />
     <Compile Include="Responses\MissingParameterResponse.cs" />

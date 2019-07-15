@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using Ionic.Zip;
 using Netlenium.Logging;
 
 namespace Netlenium.Driver.Chrome

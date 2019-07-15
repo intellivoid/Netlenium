@@ -1,5 +1,4 @@
-﻿using Ionic.Zip;
-using Netlenium.Logging;
+﻿using Netlenium.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -12,6 +12,7 @@ namespace WebAPI_Test
         {
             Console.Title = "amd64 and intel i386 should fucking die";
             var Driver = new Netlenium.Driver.Firefox.Driver();
+            Driver.TargetPlatform = Netlenium.Driver.Platform.Linux64;
             Driver.DriverManager.Initalize();
 
             Console.WriteLine("Done");

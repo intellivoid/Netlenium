@@ -32,7 +32,7 @@ namespace NetleniumServer.Handlers
                 case "get_elements":
                     GetElements(httpRequestEventArg);
                     break;
-
+                    
                 case "execute_javascript":
                     ExecuteJavascript(httpRequestEventArg);
                     break;
@@ -123,6 +123,31 @@ namespace NetleniumServer.Handlers
             catch (JavascriptExecutionException js_exception)
             {
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.JavascriptExecutionErrorResponse(js_exception.Message), 500);
+                return;
+            }
+            catch (Exception exception)
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Closes the current window handle
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        public static void Close(HttpRequestEventArgs httpRequestEventArgs)
+        {
+            if (WebService.VerifySession(httpRequestEventArgs) == false)
+            {
+                return;
+            }
+
+            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+           
+            try
+            {
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
                 return;
             }
             catch (Exception exception)

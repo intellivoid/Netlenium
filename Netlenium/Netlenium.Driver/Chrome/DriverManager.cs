@@ -60,7 +60,14 @@ namespace Netlenium.Driver.Chrome
                         }
                         break;
 
-                    case Platform.Windows:
+                    case Platform.Windows32:
+                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "chromedriver.exe")) == false)
+                        {
+                            return false;
+                        }
+                        break;
+
+                    case Platform.Windows64:
                         if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "chromedriver.exe")) == false)
                         {
                             return false;
@@ -81,7 +88,10 @@ namespace Netlenium.Driver.Chrome
             {
                 switch (driver.TargetPlatform)
                 {
-                    case Platform.Windows:
+                    case Platform.Windows32:
+                        return "chromedriver.exe";
+
+                    case Platform.Windows64:
                         return "chromedriver.exe";
 
                     case Platform.Linux32:
@@ -214,7 +224,12 @@ namespace Netlenium.Driver.Chrome
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("Requesting Google Storage Resource '{0}'", $"{LatestVersion}/chromedriver_win32.zip"));
             switch (driver.TargetPlatform)
             {
-                case Platform.Windows:
+                case Platform.Windows32:
+                    Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_win32.zip");
+                    PermissionsRequired = false;
+                    break;
+
+                case Platform.Windows64:
                     Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_win32.zip");
                     PermissionsRequired = false;
                     break;

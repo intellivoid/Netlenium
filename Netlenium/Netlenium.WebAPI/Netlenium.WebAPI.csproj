@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GitHub\Asset.cs" />
+    <Compile Include="GitHub\ReleaseNotFoundException.cs" />
     <Compile Include="GitHub\User.cs" />
     <Compile Include="GitHub\Release.cs" />
     <Compile Include="GitHub\Releases.cs" />

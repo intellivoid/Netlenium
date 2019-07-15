@@ -10,10 +10,18 @@ namespace WebAPI_Test
     {
         static void Main(string[] args)
         {
-            var Response = Netlenium.WebAPI.GitHub.Releases.GetReleases("mozilla", "geckodriver");
-            foreach(Netlenium.WebAPI.GitHub.Release release in Response)
+            Console.Title = "amd64 and intel i386 should fucking die";
+            var Response = Netlenium.WebAPI.GitHub.Releases.GetLatestRelease("mozilla", "geckodriver");
+            foreach(Netlenium.WebAPI.GitHub.Asset asset in Response.Assets)
             {
-                Console.WriteLine(release.URL.ToString());
+                Console.WriteLine(Response.TagName);
+                Console.WriteLine(asset.Size);
+                Console.WriteLine(asset.Name);
+                Console.WriteLine(asset.Size);
+                Console.WriteLine(asset.DownloadCount);
+                Console.WriteLine(asset.URL.ToString());
+                Console.WriteLine(asset.BrowserDownloadURL.ToString());
+                Console.WriteLine();
             }
 
             Console.WriteLine("Done");

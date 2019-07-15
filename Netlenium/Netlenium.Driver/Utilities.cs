@@ -24,7 +24,7 @@ namespace Netlenium.Driver
                 return Environment.Is64BitOperatingSystem ? Platform.Linux64 : Platform.Linux32;
             }
 
-            return Platform.Windows;
+            return Environment.Is64BitOperatingSystem ? Platform.Windows64 : Platform.Windows32;
         }
 
         /// <summary>
@@ -86,8 +86,12 @@ namespace Netlenium.Driver
 
             switch(platform)
             {
-                case Platform.Windows:
-                    Results = string.Format("{0}_{1}", Results, "win32");
+                case Platform.Windows32:
+                    Results = string.Format("{0}_{1}", Results, "windows_x86");
+                    break;
+
+                case Platform.Windows64:
+                    Results = string.Format("{0}_{1}", Results, "windows_x64");
                     break;
 
                 case Platform.Linux32:

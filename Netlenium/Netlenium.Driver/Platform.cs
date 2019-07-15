@@ -6,8 +6,9 @@
     public enum Platform
     {
         AutoDetect = 0,
-        Windows = 1,
-        Linux32 = 2,
-        Linux64 = 3
+        Windows32 = 1,
+        Windows64 = 2,
+        Linux32 = 3,
+        Linux64 = 4
     }
 }

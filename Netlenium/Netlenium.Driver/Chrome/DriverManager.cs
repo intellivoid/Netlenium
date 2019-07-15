@@ -245,7 +245,7 @@ namespace Netlenium.Driver.Chrome
             if (Directory.Exists(DriverDirectoryPath) == true)
             {
                 driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The directory '{DriverDirectoryPath}' already exists, this directory will be deleted");
-                Directory.Delete(DriverDirectoryPath);
+                Directory.Delete(DriverDirectoryPath, true);
             }
 
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Creating directory '{DriverDirectoryPath}'");

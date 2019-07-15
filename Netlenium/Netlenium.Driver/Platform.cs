@@ -1,14 +1,17 @@
-﻿namespace Netlenium.Driver
+﻿using System;
+
+namespace Netlenium.Driver
 {
     /// <summary>
     /// The platform type
     /// </summary>
     public enum Platform
     {
-        AutoDetect = 0,
-        Windows32 = 1,
-        Windows64 = 2,
-        Linux32 = 3,
-        Linux64 = 4
+        None = 0,
+        AutoDetect = 1,
+        Windows32 = 2,
+        Windows64 = 3,
+        Linux32 = 4,
+        Linux64 = 5
     }
 }

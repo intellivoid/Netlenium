@@ -109,5 +109,35 @@ namespace Netlenium.Driver
 
             return Results;
         }
+
+        /// <summary>
+        /// Detects the target platfrom from the Archive Name
+        /// </summary>
+        /// <param name="archiveName"></param>
+        /// <returns></returns>
+        public static Platform DetectTargetPlatformFromArchive(string archiveName)
+        {
+            if (archiveName.ToLower().Contains("linux32"))
+            {
+                return Platform.Linux32;
+            }
+
+            if (archiveName.ToLower().Contains("linux64"))
+            {
+                return Platform.Linux64;
+            }
+
+            if (archiveName.ToLower().Contains("win32"))
+            {
+                return Platform.Windows32;
+            }
+
+            if (archiveName.ToLower().Contains("win64"))
+            {
+                return Platform.Windows64;
+            }
+
+            return Platform.None;
+        }
     }
 }

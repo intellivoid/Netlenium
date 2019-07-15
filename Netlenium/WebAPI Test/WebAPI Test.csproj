@@ -50,6 +50,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Netlenium.Driver\Netlenium.Driver.csproj">
+      <Project>{18c6cb5f-0e09-4f3c-a42c-2dbee6ca2357}</Project>
+      <Name>Netlenium.Driver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Netlenium.Logging\Netlenium.Logging.csproj">
+      <Project>{b00dff05-7abc-4f3f-b3c8-7a0c4dfc8591}</Project>
+      <Name>Netlenium.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Netlenium.WebAPI\Netlenium.WebAPI.csproj">
       <Project>{d0f19dd7-ebbb-4bec-9a02-79db0a99bfbb}</Project>
       <Name>Netlenium.WebAPI</Name>

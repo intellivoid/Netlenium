@@ -57,6 +57,7 @@
     <Compile Include="Chrome\Document.cs" />
     <Compile Include="Chrome\Driver.cs" />
     <Compile Include="Firefox\Driver.cs" />
+    <Compile Include="Firefox\DriverManager.cs" />
     <Compile Include="StaleElementReferenceException.cs" />
     <Compile Include="DriverException.cs" />
     <Compile Include="ElementNotSelectableException.cs" />

@@ -56,6 +56,7 @@
     <Compile Include="AttributeNotFoundException.cs" />
     <Compile Include="Chrome\Document.cs" />
     <Compile Include="Chrome\Driver.cs" />
+    <Compile Include="FileArchive.cs" />
     <Compile Include="Firefox\Driver.cs" />
     <Compile Include="Firefox\DriverManager.cs" />
     <Compile Include="StaleElementReferenceException.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="ElementNotSelectableException.cs" />
     <Compile Include="ElementNotInteractableException.cs" />
     <Compile Include="ElementNotVisibleException.cs" />
+    <Compile Include="UnsupportedArchiveException.cs" />
     <Compile Include="WindowHandleException.cs" />
     <Compile Include="NoSuchWindowException.cs" />
     <Compile Include="Chrome\Proxy.cs" />

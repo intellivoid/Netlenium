@@ -12,6 +12,36 @@ namespace Netlenium.Driver
     public static class FileArchive
     {
         /// <summary>
+        /// Auto-detects the archive type and extracts the contents to a destination path
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="destinationPath"></param>
+        public static void ExtractArchive(string filename, string destinationPath)
+        {
+            switch(Path.GetExtension(filename))
+            {
+                case ".zip":
+                    ExtractZip(filename, destinationPath);
+                    break;
+
+                case ".tar":
+                    ExtractTar(filename, destinationPath);
+                    break;
+
+                case ".tgz":
+                    ExtractTarGz(filename, destinationPath);
+                    break;
+
+                case ".gz":
+                    ExtractTarGz(filename, destinationPath);
+                    break;
+
+                default:
+                    throw new UnsupportedArchiveException($"The archive '{Path.GetExtension(filename)}' is not supported.");
+            }
+        }
+        
+        /// <summary>
         /// Extracts all contents from a Zip file to a destination path
         /// </summary>
         /// <param name="filename"></param>
@@ -20,6 +50,7 @@ namespace Netlenium.Driver
         {
             var zip = ZipFile.Read(filename);
             zip.ExtractAll(destinationPath, ExtractExistingFileAction.OverwriteSilently);
+            zip.Dispose();
         }
 
         /// <summary>
@@ -38,7 +69,7 @@ namespace Netlenium.Driver
         /// </summary>
         /// <param name="stream">The <i>.tar.gz</i> to decompress and extract.</param>
         /// <param name="outputDir">Output directory to write the files.</param>
-        public static void ExtractTarGz(Stream stream, string outputDir)
+        private static void ExtractTarGz(Stream stream, string outputDir)
         {
             // A GZipStream is not seekable, so copy it first to a MemoryStream
             using (var gzip = new GZipStream(stream, CompressionMode.Decompress))
@@ -64,11 +95,11 @@ namespace Netlenium.Driver
         /// Extractes a <c>tar</c> archive to the specified directory.
         /// </summary>
         /// <param name="filename">The <i>.tar</i> to extract.</param>
-        /// <param name="outputDir">Output directory to write the files.</param>
-        public static void ExtractTar(string filename, string outputDir)
+        /// <param name="destinationPath">Output directory to write the files.</param>
+        public static void ExtractTar(string filename, string destinationPath)
         {
             using (var stream = File.OpenRead(filename))
-                ExtractTar(stream, outputDir);
+                ExtractTar(stream, destinationPath);
         }
 
         /// <summary>
@@ -76,7 +107,7 @@ namespace Netlenium.Driver
         /// </summary>
         /// <param name="stream">The <i>.tar</i> to extract.</param>
         /// <param name="outputDir">Output directory to write the files.</param>
-        public static void ExtractTar(Stream stream, string outputDir)
+        private static void ExtractTar(Stream stream, string outputDir)
         {
             var buffer = new byte[100];
             while (true)

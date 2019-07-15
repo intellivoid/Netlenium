@@ -256,71 +256,38 @@ namespace Netlenium.Driver.Chrome
             driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Permissions Required (chmod): {PermissionsRequired}");
 
             // Check files before modification
-            if(Directory.Exists(DriverDirectoryPath) == true)
+            if (File.Exists(TemporaryFileDownloadPath) == true)
             {
-                if (File.Exists(TemporaryFileDownloadPath) == true)
-                {
-                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{TemporaryFileDownloadPath}' already exists, this file will be deleted");
-                    File.Delete(TemporaryFileDownloadPath);
-                }
-
-                if (File.Exists($"{DriverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}") == true)
-                {
-                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{DriverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}' already exists, this file will be deleted");
-                    File.Delete($"{DriverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}");
-                }
-
-                if (File.Exists(DriverVersionFilePath) == true)
-                {
-                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{DriverVersionFilePath}' already exists, this file will be deleted");
-                    File.Delete(DriverVersionFilePath);
-                }
-            }
-            else
-            {
-                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Creating directory '{DriverDirectoryPath}'");
-                Directory.CreateDirectory(DriverDirectoryPath);
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{TemporaryFileDownloadPath}' already exists, this file will be deleted");
+                File.Delete(TemporaryFileDownloadPath);
             }
 
-            // Download archive and extract contents
+            // Check files before modification
+            if (Directory.Exists(DriverDirectoryPath) == true)
+            {
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The directory '{DriverDirectoryPath}' already exists, this directory will be deleted");
+                Directory.Delete(DriverDirectoryPath);
+            }
+
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Creating directory '{DriverDirectoryPath}'");
+            Directory.CreateDirectory(DriverDirectoryPath);
+
+            // Download the archive
             var webClient = new WebClient();
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Downloading archive from '{Resource.AccessLocation.ToString()}'");
             webClient.DownloadFile(Resource.AccessLocation.ToString(), TemporaryFileDownloadPath);
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Download completed");
 
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Reading archive '{TemporaryFileDownloadPath}'");
-            var zip = ZipFile.Read(TemporaryFileDownloadPath);
-
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Extracting driver resources from archive");
-            foreach (var entry in zip)
-            {
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Reading '{entry}'");
-                if (entry.FileName != DriverExecutableName) continue;
-                if (entry.IsDirectory) continue;
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Extracting '{entry}'");
-                entry.Extract(ApplicationPaths.TemporaryDirectory, ExtractExistingFileAction.OverwriteSilently);
-                break;
-            }
-
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", "Disposing acrhive object");
-            zip.Dispose();
-
-            // Copy the files over the destination
+            // Extract archive and create version file
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Extracting driver resources from archive '{TemporaryFileDownloadPath}'");
+            FileArchive.ExtractArchive(TemporaryFileDownloadPath, DriverDirectoryPath);
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Creating version file");
             File.WriteAllText(DriverVersionFilePath, LatestVersion.ToString());
 
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Copying '{DriverExecutableName}' to '{DriverDirectoryPath}'");
-            var DriverSourcePath = $"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}{DriverExecutableName}";
-            var DriverDestinationPath = DriverExecutablePath;
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Source Path: {DriverSourcePath}");
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Destination Path: {DriverDestinationPath}");
-            File.Copy(DriverSourcePath, DriverDestinationPath);
-
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{DriverSourcePath}'");
-            File.Delete(DriverSourcePath);
+            // Cleanup temporary files
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{TemporaryFileDownloadPath}'");
-            File.Delete(DriverSourcePath);
-
+            File.Delete(TemporaryFileDownloadPath);
+            
             driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "The driver installalation has completed successfully");
         }
         

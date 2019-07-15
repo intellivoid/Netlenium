@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Netlenium.WebAPI.Github
+namespace Netlenium.WebAPI.GitHub
 {
     [Serializable]
     public class User

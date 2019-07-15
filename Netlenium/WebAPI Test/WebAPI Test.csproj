@@ -7,7 +7,7 @@
     <ProjectGuid>{511B766E-834C-4122-8821-E3CC062154EE}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>WebAPI_Test</RootNamespace>
-    <AssemblyName>WebAPI_Test</AssemblyName>
+    <AssemblyName>WebAPI Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Netlenium.WebAPI\Netlenium.WebAPI.csproj">
+      <Project>{d0f19dd7-ebbb-4bec-9a02-79db0a99bfbb}</Project>
+      <Name>Netlenium.WebAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

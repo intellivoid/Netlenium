@@ -50,7 +50,8 @@ namespace Netlenium.Driver.Firefox
 
         public IDocument Document => throw new NotImplementedException();
 
-        public IProxy ProxyConfiguration => throw new NotImplementedException();
+        private Proxy proxyConfiguration;
+        public IProxy ProxyConfiguration => proxyConfiguration;
 
         private bool headless;
         public bool Headless { get => headless; set => headless = value; }
@@ -89,6 +90,7 @@ namespace Netlenium.Driver.Firefox
             logging = new Service()
             {
                 CommandLineLoggingEnabled = true,
+                FileLoggingEnabled = true,
                 DebuggingOutputEnabled = true,
                 InformationEntriesEnabled = true,
                 DebuggingEntriesEnabled = true,
@@ -101,6 +103,7 @@ namespace Netlenium.Driver.Firefox
             HeadlessWindowSize = new Size(1920, 1080);
 
             driverManager = new DriverManager(this);
+            proxyConfiguration = new Proxy(this);
             headless = true;
             targetPlatform = Platform.AutoDetect;
         }
@@ -154,7 +157,7 @@ namespace Netlenium.Driver.Firefox
                 DriverOptions.SetPreference("media.volume_scale", "0.0");
             }
             
-            //if (proxyConfiguration.Enabled == true)
+            if (proxyConfiguration.Enabled == true)
             //{
             //    var ProxyExtensionPath = proxyConfiguration.BuildExtension();
             //    options.Add("load-extension", ProxyExtensionPath);

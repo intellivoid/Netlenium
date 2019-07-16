@@ -263,6 +263,8 @@ namespace Netlenium.Driver.WebDriver
             driverServiceProcess.StartInfo.Arguments = string.Format("{0} {1}", CommandLineArguments, ExtraCommandlineArguments);
             driverServiceProcess.StartInfo.UseShellExecute = false;
             driverServiceProcess.StartInfo.CreateNoWindow = hideCommandPromptWindow;
+            driverServiceProcess.StartInfo.EnvironmentVariables["TMP"] = ApplicationPaths.TemporaryDirectory;
+            driverServiceProcess.StartInfo.EnvironmentVariables["TEMP"] = ApplicationPaths.TemporaryDirectory;
             driverServiceProcess.Start();
             var serviceAvailable = WaitForServiceInitialization();
 

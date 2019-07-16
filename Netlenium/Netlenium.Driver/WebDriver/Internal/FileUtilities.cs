@@ -173,7 +173,7 @@ namespace Netlenium.Driver.WebDriver.Internal
         public static string GenerateRandomTempDirectoryName(string directoryPattern)
         {
             var directoryName = string.Format(CultureInfo.InvariantCulture, directoryPattern, Guid.NewGuid().ToString("N"));
-            return Path.Combine(Path.GetTempPath(), directoryName);
+            return Path.Combine(ApplicationPaths.TemporaryDirectory, directoryName);
         }
     }
 }

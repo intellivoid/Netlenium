@@ -299,7 +299,7 @@ namespace Netlenium.Driver.WebDriver.Firefox
         }
 
         /// <summary>
-        /// Adds the WebDriver extension for Firefox to the profile.
+        /// Adds the Netlenium extension for Firefox to the profile.
         /// </summary>
         internal void AddWebDriverExtension()
         {
@@ -310,7 +310,7 @@ namespace Netlenium.Driver.WebDriver.Firefox
         }
 
         /// <summary>
-        /// Removes the WebDriver extension for Firefox to the profile, for use with non-legacy
+        /// Removes the Netlenium extension for Firefox to the profile, for use with non-legacy
         /// FirefoxDriver instances that use geckodriver.
         /// </summary>
         internal void RemoveWebDriverExtension()

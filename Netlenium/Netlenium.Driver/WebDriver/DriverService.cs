@@ -22,6 +22,7 @@ namespace Netlenium.Driver.WebDriver
         private bool hideCommandPromptWindow;
         private bool isDisposed;
         private Process driverServiceProcess;
+        private string commandLineArguments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DriverService"/> class.
@@ -52,6 +53,7 @@ namespace Netlenium.Driver.WebDriver
             driverServicePath = servicePath;
             this.driverServiceExecutableName = driverServiceExecutableName;
             driverServicePort = port;
+            commandLineArguments = string.Format(CultureInfo.InvariantCulture, "--port={0}", driverServicePort);
         }
 
         /// <summary>
@@ -152,7 +154,14 @@ namespace Netlenium.Driver.WebDriver
         /// </summary>
         protected virtual string CommandLineArguments
         {
-            get { return string.Format(CultureInfo.InvariantCulture, "--port={0}", driverServicePort); }
+            get
+            {
+                return commandLineArguments;
+            }
+            set
+            {
+                commandLineArguments = value;
+            }
         }
 
         /// <summary>
@@ -230,6 +239,28 @@ namespace Netlenium.Driver.WebDriver
             driverServiceProcess = new Process();
             driverServiceProcess.StartInfo.FileName = Path.Combine(driverServicePath, driverServiceExecutableName);
             driverServiceProcess.StartInfo.Arguments = CommandLineArguments;
+            driverServiceProcess.StartInfo.UseShellExecute = false;
+            driverServiceProcess.StartInfo.CreateNoWindow = hideCommandPromptWindow;
+            driverServiceProcess.Start();
+            var serviceAvailable = WaitForServiceInitialization();
+
+            if (!serviceAvailable)
+            {
+                var msg = "Cannot start the driver service on " + ServiceUrl;
+                throw new WebDriverException(msg);
+            }
+        }
+
+        /// <summary>
+        /// Starts the DriverService with custom commandline arguments for the driver
+        /// </summary>
+        /// <param name="ExtraCommandlineArguments"></param>
+        [SecurityPermission(SecurityAction.Demand)]
+        public void Start(string ExtraCommandlineArguments)
+        {
+            driverServiceProcess = new Process();
+            driverServiceProcess.StartInfo.FileName = Path.Combine(driverServicePath, driverServiceExecutableName);
+            driverServiceProcess.StartInfo.Arguments = string.Format("{0} {1}", CommandLineArguments, ExtraCommandlineArguments);
             driverServiceProcess.StartInfo.UseShellExecute = false;
             driverServiceProcess.StartInfo.CreateNoWindow = hideCommandPromptWindow;
             driverServiceProcess.Start();

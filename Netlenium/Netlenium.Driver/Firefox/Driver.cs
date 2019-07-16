@@ -70,12 +70,7 @@ namespace Netlenium.Driver.Firefox
         /// Options that are passed on to the Chrome Driver
         /// </summary>
         private FirefoxOptions DriverOptions { get; set; }
-
-        /// <summary>
-        /// Firefox Driver Profile used for setting options
-        /// </summary>
-        private FirefoxProfile DriverProfile { get; set; }
-
+        
         /// <summary>
         /// Remote Driver Client for controlling the Driver Service
         /// </summary>
@@ -117,8 +112,6 @@ namespace Netlenium.Driver.Firefox
         /// <param name="options"></param>
         private void SetOptions(Dictionary<string, string> options)
         {
-            DriverOptions = new FirefoxOptions();
-
             foreach (var option in options)
             {
                 var Argument = option.Value == string.Empty ? $"-{option.Key}" : $"-{option.Key}={option.Value}";
@@ -147,32 +140,20 @@ namespace Netlenium.Driver.Firefox
             DriverService = FirefoxDriverService.CreateDefaultService(DriverManager.DriverDirectoryPath, DriverManager.DriverExecutableName);
             logging.WriteEntry(MessageType.Debugging, "Driver", "DriverService Constructed");
 
-            try
-            {
-                logging.WriteEntry(MessageType.Verbose, "Driver", "Creating new Firefox Profile");
-                DriverProfile = new FirefoxProfile();
-                
-                DriverProfile.WriteToDisk();
-                logging.WriteEntry(MessageType.Verbose, "Driver", $"Profile Created: '{DriverProfile.ProfileDirectory}'");
-            }
-            catch(Exception ex)
-            {
-                logging.WriteEntry(MessageType.Error, "Driver", $"Cannot create profile, {ex.Message}");
-            }
-            
+
             logging.WriteEntry(MessageType.Verbose, "Driver", "Creating options for driver");
+            DriverOptions = new FirefoxOptions();
+
             var options = new Dictionary<string, string>();
 
             if (Headless == true)
             {
                 logging.WriteEntry(MessageType.Debugging, "Driver", $"Headless mode with window-size of {HeadlessWindowSize.Width}x{HeadlessWindowSize.Height}");
-                //options.Add("headless", string.Empty);
-                //options.Add("window-size", $"{HeadlessWindowSize.Width}x{HeadlessWindowSize.Height}");
+                options.Add("headless", string.Empty);
+                options.Add("window-size", $"{HeadlessWindowSize.Width}x{HeadlessWindowSize.Height}");
+                DriverOptions.SetPreference("media.volume_scale", "0.0");
             }
-
-            //options.Add("profile", DriverProfile.ProfileDirectory);
-            //options.Add("profile", "C:\\Users\\Netkas\\AppData\\Local\\Temp\\rust_mozprofile.ffTe22DD6cOY");
-
+            
             //if (proxyConfiguration.Enabled == true)
             //{
             //    var ProxyExtensionPath = proxyConfiguration.BuildExtension();
@@ -180,41 +161,38 @@ namespace Netlenium.Driver.Firefox
             //}
 
             DriverService.HideCommandPromptWindow = false;
+            var DriverCommandLineOptions = string.Empty;
             if (driverLoggingEnabled == false)
             {
-                //options.Add("log-level", "0");
-                //options.Add("silent", string.Empty);
-                //DriverService.SuppressInitialDiagnosticInformation = true;
+                DriverCommandLineOptions = "--log fatal";
+                DriverService.SuppressInitialDiagnosticInformation = true;
             }
             else
             {
                 if (driverVerboseLoggingEnabled == true)
                 {
-                    //options.Add("log-level", "1");
-                    //DriverService.EnableVerboseLogging = true;
+                    DriverCommandLineOptions = "--log debug";
                 }
                 else
                 {
-                    //options.Add("log-level", "2");
-                    //DriverService.EnableVerboseLogging = false;
+                    DriverCommandLineOptions = "--log info";
                 }
 
                 DriverService.SuppressInitialDiagnosticInformation = false;
             }
 
+            logging.WriteEntry(MessageType.Debugging, "Driver", $"Using arguments for driver '{DriverCommandLineOptions}'");
             logging.WriteEntry(MessageType.Verbose, "Driver", "Setting options for driver");
             SetOptions(options);
 
             logging.WriteEntry(MessageType.Verbose, "Driver", "Starting Driver Service");
-            DriverService.Start();
+            DriverService.Start(DriverCommandLineOptions);
 
             logging.WriteEntry(MessageType.Debugging, "Driver", $"Service URL: {DriverService.ServiceUrl}");
             logging.WriteEntry(MessageType.Debugging, "Driver", $"Process ID: {DriverService.ProcessId}");
             logging.WriteEntry(MessageType.Debugging, "Driver", $"Port: {DriverService.Port}");
 
             logging.WriteEntry(MessageType.Verbose, "Driver", $"Connecting to '{DriverService.ServiceUrl}'");
-
-            DriverOptions.SetPreference("media.volume_scale", "0.0");
             RemoteDriver = new RemoteWebDriver(DriverService.ServiceUrl, DriverOptions);
 
             logging.WriteEntry(MessageType.Information, "Driver", "Remote Driver Serivce Started");

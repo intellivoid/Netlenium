@@ -1,5 +1,5 @@
 ﻿namespace Netlenium.Driver.Firefox
-{
+{ 
     public class Proxy : IProxy
     {
         public bool Enabled { get; set; }
@@ -9,16 +9,12 @@
         public string Username { get; set; }
         public string Password { get; set; }
         public ProxyScheme Scheme { get; set; }
-
-        private Driver driver;
-
+        
         /// <summary>
         /// Public Constructor
         /// </summary>
-        /// <param name="driver"></param>
-        public Proxy(Driver driver)
+        public Proxy()
         {
-            this.driver = driver;
             Enabled = false;
             Host = "0.0.0.0";
             Port = 8080;

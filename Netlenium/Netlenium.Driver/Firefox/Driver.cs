@@ -103,7 +103,7 @@ namespace Netlenium.Driver.Firefox
             HeadlessWindowSize = new Size(1920, 1080);
 
             driverManager = new DriverManager(this);
-            proxyConfiguration = new Proxy(this);
+            proxyConfiguration = new Proxy();
             headless = true;
             targetPlatform = Platform.AutoDetect;
         }
@@ -158,10 +158,21 @@ namespace Netlenium.Driver.Firefox
             }
             
             if (proxyConfiguration.Enabled == true)
-            //{
-            //    var ProxyExtensionPath = proxyConfiguration.BuildExtension();
-            //    options.Add("load-extension", ProxyExtensionPath);
-            //}
+            {
+                logging.WriteEntry(MessageType.Debugging, "Driver", $"Setting HTTP Proxy {string.Format("{0}:{1}", proxyConfiguration.Host, proxyConfiguration.Port)}");
+                DriverOptions.Proxy.HttpProxy = string.Format("{0}:{1}", proxyConfiguration.Host, proxyConfiguration.Port);
+                logging.WriteEntry(MessageType.Debugging, "Driver", $"Setting FTP Proxy {string.Format("{0}:{1}", proxyConfiguration.Host, proxyConfiguration.Port)}");
+                DriverOptions.Proxy.FtpProxy = string.Format("{0}:{1}", proxyConfiguration.Host, proxyConfiguration.Port);
+                logging.WriteEntry(MessageType.Debugging, "Driver", $"Setting SOCKS Proxy {string.Format("{0}:{1}", proxyConfiguration.Host, proxyConfiguration.Port)}");
+                DriverOptions.Proxy.SocksProxy = string.Format("{0}:{1}", proxyConfiguration.Host, proxyConfiguration.Port);
+
+                if (proxyConfiguration.AuthenticationRequried == true)
+                {
+                    logging.WriteEntry(MessageType.Debugging, "Driver", "Setting SOCKS Proxy authentication");
+                    DriverOptions.Proxy.SocksUserName = proxyConfiguration.Username;
+                    DriverOptions.Proxy.SocksPassword = proxyConfiguration.Password;
+                }
+            }
 
             DriverService.HideCommandPromptWindow = false;
             var DriverCommandLineOptions = string.Empty;

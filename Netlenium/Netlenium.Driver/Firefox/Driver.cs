@@ -46,8 +46,9 @@ namespace Netlenium.Driver.Firefox
             }
         }
 
-        public IActions Actions => throw new NotImplementedException();
-
+        private Actions actions;
+        public IActions Actions => actions;
+        
         public IDocument Document => throw new NotImplementedException();
 
         private Proxy proxyConfiguration;
@@ -103,6 +104,7 @@ namespace Netlenium.Driver.Firefox
             HeadlessWindowSize = new Size(1920, 1080);
 
             driverManager = new DriverManager(this);
+            actions = new Actions(this);
             proxyConfiguration = new Proxy();
             headless = true;
             targetPlatform = Platform.AutoDetect;

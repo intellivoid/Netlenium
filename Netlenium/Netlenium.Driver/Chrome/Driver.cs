@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Security.Permissions;
 using Netlenium.Driver.WebDriver.Chrome;
 using Netlenium.Driver.WebDriver.Remote;
 using Netlenium.Logging;

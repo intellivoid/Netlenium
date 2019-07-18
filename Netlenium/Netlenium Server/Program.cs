@@ -1,6 +1,8 @@
 ﻿using Mono.Options;
 using NetleniumServer;
 using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Netlenium_Server
 {
@@ -135,6 +137,7 @@ namespace Netlenium_Server
             }
 
             Console.Title = "Netlenium Server";
+            Console.CancelKeyPress += new ConsoleCancelEventHandler(CommandCancelEventHandler);
 
             try
             {
@@ -269,6 +272,65 @@ namespace Netlenium_Server
             Console.WriteLine();
             Console.WriteLine("     --auth-password [Optional]");
             Console.WriteLine("         Authentication Password for Web Service access");
+        }
+
+        /// <summary>
+        /// Handles the Cancel Command event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        static void CommandCancelEventHandler(object sender, ConsoleCancelEventArgs e)
+        {
+            GracefullyShutdown();
+        }
+
+        /// <summary>
+        /// Gracefully shuts down the server and closes the process
+        /// </summary>
+        static void GracefullyShutdown()
+        {
+            WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Shutting down server");
+            WebService.Stop();
+
+            if (SessionManager.activeSessions != null)
+            {
+                WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Closing active sessions");
+                
+                while(true)
+                {
+                    var CurrentActiveSessions = new List<string>();
+                    foreach (string session in SessionManager.activeSessions.Keys)
+                    {
+                        CurrentActiveSessions.Add(session);
+                    }
+
+                    try
+                    {
+                        foreach (string session in CurrentActiveSessions)
+                        {
+                            try
+                            {
+                                SessionManager.StopSession(session);
+                            }
+                            catch (Exception ex)
+                            {
+                                WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "Application", $"Cannot close session '{session}', {ex.Message}");
+                            }
+                        }
+
+                        break;
+                    }
+                    catch(Exception)
+                    {
+                        WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "Application", "SessionManager is busy, trying again in 2 seconds");
+                        Thread.Sleep(2000);
+                    }
+                }
+                
+            }
+
+            WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Closing process");
+            Environment.Exit(0);
         }
     }
 }

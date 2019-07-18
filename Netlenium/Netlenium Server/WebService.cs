@@ -65,6 +65,14 @@ namespace NetleniumServer
             return $"http://{Server.EndPoint}/";
         }
 
+        /// <summary>
+        /// Stops the HTTP Server gracefully
+        /// </summary>
+        public static void Stop()
+        {
+            Server.Stop();
+        }
+
 
         /// <summary>
         /// Sends a response back to the client
@@ -256,6 +264,7 @@ namespace NetleniumServer
                     SessionManager.Sync();
                     await Task.Delay(5000, cancellationToken);
                     if (cancellationToken.IsCancellationRequested) break;
+                    if (Server.State == HttpServerState.Stopped) break;
                 }
             });
 

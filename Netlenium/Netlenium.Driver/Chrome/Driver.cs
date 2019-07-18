@@ -215,15 +215,12 @@ namespace Netlenium.Driver.Chrome
         {
             if (DriverService != null)
             {
-                if (DriverService.IsRunning == true)
-                {
-                    logging.WriteEntry(MessageType.Information, "Driver", "Quitting remote driver");
-                    RemoteDriver.Quit();
-                    logging.WriteEntry(MessageType.Verbose, "Driver", "Disposing Driver Service");
-                    DriverService.Dispose();
-                    logging.WriteEntry(MessageType.Information, "Driver", "Remote Driver Service stopped");
-                    return;
-                }
+                logging.WriteEntry(MessageType.Information, "Driver", "Quitting remote driver");
+                RemoteDriver.Quit();
+                logging.WriteEntry(MessageType.Verbose, "Driver", "Disposing Driver Service");
+                DriverService.Dispose();
+                logging.WriteEntry(MessageType.Information, "Driver", "Remote Driver Service stopped");
+                return;
             }
 
             logging.WriteEntry(MessageType.Error, "Driver", "Remote Driver Service cannot be stopped because it is not running");

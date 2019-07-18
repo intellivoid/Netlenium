@@ -92,6 +92,7 @@
     <Compile Include="Responses\AttributeNotFoundResponse.cs" />
     <Compile Include="Responses\AttributeValueResponse.cs" />
     <Compile Include="Responses\CurrentWindowResponse.cs" />
+    <Compile Include="Responses\DriverDisabledResponse.cs" />
     <Compile Include="Responses\ElementNotFoundResponse.cs" />
     <Compile Include="Responses\ElementsResultsResponse.cs" />
     <Compile Include="Responses\InvalidSearchByValueResponse.cs" />

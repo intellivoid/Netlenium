@@ -73,10 +73,24 @@ namespace NetleniumServer.Handlers
             switch (targetBrowser)
             {
                 case "chrome":
+
+                    if (CommandLineParameters.DisableChromeDriver == true)
+                    {
+                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.DriverDisabledResponse(targetBrowser), 403);
+                        return;
+                    }
+
                     SessionObject = SessionManager.CreateSession(Netlenium.Driver.Browser.Chrome);
                     break;
 
                 case "firefox":
+
+                    if (CommandLineParameters.DisableFirefoxDriver == true)
+                    {
+                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.DriverDisabledResponse(targetBrowser), 403);
+                        return;
+                    }
+
                     SessionObject = SessionManager.CreateSession(Netlenium.Driver.Browser.Firefox);
                     break;
 

@@ -26,6 +26,8 @@ namespace Netlenium_Server
             CommandLineParameters.ServerName = "Netlenium Server";
             CommandLineParameters.MaxSessions = 100;
             CommandLineParameters.SessionInactivityLimit = 10;
+            CommandLineParameters.DisableChromeDriver = false;
+            CommandLineParameters.DisableFirefoxDriver = false;
             CommandLineParameters.AuthPassword = string.Empty;
             
 
@@ -57,6 +59,12 @@ namespace Netlenium_Server
 
                 { "session-inactivity-limit=", "The amount of minutes that a session is allowed to be inactive",
                   v => { if (v != null) CommandLineParameters.SessionInactivityLimit = Convert.ToInt32(v); } },
+
+                { "disable-chrome-driver",  "Disables the ability to start Chrome Drivers",
+                  v => CommandLineParameters.DisableChromeDriver = v != null },
+
+                { "disable-firefox-driver",  "Disables the ability to start Firefox Drivers",
+                  v => CommandLineParameters.DisableFirefoxDriver = v != null },
 
                 { "auth-password=", "Authentication Password for Web Service access",
                   v => { if (v != null) CommandLineParameters.AuthPassword = v; } },
@@ -252,6 +260,12 @@ namespace Netlenium_Server
             Console.WriteLine("         The amount of minutes that a session is allowed to be inactive");
             Console.WriteLine("         before it gets closed. Using 0 as the value will never close");
             Console.WriteLine("         inactive session");
+            Console.WriteLine();
+            Console.WriteLine("     --disable-chrome-driver");
+            Console.WriteLine("         Disables the ability to start Chrome Drivers");
+            Console.WriteLine();
+            Console.WriteLine("     --disable-firefox-driver");
+            Console.WriteLine("         Disables the ability to start Firefox Drivers");
             Console.WriteLine();
             Console.WriteLine("     --auth-password [Optional]");
             Console.WriteLine("         Authentication Password for Web Service access");

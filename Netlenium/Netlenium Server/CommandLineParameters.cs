@@ -51,6 +51,16 @@
         public static int SessionInactivityLimit { get; set; }
 
         /// <summary>
+        /// Disables the ability to start Chrome Drivers
+        /// </summary>
+        public static bool DisableChromeDriver { get; set; }
+
+        /// <summary>
+        /// Disables the ability to start Firefox Drivers
+        /// </summary>
+        public static bool DisableFirefoxDriver { get; set; }
+
+        /// <summary>
         /// Authenticaiton Password for Web Service access
         /// </summary>
         public static string AuthPassword { get; set; }

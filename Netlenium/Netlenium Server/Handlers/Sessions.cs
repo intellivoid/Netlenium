@@ -76,6 +76,10 @@ namespace NetleniumServer.Handlers
                     SessionObject = SessionManager.CreateSession(Netlenium.Driver.Browser.Chrome);
                     break;
 
+                case "firefox":
+                    SessionObject = SessionManager.CreateSession(Netlenium.Driver.Browser.Firefox);
+                    break;
+
                 default:
                     WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnsupportedBrowserResponse(), 400);
                     return;

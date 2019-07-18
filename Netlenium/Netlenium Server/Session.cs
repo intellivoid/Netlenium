@@ -51,6 +51,10 @@ namespace NetleniumServer
                 case Browser.Chrome:
                     driver = new Netlenium.Driver.Chrome.Driver();
                     break;
+
+                case Browser.Firefox:
+                    driver = new Netlenium.Driver.Firefox.Driver();
+                    break;
             }
 
             if (CommandLineParameters.DisabledStdout == true)

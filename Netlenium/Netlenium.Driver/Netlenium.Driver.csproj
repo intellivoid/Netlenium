@@ -57,8 +57,13 @@
     <Compile Include="Chrome\Document.cs" />
     <Compile Include="Chrome\Driver.cs" />
     <Compile Include="FileArchive.cs" />
+    <Compile Include="Firefox\Actions.cs" />
+    <Compile Include="Firefox\Document.cs" />
     <Compile Include="Firefox\Driver.cs" />
     <Compile Include="Firefox\DriverManager.cs" />
+    <Compile Include="Firefox\Proxy.cs" />
+    <Compile Include="Firefox\WebElement.cs" />
+    <Compile Include="Firefox\Window.cs" />
     <Compile Include="StaleElementReferenceException.cs" />
     <Compile Include="DriverException.cs" />
     <Compile Include="ElementNotSelectableException.cs" />

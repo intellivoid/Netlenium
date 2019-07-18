@@ -20,6 +20,8 @@ namespace NetleniumServer.Responses
         /// </summary>
         public ElementsResultsResponse()
         {
+            Status = true;
+            ResponseCode = 200;
             Elements = new List<Objects.WebElement>();
         }
     }

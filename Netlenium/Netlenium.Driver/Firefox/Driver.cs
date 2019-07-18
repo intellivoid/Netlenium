@@ -48,8 +48,9 @@ namespace Netlenium.Driver.Firefox
 
         private Actions actions;
         public IActions Actions => actions;
-        
-        public IDocument Document => throw new NotImplementedException();
+
+        private Document document;
+        public IDocument Document => document;
 
         private Proxy proxyConfiguration;
         public IProxy ProxyConfiguration => proxyConfiguration;
@@ -105,6 +106,7 @@ namespace Netlenium.Driver.Firefox
 
             driverManager = new DriverManager(this);
             actions = new Actions(this);
+            document = new Document(this);
             proxyConfiguration = new Proxy();
             headless = true;
             targetPlatform = Platform.AutoDetect;

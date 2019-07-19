@@ -1,57 +1,58 @@
 ﻿using Netlenium.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Netlenium.Driver.Firefox
 {
+    /// <summary>
+    /// Firefox Driver Manager
+    /// </summary>
     public class DriverManager : IDriverManager
     {
         /// <summary>
         /// The main gecko driver
         /// </summary>
-        private Driver driver;
+        private readonly Driver driver;
         
         public bool IsInstalled
         {
             get
             {
-                var DriverDirectoryPath = string.Format("{0}{1}{2}",
-                    ApplicationPaths.DriverDirectory, Path.DirectorySeparatorChar,
-                    Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)
-                );
+                var driverDirectoryPath =
+                    $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)}";
 
-                var VersionFilePath = string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "version");
+                var versionFilePath = $"{driverDirectoryPath}{Path.DirectorySeparatorChar}version";
 
-                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("Checking if the directory '{0}' exists", DriverDirectoryPath));
-                if (Directory.Exists(DriverDirectoryPath) == false)
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager",
+                    $"Checking if the directory '{driverDirectoryPath}' exists");
+                if (Directory.Exists(driverDirectoryPath) == false)
                 {
-                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("Directory '{0}' does not exists", DriverDirectoryPath));
+                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager",
+                        $"Directory '{driverDirectoryPath}' does not exists");
                     return false;
                 }
 
-                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("Checking if the file '{0}' exists", VersionFilePath));
-                if (File.Exists(VersionFilePath) == false)
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager",
+                    $"Checking if the file '{versionFilePath}' exists");
+                if (File.Exists(versionFilePath) == false)
                 {
-                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("File '{0}' does not exists", VersionFilePath));
+                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager",
+                        $"File '{versionFilePath}' does not exists");
                     return false;
                 }
 
                 switch (driver.TargetPlatform)
                 {
                     case Platform.Linux32 | Platform.Linux64:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, DriverExecutableName)) == false)
+                        if (File.Exists($"{driverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}") == false)
                         {
                             return false;
                         }
                         break;
 
                     case Platform.Windows32 | Platform.Windows64:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, DriverExecutableName)) == false)
+                        if (File.Exists($"{driverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}") == false)
                         {
                             return false;
                         }
@@ -78,7 +79,8 @@ namespace Netlenium.Driver.Firefox
                         return "geckodriver";
 
                     default:
-                        driver.Logging.WriteEntry(MessageType.Error, "DriverManager", string.Format("The platform '{0}' is not supported for this driver", driver.TargetPlatform));
+                        driver.Logging.WriteEntry(MessageType.Error, "DriverManager",
+                            $"The platform '{driver.TargetPlatform}' is not supported for this driver");
                         throw new UnsupportedPlatformException();
                 }
             }
@@ -88,8 +90,8 @@ namespace Netlenium.Driver.Firefox
         {
             get
             {
-                var DirectoryName = Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser);
-                return $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{DirectoryName}";
+                var directoryName = Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser);
+                return $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{directoryName}";
             }
         }
 
@@ -111,14 +113,12 @@ namespace Netlenium.Driver.Firefox
                 throw new DriverNotInstalledException();
             }
 
-            var DriverDirectoryPath = string.Format("{0}{1}{2}",
-                   ApplicationPaths.DriverDirectory, Path.DirectorySeparatorChar,
-                   Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)
-               );
+            var driverDirectoryPath =
+                $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)}";
 
-            var VersionFilePath = string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "version");
+            var versionFilePath = $"{driverDirectoryPath}{Path.DirectorySeparatorChar}{"version"}";
 
-            return new Version(File.ReadAllText(VersionFilePath));
+            return new Version(File.ReadAllText(versionFilePath));
         }
 
         public Version GetLatestVersion()
@@ -127,16 +127,17 @@ namespace Netlenium.Driver.Firefox
             {
                 driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Creating HTTP/S Request to GitHub API For the latest Release on 'mozilla/geckodriver'");
 
-                var Release = WebAPI.GitHub.Releases.GetLatestRelease("mozilla", "geckodriver");
+                var release = WebAPI.GitHub.Releases.GetLatestRelease("mozilla", "geckodriver");
 
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", string.Format("ID => {0}", Release.ID));
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", string.Format("Tag Name => {0}", Release.TagName));
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", string.Format("NodeID => {0}", Release.NodeID));
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", string.Format("Created At => {0}", Release.CreatedAt));
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", string.Format("Published At => {0}", Release.PublishedAt));
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", string.Format("Release URL => {0}", Release.HtmlURL));
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"ID => {release.ID}");
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Tag Name => {release.TagName}");
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"NodeID => {release.NodeID}");
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Created At => {release.CreatedAt}");
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager",
+                    $"Published At => {release.PublishedAt}");
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Release URL => {release.HtmlURL}");
 
-                return new Version(Release.TagName.Substring(1));
+                return new Version(release.TagName.Substring(1));
             }
             catch (Exception e)
             {
@@ -155,67 +156,64 @@ namespace Netlenium.Driver.Firefox
                 return;
             }
 
-            var LatestVersion = GetLatestVersion();
-            var CurrentVersion = GetCurrentVersion();
+            var latestVersion = GetLatestVersion();
+            var currentVersion = GetCurrentVersion();
 
-            if (CurrentVersion.CompareTo(LatestVersion) != 0)
+            if (currentVersion.CompareTo(latestVersion) != 0)
             {
-                driver.Logging.WriteEntry(MessageType.Warning, "DriverManager", string.Format("The current driver ({0}) does not match the latest version {1}", CurrentVersion, LatestVersion));
+                driver.Logging.WriteEntry(MessageType.Warning, "DriverManager",
+                    $"The current driver ({currentVersion}) does not match the latest version {latestVersion}");
                 driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Attempting to update the driver resources");
                 InstallLatestDriver();
                 return;
             }
 
             driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Driver resources are up to date");
-            return;
         }
 
         /// <summary>
         /// Installs the latest driver
         /// </summary>
-        public void InstallLatestDriver()
+        private void InstallLatestDriver()
         {
-            WebAPI.Google.Content Resource;
-            var LatestVersion = GetLatestVersion();
+            var latestVersion = GetLatestVersion();
 
-            var DriverVersionFilePath = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}version";
-            var PermissionsRequired = false;
+            var driverVersionFilePath = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}version";
+            const bool permissionsRequired = false;
 
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Creating HTTP/S Request to GitHub API For the latest Release on 'mozilla/geckodriver'");
-            var Release = WebAPI.GitHub.Releases.GetLatestRelease("mozilla", "geckodriver");
+            var release = WebAPI.GitHub.Releases.GetLatestRelease("mozilla", "geckodriver");
 
-            WebAPI.GitHub.Asset TargetAsset = null;
-            foreach(WebAPI.GitHub.Asset asset in Release.Assets)
+            WebAPI.GitHub.Asset targetAsset = null;
+            foreach(var asset in release.Assets)
             {
-                if(Utilities.DetectTargetPlatformFromArchive(asset.Name) == driver.TargetPlatform)
-                {
-                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Asset found '{asset.Name}'");
-                    TargetAsset = asset;
-                    break;
-                }
+                if (Utilities.DetectTargetPlatformFromArchive(asset.Name) != driver.TargetPlatform) continue;
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Asset found '{asset.Name}'");
+                targetAsset = asset;
+                break;
             }
 
-            if(TargetAsset == null)
+            if(targetAsset == null)
             {
                 throw new PlatformNotSupportedException($"No driver for the platform '{driver.TargetPlatform}' could be found");
             }
 
-            var TemporaryFileDownloadPath = string.Format($"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}{TargetAsset.Name}");
+            var temporaryFileDownloadPath = string.Format($"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}{targetAsset.Name}");
 
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Temporary File Download Path: {TemporaryFileDownloadPath}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Temporary File Download Path: {temporaryFileDownloadPath}");
             driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Executable Name: {DriverExecutableName}");
             driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Directory Path: {DriverDirectoryPath}");
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Version File Path: {DriverVersionFilePath}");
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Permissions Required (chmod): {PermissionsRequired}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Version File Path: {driverVersionFilePath}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Permissions Required (chmod): {permissionsRequired}");
 
-            if (File.Exists(TemporaryFileDownloadPath) == true)
+            if (File.Exists(temporaryFileDownloadPath))
             {
-                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{TemporaryFileDownloadPath}' already exists, this file will be deleted");
-                File.Delete(TemporaryFileDownloadPath);
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{temporaryFileDownloadPath}' already exists, this file will be deleted");
+                File.Delete(temporaryFileDownloadPath);
             }
 
             // Check files before modification
-            if (Directory.Exists(DriverDirectoryPath) == true)
+            if (Directory.Exists(DriverDirectoryPath))
             {
                 driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The directory '{DriverDirectoryPath}' already exists, this directory will be deleted");
                 Directory.Delete(DriverDirectoryPath, true);
@@ -226,19 +224,19 @@ namespace Netlenium.Driver.Firefox
 
             // Download the archive
             var webClient = new WebClient();
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Downloading archive from '{TargetAsset.BrowserDownloadURL.ToString()}'");
-            webClient.DownloadFile(TargetAsset.BrowserDownloadURL.ToString(), TemporaryFileDownloadPath);
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Downloading archive from '{targetAsset.BrowserDownloadURL}'");
+            webClient.DownloadFile(targetAsset.BrowserDownloadURL.ToString(), temporaryFileDownloadPath);
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Download completed");
 
             // Extract archive and create version file
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Extracting driver resources from archive '{TemporaryFileDownloadPath}'");
-            FileArchive.ExtractArchive(TemporaryFileDownloadPath, DriverDirectoryPath);
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Extracting driver resources from archive '{temporaryFileDownloadPath}'");
+            FileArchive.ExtractArchive(temporaryFileDownloadPath, DriverDirectoryPath);
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Creating version file");
-            File.WriteAllText(DriverVersionFilePath, LatestVersion.ToString());
+            File.WriteAllText(driverVersionFilePath, latestVersion.ToString());
 
             // Cleanup temporary files
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{TemporaryFileDownloadPath}'");
-            File.Delete(TemporaryFileDownloadPath);
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{temporaryFileDownloadPath}'");
+            File.Delete(temporaryFileDownloadPath);
 
             driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "The driver installalation has completed successfully");
         }

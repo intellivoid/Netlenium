@@ -5,6 +5,7 @@ namespace Netlenium.Driver
     /// <summary>
     /// The platform type
     /// </summary>
+    [Flags]
     public enum Platform
     {
         None = 0,

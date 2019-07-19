@@ -145,7 +145,7 @@ namespace Netlenium.Driver.Firefox
             }
         }
 
-        public void Initalize()
+        public void Initialize()
         {
             driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Checking driver resources");
 

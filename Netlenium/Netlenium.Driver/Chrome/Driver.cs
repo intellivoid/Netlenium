@@ -141,7 +141,7 @@ namespace Netlenium.Driver.Chrome
                 }
             }
 
-            DriverManager.Initalize();
+            DriverManager.Initialize();
 
             logging.WriteEntry(MessageType.Information, "Driver", "Starting remote driver service");
 

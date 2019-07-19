@@ -43,9 +43,9 @@ namespace Netlenium.Driver
         string DriverExecutablePath { get; }
 
         /// <summary>
-        /// Intializes the driver by updating or fetching any missing resources
+        /// Initialize the driver by updating or fetching any missing resources
         /// </summary>
-        void Initalize();
+        void Initialize();
 
     }
 }

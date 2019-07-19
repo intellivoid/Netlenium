@@ -28,7 +28,7 @@
         /// <summary>
         /// If authentication is required
         /// </summary>
-        bool AuthenticationRequried { get; set; }
+        bool AuthenticationRequired { get; set; }
 
         /// <summary>
         /// Username for authentication

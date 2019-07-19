@@ -162,7 +162,7 @@ namespace Netlenium.Driver.Chrome
         /// Installs the driver if it isn't installed
         /// and updates outdated resources
         /// </summary>
-        public void Initalize()
+        public void Initialize()
         {
             driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Checking driver resources");
 

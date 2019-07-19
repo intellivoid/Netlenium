@@ -10,12 +10,13 @@ namespace Netlenium.Driver.Chrome
         public bool Enabled { get; set; }
         public string Host { get; set; }
         public int Port { get; set; }
-        public bool AuthenticationRequried { get; set; }
+        
+        public bool AuthenticationRequired { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public ProxyScheme Scheme { get; set; }
 
-        private Driver driver;
+        private readonly Driver driver;
 
         /// <summary>
         /// Public Constructor
@@ -27,7 +28,7 @@ namespace Netlenium.Driver.Chrome
             Enabled = false;
             Host = "0.0.0.0";
             Port = 8080;
-            AuthenticationRequried = false;
+            AuthenticationRequired = false;
             Username = string.Empty;
             Password = string.Empty;
         }
@@ -40,33 +41,33 @@ namespace Netlenium.Driver.Chrome
         {
             driver.Logging.WriteEntry(Logging.MessageType.Information, "Proxy", "Creating extension for proxy");
 
-            var ChromeExtensionTemplatePath = $"{Utilities.AssemblyDirectory}{Path.DirectorySeparatorChar}extensions{Path.DirectorySeparatorChar}chrome";
-            var Files = new List<string>
+            var chromeExtensionTemplatePath = $"{Utilities.AssemblyDirectory}{Path.DirectorySeparatorChar}extensions{Path.DirectorySeparatorChar}chrome";
+            var files = new List<string>
             {
-                $"{ChromeExtensionTemplatePath}{Path.DirectorySeparatorChar}background.js",
-                $"{ChromeExtensionTemplatePath}{Path.DirectorySeparatorChar}manifest.json"
+                $"{chromeExtensionTemplatePath}{Path.DirectorySeparatorChar}background.js",
+                $"{chromeExtensionTemplatePath}{Path.DirectorySeparatorChar}manifest.json"
             };
 
-            driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Extension Template Path: {ChromeExtensionTemplatePath}");
-            driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Required File: {Files[0]}");
-            driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Required File: {Files[1]}");
+            driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Extension Template Path: {chromeExtensionTemplatePath}");
+            driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Required File: {files[0]}");
+            driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Required File: {files[1]}");
 
-            if (Directory.Exists(ChromeExtensionTemplatePath) == false)
+            if (Directory.Exists(chromeExtensionTemplatePath) == false)
             {
-                driver.Logging.WriteEntry(Logging.MessageType.Error, "Proxy", $"The directory '{ChromeExtensionTemplatePath}' does not exist");
-                throw new DirectoryNotFoundException(ChromeExtensionTemplatePath);
+                driver.Logging.WriteEntry(Logging.MessageType.Error, "Proxy", $"The directory '{chromeExtensionTemplatePath}' does not exist");
+                throw new DirectoryNotFoundException(chromeExtensionTemplatePath);
             }
 
-            if(File.Exists(Files[0]) == false)
+            if(File.Exists(files[0]) == false)
             {
-                driver.Logging.WriteEntry(Logging.MessageType.Error, "Proxy", $"The file '{Files[0]}' does not exist");
-                throw new FileNotFoundException(Files[0]);
+                driver.Logging.WriteEntry(Logging.MessageType.Error, "Proxy", $"The file '{files[0]}' does not exist");
+                throw new FileNotFoundException(files[0]);
             }
 
-            if(File.Exists(Files[1]) == false)
+            if(File.Exists(files[1]) == false)
             {
-                driver.Logging.WriteEntry(Logging.MessageType.Error, "Proxy", $"The file '{Files[1]}' does not exist");
-                throw new FileNotFoundException(Files[1]);
+                driver.Logging.WriteEntry(Logging.MessageType.Error, "Proxy", $"The file '{files[1]}' does not exist");
+                throw new FileNotFoundException(files[1]);
             }
 
             Random random = new Random();
@@ -79,28 +80,28 @@ namespace Netlenium.Driver.Chrome
             Directory.CreateDirectory(extensionDirectory);
 
             driver.Logging.WriteEntry(Logging.MessageType.Verbose, "Proxy", "Building Files");
-            var FileContents = new List<string>
+            var fileContents = new List<string>
             {
-                File.ReadAllText(Files[0]),
-                File.ReadAllText(Files[1])
+                File.ReadAllText(files[0]),
+                File.ReadAllText(files[1])
             };
 
             driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Replacing '%HOST%' with '{Host}'");
-            FileContents[0] = FileContents[0].Replace("%HOST%", Host);
+            fileContents[0] = fileContents[0].Replace("%HOST%", Host);
 
             driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Replacing '%PORT%' with '{Port}'");
-            FileContents[0] = FileContents[0].Replace("%PORT%", Port.ToString());
+            fileContents[0] = fileContents[0].Replace("%PORT%", Port.ToString());
 
             switch(Scheme)
             {
                 case ProxyScheme.HTTP:
                     driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Replacing '%SCHEME%' with 'http'");
-                    FileContents[0] = FileContents[0].Replace("%SCHEME%", "http");
+                    fileContents[0] = fileContents[0].Replace("%SCHEME%", "http");
                     break;
 
                 case ProxyScheme.HTTPS:
                     driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Replacing '%SCHEME%' with 'https'");
-                    FileContents[0] = FileContents[0].Replace("%SCHEME%", "https");
+                    fileContents[0] = fileContents[0].Replace("%SCHEME%", "https");
                     break;
 
                 default:
@@ -108,34 +109,34 @@ namespace Netlenium.Driver.Chrome
                     throw new UnsupportedSchemeException();
             }
 
-            if (AuthenticationRequried == true)
+            if (AuthenticationRequired)
             {
                 driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Replacing '%USERNAME%' with '{Username}'");
-                FileContents[0] = FileContents[0].Replace("%USERNAME%", Username);
+                fileContents[0] = fileContents[0].Replace("%USERNAME%", Username);
 
                 driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Replacing '%PASSWORD%' with '{Password}'");
-                FileContents[0] = FileContents[0].Replace("%PASSWORD%", Password);
+                fileContents[0] = fileContents[0].Replace("%PASSWORD%", Password);
             }
             else
             {
                 driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Replacing '%USERNAME%' with 'None'");
-                FileContents[0] = FileContents[0].Replace("%USERNAME%", "None");
+                fileContents[0] = fileContents[0].Replace("%USERNAME%", "None");
 
                 driver.Logging.WriteEntry(Logging.MessageType.Debugging, "Proxy", $"Replacing '%PASSWORD%' with 'None'");
-                FileContents[0] = FileContents[0].Replace("%PASSWORD%", "None");
+                fileContents[0] = fileContents[0].Replace("%PASSWORD%", "None");
             }
 
-            var OutputFiles = new List<string>
+            var outputFiles = new List<string>
             {
                 $"{extensionDirectory}{Path.DirectorySeparatorChar}background.js",
                 $"{extensionDirectory}{Path.DirectorySeparatorChar}manifest.json"
             };
 
-            driver.Logging.WriteEntry(Logging.MessageType.Verbose, "Proxy", $"Writing '{OutputFiles[0]}' ...");
-            File.WriteAllText(OutputFiles[0], FileContents[0]);
+            driver.Logging.WriteEntry(Logging.MessageType.Verbose, "Proxy", $"Writing '{outputFiles[0]}' ...");
+            File.WriteAllText(outputFiles[0], fileContents[0]);
 
-            driver.Logging.WriteEntry(Logging.MessageType.Verbose, "Proxy", $"Writing '{OutputFiles[1]}' ...");
-            File.WriteAllText(OutputFiles[1], FileContents[1]);
+            driver.Logging.WriteEntry(Logging.MessageType.Verbose, "Proxy", $"Writing '{outputFiles[1]}' ...");
+            File.WriteAllText(outputFiles[1], fileContents[1]);
 
             driver.Logging.WriteEntry(Logging.MessageType.Information, "Proxy", "Extension created");
 

@@ -135,7 +135,7 @@ namespace Netlenium.Driver.Firefox
                 }
             }
 
-            DriverManager.Initalize();
+            DriverManager.Initialize();
 
             Logging.WriteEntry(MessageType.Information, "Driver", "Starting remote driver service");
 
@@ -167,7 +167,7 @@ namespace Netlenium.Driver.Firefox
                 Logging.WriteEntry(MessageType.Debugging, "Driver", $"Setting SOCKS Proxy {proxyConfiguration.Host}:{proxyConfiguration.Port}");
                 DriverOptions.Proxy.SocksProxy = $"{proxyConfiguration.Host}:{proxyConfiguration.Port}";
 
-                if (proxyConfiguration.AuthenticationRequried)
+                if (proxyConfiguration.AuthenticationRequired)
                 {
                     Logging.WriteEntry(MessageType.Debugging, "Driver", "Setting SOCKS Proxy authentication");
                     DriverOptions.Proxy.SocksUserName = proxyConfiguration.Username;

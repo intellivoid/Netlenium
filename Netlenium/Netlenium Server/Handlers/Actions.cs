@@ -1,6 +1,7 @@
-﻿using Netlenium.Driver;
-using System;
+﻿using System;
+using Netlenium.Driver;
 using NetleniumServer.Intellivoid;
+using NetleniumServer.Responses;
 
 namespace NetleniumServer.Handlers
 {
@@ -9,7 +10,7 @@ namespace NetleniumServer.Handlers
     /// </summary>
     public static class Actions
     {
-        // <summary>
+        /// <summary>
         /// Handles the incoming request for this API Handler
         /// </summary>
         /// <param name="requestPath"></param>
@@ -18,12 +19,12 @@ namespace NetleniumServer.Handlers
         {
             if (requestPath.Length < 1)
             {
-                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
             }
 
             if (WebService.IsAuthorized(httpRequestEventArg) == false)
             {
-                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new UnauthorizedRequestResponse(), 401);
                 return;
             }
 
@@ -42,18 +43,16 @@ namespace NetleniumServer.Handlers
                     break;
 
                 default:
-                    WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                    WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
                     break;
             }
-
-            return;
         }
 
         /// <summary>
         /// Returns a list of Elements that are in the DOM
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void GetElements(HttpRequestEventArgs httpRequestEventArgs)
+        private static void GetElements(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
@@ -66,35 +65,32 @@ namespace NetleniumServer.Handlers
 
             if (searchBy == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("by"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("by"), 400);
                 return;
             }
 
             if (searchValue == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("value"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("value"), 400);
                 return;
             }
 
             try
             {
-                var WebServiceResponse = new Responses.ElementsResultsResponse();
-                foreach (IWebElement webElement in SessionManager.activeSessions[sessionId].Driver.Document.GetElements(Utilities.ParseSearchBy(searchBy), searchValue))
+                var webServiceResponse = new ElementsResultsResponse();
+                foreach (var webElement in SessionManager.activeSessions[sessionId].Driver.Document.GetElements(Utilities.ParseSearchBy(searchBy), searchValue))
                 {
-                    WebServiceResponse.Elements.Add(new Objects.WebElement(webElement));
+                    webServiceResponse.Elements.Add(new Objects.WebElement(webElement));
                 }
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, WebServiceResponse, 200);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, webServiceResponse);
             }
             catch (InvalidSearchByValueException)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.InvalidSearchByValueResponse(), 400);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new InvalidSearchByValueResponse(), 400);
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -102,7 +98,7 @@ namespace NetleniumServer.Handlers
         /// Executes Javascript Code and returns the results
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void ExecuteJavascript(HttpRequestEventArgs httpRequestEventArgs)
+        private static void ExecuteJavascript(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
@@ -114,25 +110,22 @@ namespace NetleniumServer.Handlers
             
             if (code == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("code"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("code"), 400);
                 return;
             }
 
             try
             {
                 var output = SessionManager.activeSessions[sessionId].Driver.Actions.ExecuteJavascript(code);
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.JavascriptExecutionResponse(output), 200);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new JavascriptExecutionResponse(output));
             }
-            catch (JavascriptExecutionException js_exception)
+            catch (JavascriptExecutionException jsException)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.JavascriptExecutionErrorResponse(js_exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new JavascriptExecutionErrorResponse(jsException.Message), 500);
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -140,24 +133,22 @@ namespace NetleniumServer.Handlers
         /// Closes the current window handle
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void Close(HttpRequestEventArgs httpRequestEventArgs)
+        private static void Close(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
                 return;
             }
 
-            var sessionId = WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
+            WebService.GetParameter(httpRequestEventArgs.Request, "session_id");
            
             try
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
     }

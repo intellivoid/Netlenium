@@ -1,5 +1,6 @@
 ﻿using System;
 using NetleniumServer.Intellivoid;
+using NetleniumServer.Responses;
 
 namespace NetleniumServer.Handlers
 {
@@ -17,19 +18,19 @@ namespace NetleniumServer.Handlers
         {
             if (requestPath.Length < 1)
             {
-                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
             }
 
             if (WebService.IsAuthorized(httpRequestEventArg) == false)
             {
-                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new UnauthorizedRequestResponse(), 401);
                 return;
             }
 
             switch (requestPath[1])
             {
                 case "load_url":
-                    LoadURL(httpRequestEventArg);
+                    LoadUrl(httpRequestEventArg);
                     break;
 
                 case "go_forward":
@@ -45,18 +46,16 @@ namespace NetleniumServer.Handlers
                     break;
 
                 default:
-                    WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                    WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
                     break;
             }
-
-            return;
         }
 
         /// <summary>
         /// Navigates to the given URL
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void LoadURL(HttpRequestEventArgs httpRequestEventArgs)
+        private static void LoadUrl(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
@@ -68,20 +67,18 @@ namespace NetleniumServer.Handlers
 
             if (url == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("url"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("url"), 400);
                 return;
             }
 
             try
             {
                 SessionManager.activeSessions[sessionId].Driver.Actions.LoadURI(url);
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -89,7 +86,7 @@ namespace NetleniumServer.Handlers
         /// Goes back on item in the history
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void GoBack(HttpRequestEventArgs httpRequestEventArgs)
+        private static void GoBack(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
@@ -101,13 +98,11 @@ namespace NetleniumServer.Handlers
             try
             {
                 SessionManager.activeSessions[sessionId].Driver.Actions.GoBack();
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -115,7 +110,7 @@ namespace NetleniumServer.Handlers
         /// Goes forward on item in the history
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void GoForward(HttpRequestEventArgs httpRequestEventArgs)
+        private static void GoForward(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
@@ -127,13 +122,11 @@ namespace NetleniumServer.Handlers
             try
             {
                 SessionManager.activeSessions[sessionId].Driver.Actions.GoForward();
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -141,7 +134,7 @@ namespace NetleniumServer.Handlers
         /// Reloads the current document that's loaded
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void Reload(HttpRequestEventArgs httpRequestEventArgs)
+        private static void Reload(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
@@ -153,13 +146,11 @@ namespace NetleniumServer.Handlers
             try
             {
                 SessionManager.activeSessions[sessionId].Driver.Actions.Reload();
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
     }

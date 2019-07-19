@@ -1,7 +1,9 @@
-﻿using Netlenium.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Netlenium.Driver;
 using NetleniumServer.Intellivoid;
+using NetleniumServer.Objects;
+using NetleniumServer.Responses;
 
 namespace NetleniumServer.Handlers
 {
@@ -10,7 +12,7 @@ namespace NetleniumServer.Handlers
     /// </summary>
     public static class WindowHandler
     {
-        // <summary>
+        /// <summary>
         /// Handles the incoming request for this API Handler
         /// </summary>
         /// <param name="requestPath"></param>
@@ -19,12 +21,12 @@ namespace NetleniumServer.Handlers
         {
             if (requestPath.Length < 1)
             {
-                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
             }
 
             if (WebService.IsAuthorized(httpRequestEventArg) == false)
             {
-                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new UnauthorizedRequestResponse(), 401);
                 return;
             }
 
@@ -43,18 +45,16 @@ namespace NetleniumServer.Handlers
                     break;
 
                 default:
-                    WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                    WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
                     break;
             }
-
-            return;
         }
 
         /// <summary>
         /// Gets the details of the current Window Handler
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void CurrentWindow(HttpRequestEventArgs httpRequestEventArgs)
+        private static void CurrentWindow(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
@@ -65,19 +65,17 @@ namespace NetleniumServer.Handlers
 
             try
             {
-                var CurrentWindowObject = new Objects.CurrentWindow()
+                var currentWindowObject = new CurrentWindow
                 {
                     ID = SessionManager.activeSessions[sessionId].Driver.Actions.CurrentWindow.ID,
                     Title = SessionManager.activeSessions[sessionId].Driver.Document.Title,
                     URL = SessionManager.activeSessions[sessionId].Driver.Document.Uri
                 };
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.CurrentWindowResponse(CurrentWindowObject), 200);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new CurrentWindowResponse(currentWindowObject));
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -85,7 +83,7 @@ namespace NetleniumServer.Handlers
         /// Returns a list of opened Window Handles
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void ListWindowHandles(HttpRequestEventArgs httpRequestEventArgs)
+        private static void ListWindowHandles(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
@@ -96,18 +94,16 @@ namespace NetleniumServer.Handlers
 
             try
             {
-                var WindowHandlesList = new List<string>();
-                foreach(IWindow WindowHandler in SessionManager.activeSessions[sessionId].Driver.Actions.GetWindows())
+                var windowHandlesList = new List<string>();
+                foreach(var windowHandler in SessionManager.activeSessions[sessionId].Driver.Actions.GetWindows())
                 {
-                    WindowHandlesList.Add(WindowHandler.ID);
+                    windowHandlesList.Add(windowHandler.ID);
                 }
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.ListWindowHandlesResponse(WindowHandlesList), 200);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new ListWindowHandlesResponse(windowHandlesList));
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -115,7 +111,7 @@ namespace NetleniumServer.Handlers
         /// Switches to another Window Handle
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void SwitchTo(HttpRequestEventArgs httpRequestEventArgs)
+        private static void SwitchTo(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
@@ -127,26 +123,23 @@ namespace NetleniumServer.Handlers
 
             if (windowId == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("id"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("id"), 400);
                 return;
             }
 
             try
             {
-                var WindowHandle = SessionManager.activeSessions[sessionId].Driver.Actions.GetWindow(windowId);
-                WindowHandle.SwitchTo();
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                var windowHandle = SessionManager.activeSessions[sessionId].Driver.Actions.GetWindow(windowId);
+                windowHandle.SwitchTo();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch(NoSuchWindowException)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.WindowNotFoundResponse(), 404);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new WindowNotFoundResponse(), 404);
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
     }

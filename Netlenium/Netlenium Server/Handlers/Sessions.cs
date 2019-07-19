@@ -1,5 +1,8 @@
 ﻿using System;
+using Netlenium.Driver;
+using Netlenium.Logging;
 using NetleniumServer.Intellivoid;
+using NetleniumServer.Responses;
 
 namespace NetleniumServer.Handlers
 {
@@ -17,12 +20,12 @@ namespace NetleniumServer.Handlers
         {
             if(requestPath.Length < 1)
             {
-                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
             }
 
             if (WebService.IsAuthorized(httpRequestEventArg) == false)
             {
-                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new UnauthorizedRequestResponse(), 401);
                 return;
             }
 
@@ -37,24 +40,22 @@ namespace NetleniumServer.Handlers
                     break;
 
                 default:
-                    WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                    WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
                     break;
             }
-
-            return;
         }
 
         /// <summary>
         /// Creates a new Driver Session
         /// </summary>
-        /// <param name="httpRequest"></param>
-        public static void CreateSession(HttpRequestEventArgs httpRequestEventArgs)
+        /// <param name="httpRequestEventArgs"></param>
+        private static void CreateSession(HttpRequestEventArgs httpRequestEventArgs)
         {
             var targetBrowser = WebService.GetParameter(httpRequestEventArgs.Request, "target_browser");
 
             if (targetBrowser == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("target_browser"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("target_browser"), 400);
                 return;
             }
 
@@ -62,45 +63,44 @@ namespace NetleniumServer.Handlers
             {
                 if (SessionManager.activeSessions.Count == CommandLineParameters.MaxSessions)
                 {
-                    WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "SessionManager", $"Cannot create session for '{targetBrowser.ToString()}', {CommandLineParameters.MaxSessions} Session(s) are allowed at the same time");
-                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MaxSessionsErrorResponse(), 403);
+                    WebService.logging.WriteEntry(MessageType.Error, "SessionManager", $"Cannot create session for '{targetBrowser}', {CommandLineParameters.MaxSessions} Session(s) are allowed at the same time");
+                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new MaxSessionsErrorResponse(), 403);
                     return;
                 }
             }
 
-            Session SessionObject = null;
+            Session sessionObject;
 
             switch (targetBrowser)
             {
                 case "chrome":
 
-                    if (CommandLineParameters.DisableChromeDriver == true)
+                    if (CommandLineParameters.DisableChromeDriver)
                     {
-                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.DriverDisabledResponse(targetBrowser), 403);
+                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new DriverDisabledResponse(targetBrowser), 403);
                         return;
                     }
 
-                    SessionObject = SessionManager.CreateSession(Netlenium.Driver.Browser.Chrome);
+                    sessionObject = SessionManager.CreateSession(Browser.Chrome);
                     break;
 
                 case "firefox":
 
-                    if (CommandLineParameters.DisableFirefoxDriver == true)
+                    if (CommandLineParameters.DisableFirefoxDriver)
                     {
-                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.DriverDisabledResponse(targetBrowser), 403);
+                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new DriverDisabledResponse(targetBrowser), 403);
                         return;
                     }
 
-                    SessionObject = SessionManager.CreateSession(Netlenium.Driver.Browser.Firefox);
+                    sessionObject = SessionManager.CreateSession(Browser.Firefox);
                     break;
 
                 default:
-                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnsupportedBrowserResponse(), 400);
+                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnsupportedBrowserResponse(), 400);
                     return;
             }
 
-            WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionCreatedResponse(SessionObject.ID), 200);
-            return;
+            WebService.SendJsonResponse(httpRequestEventArgs.Response, new SessionCreatedResponse(sessionObject.ID));
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace NetleniumServer.Handlers
         /// used resources
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void CloseSession(HttpRequestEventArgs httpRequestEventArgs)
+        private static void CloseSession(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
@@ -121,14 +121,12 @@ namespace NetleniumServer.Handlers
             try
             {
                 SessionManager.StopSession(sessionId);
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception ex)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.SessionErrorResponse(ex.Message), 500);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new SessionErrorResponse(ex.Message), 500);
             }
-
-            return;
         }
     }
 }

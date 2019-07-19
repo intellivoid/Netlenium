@@ -1,6 +1,7 @@
-﻿using Netlenium.Driver;
-using System;
+﻿using System;
+using Netlenium.Driver;
 using NetleniumServer.Intellivoid;
+using NetleniumServer.Responses;
 
 namespace NetleniumServer.Handlers
 {
@@ -19,12 +20,12 @@ namespace NetleniumServer.Handlers
         {
             if (requestPath.Length < 1)
             {
-                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
             }
 
             if (WebService.IsAuthorized(httpRequestEventArg) == false)
             {
-                WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                WebService.SendJsonResponse(httpRequestEventArg.Response, new UnauthorizedRequestResponse(), 401);
                 return;
             }
 
@@ -59,48 +60,44 @@ namespace NetleniumServer.Handlers
                     break;
 
                 default:
-                    WebService.SendJsonResponse(httpRequestEventArg.Response, new Responses.NotFoundResponse(), 404);
+                    WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
                     break;
             }
-
-            return;
         }
 
         /// <summary>
         /// Simulates key strokes on the Element
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void SendKeys(HttpRequestEventArgs httpRequestEventArgs)
+        private static void SendKeys(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
                 return;
             }
 
-            var Element = Utilities.GetElement(httpRequestEventArgs);
+            var element = Utilities.GetElement(httpRequestEventArgs);
             var keysValue = WebService.GetParameter(httpRequestEventArgs.Request, "input");
 
-            if (Element == null)
+            if (element == null)
             {
                 return;
             }
 
             if (keysValue == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("input"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("input"), 400);
                 return;
             }
 
             try
             {
-                Element.SendKeys(keysValue);
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                element.SendKeys(keysValue);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -108,30 +105,28 @@ namespace NetleniumServer.Handlers
         /// Simulates a click event on the element
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void Click(HttpRequestEventArgs httpRequestEventArgs)
+        private static void Click(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
                 return;
             }
 
-            var Element = Utilities.GetElement(httpRequestEventArgs);
+            var element = Utilities.GetElement(httpRequestEventArgs);
 
-            if (Element == null)
+            if (element == null)
             {
                 return;
             }
 
             try
             {
-                Element.Click();
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                element.Click();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -139,30 +134,28 @@ namespace NetleniumServer.Handlers
         /// Moves to the selected Element
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void MoveTo(HttpRequestEventArgs httpRequestEventArgs)
+        private static void MoveTo(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
                 return;
             }
 
-            var Element = Utilities.GetElement(httpRequestEventArgs);
+            var element = Utilities.GetElement(httpRequestEventArgs);
 
-            if (Element == null)
+            if (element == null)
             {
                 return;
             }
 
             try
             {
-                Element.MoveTo();
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                element.MoveTo();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -170,42 +163,39 @@ namespace NetleniumServer.Handlers
         /// Gets the value of an attribute from the given element
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void GetAttribute(HttpRequestEventArgs httpRequestEventArgs)
+        private static void GetAttribute(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
                 return;
             }
 
-            var Element = Utilities.GetElement(httpRequestEventArgs);
-            var AttributeName = WebService.GetParameter(httpRequestEventArgs.Request, "attribute_name");
+            var element = Utilities.GetElement(httpRequestEventArgs);
+            var attributeName = WebService.GetParameter(httpRequestEventArgs.Request, "attribute_name");
 
-            if (AttributeName == null)
+            if (attributeName == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("attribute_name"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("attribute_name"), 400);
                 return;
             }
 
-            if (Element == null)
+            if (element == null)
             {
                 return;
             }
 
             try
             {
-                var AttributeValue = Element.GetAttribute(AttributeName);
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.AttributeValueResponse(AttributeValue), 200);
-                return;
+                var attributeValue = element.GetAttribute(attributeName);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new AttributeValueResponse(attributeValue));
             }
             catch (AttributeNotFoundException)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.AttributeNotFoundResponse(AttributeName), 404);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new AttributeNotFoundResponse(attributeName), 404);
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
 
         }
@@ -214,44 +204,42 @@ namespace NetleniumServer.Handlers
         /// Sets a value to a WebElement's attribute, creates attribute if it doesn't exist
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void SetAttribute(HttpRequestEventArgs httpRequestEventArgs)
+        private static void SetAttribute(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
                 return;
             }
 
-            var Element = Utilities.GetElement(httpRequestEventArgs);
-            var AttributeName = WebService.GetParameter(httpRequestEventArgs.Request, "attribute_name");
-            var AttributeValue = WebService.GetParameter(httpRequestEventArgs.Request, "attribute_value");
+            var element = Utilities.GetElement(httpRequestEventArgs);
+            var attributeName = WebService.GetParameter(httpRequestEventArgs.Request, "attribute_name");
+            var attributeValue = WebService.GetParameter(httpRequestEventArgs.Request, "attribute_value");
 
-            if (AttributeName == null)
+            if (attributeName == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("attribute_name"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("attribute_name"), 400);
                 return;
             }
 
-            if (AttributeValue == null)
+            if (attributeValue == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("attribute_value"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("attribute_value"), 400);
                 return;
             }
 
-            if (Element == null)
+            if (element == null)
             {
                 return;
             }
 
             try
             {
-                Element.SetAttribute(AttributeName, AttributeValue);
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                element.SetAttribute(attributeName, attributeValue);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -259,30 +247,28 @@ namespace NetleniumServer.Handlers
         /// Submits the given element to the Web Server
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void Submit(HttpRequestEventArgs httpRequestEventArgs)
+        private static void Submit(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
                 return;
             }
 
-            var Element = Utilities.GetElement(httpRequestEventArgs);
+            var element = Utilities.GetElement(httpRequestEventArgs);
 
-            if (Element == null)
+            if (element == null)
             {
                 return;
             }
 
             try
             {
-                Element.Submit();
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                element.Submit();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
 
@@ -290,30 +276,28 @@ namespace NetleniumServer.Handlers
         /// Clears the innerHTML of the element
         /// </summary>
         /// <param name="httpRequestEventArgs"></param>
-        public static void Clear(HttpRequestEventArgs httpRequestEventArgs)
+        private static void Clear(HttpRequestEventArgs httpRequestEventArgs)
         {
             if (WebService.VerifySession(httpRequestEventArgs) == false)
             {
                 return;
             }
 
-            var Element = Utilities.GetElement(httpRequestEventArgs);
+            var element = Utilities.GetElement(httpRequestEventArgs);
 
-            if (Element == null)
+            if (element == null)
             {
                 return;
             }
 
             try
             {
-                Element.Clear();
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.RequestSuccessResponse(), 200);
-                return;
+                element.Clear();
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
-                return;
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
             }
         }
     }

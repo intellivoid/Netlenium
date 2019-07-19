@@ -50,13 +50,13 @@ namespace Netlenium.Logging
             }
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(string.Format("[ {0} ]", DateTime.Now.ToString("hh:mm:ss tt")));
+            Console.Write($"[ {DateTime.Now:hh:mm:ss tt} ]");
 
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write(string.Format(" {0}.{1}", serviceName, moduleName));
+            Console.Write($" {serviceName}.{moduleName}");
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(string.Format(" => {0}", entry));
+            Console.Write($" => {entry}");
             Console.WriteLine();
         }
     }

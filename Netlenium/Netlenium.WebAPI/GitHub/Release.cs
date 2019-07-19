@@ -9,21 +9,21 @@ namespace Netlenium.WebAPI.GitHub
     [Serializable]
     public class Release
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
-        public Uri URL { get; set; }
+        public Uri Url { get; set; }
 
-        public Uri HtmlURL { get; set; }
+        public Uri HtmlUrl { get; set; }
 
-        public Uri AssetsURL { get; set; }
+        public Uri AssetsUrl { get; set; }
 
-        public Uri UploadURL { get; set; }
+        public Uri UploadUrl { get; set; }
 
-        public Uri TarballURL { get; set; }
+        public Uri TarballUrl { get; set; }
 
-        public Uri ZipballURL { get; set; }
+        public Uri ZipballUrl { get; set; }
 
-        public string NodeID { get; set; }
+        public string NodeId { get; set; }
 
         public string TagName { get; set; }
 

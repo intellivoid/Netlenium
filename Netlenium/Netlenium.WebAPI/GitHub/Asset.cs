@@ -5,13 +5,13 @@ namespace Netlenium.WebAPI.GitHub
     [Serializable]
     public class Asset
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
-        public Uri URL { get; set; }
+        public Uri Url { get; set; }
 
-        public Uri BrowserDownloadURL { get; set; }
+        public Uri BrowserDownloadUrl { get; set; }
 
-        public string NodeID { get; set; }
+        public string NodeId { get; set; }
 
         public string Name { get; set; }
 

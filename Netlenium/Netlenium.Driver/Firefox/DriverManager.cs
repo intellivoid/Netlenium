@@ -129,13 +129,13 @@ namespace Netlenium.Driver.Firefox
 
                 var release = WebAPI.GitHub.Releases.GetLatestRelease("mozilla", "geckodriver");
 
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"ID => {release.ID}");
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"ID => {release.Id}");
                 driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Tag Name => {release.TagName}");
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"NodeID => {release.NodeID}");
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"NodeID => {release.NodeId}");
                 driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Created At => {release.CreatedAt}");
                 driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager",
                     $"Published At => {release.PublishedAt}");
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Release URL => {release.HtmlURL}");
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Release URL => {release.HtmlUrl}");
 
                 return new Version(release.TagName.Substring(1));
             }
@@ -224,8 +224,8 @@ namespace Netlenium.Driver.Firefox
 
             // Download the archive
             var webClient = new WebClient();
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Downloading archive from '{targetAsset.BrowserDownloadURL}'");
-            webClient.DownloadFile(targetAsset.BrowserDownloadURL.ToString(), temporaryFileDownloadPath);
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Downloading archive from '{targetAsset.BrowserDownloadUrl}'");
+            webClient.DownloadFile(targetAsset.BrowserDownloadUrl.ToString(), temporaryFileDownloadPath);
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Download completed");
 
             // Extract archive and create version file

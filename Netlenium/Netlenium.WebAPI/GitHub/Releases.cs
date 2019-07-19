@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace Netlenium.WebAPI.GitHub
 {
@@ -33,25 +33,27 @@ namespace Netlenium.WebAPI.GitHub
 
             var httpClient = new WebClient();
             httpClient.Headers.Add("User-Agent", "Netlenium");
-            var Releases = new List<Release>();
-            var RequestUrl = string.Format("{0}repos/{1}/{2}/releases", Endpoint.ToString(), owner, repo);
-            var ResponseParsed = JArray.Parse(httpClient.DownloadString(RequestUrl));
+            var releases = new List<Release>();
+            var requestUrl = $"{Endpoint}repos/{owner}/{repo}/releases";
+            var responseParsed = JArray.Parse(httpClient.DownloadString(requestUrl));
 
-            foreach(JObject JsonObject in ResponseParsed)
+            foreach(var jToken in responseParsed)
             {
-                Releases.Add(ParseReleaseJObject(JsonObject));
+                var jsonObject = (JObject) jToken;
+                releases.Add(ParseReleaseJObject(jsonObject));
             }
 
-            return Releases;
+            return releases;
         }
 
         /// <summary>
         /// Gets a single release from the repo by release id
         /// </summary>
         /// <param name="owner"></param>
-        /// <param name="repo"></param>x
+        /// <param name="repo"></param>
+        /// <param name="releaseId"></param>
         /// <returns></returns>
-        public static Release GetRelease(string owner, string repo, string release_id)
+        public static Release GetRelease(string owner, string repo, string releaseId)
         {
             try
             {
@@ -65,13 +67,12 @@ namespace Netlenium.WebAPI.GitHub
 
             var httpClient = new WebClient();
             httpClient.Headers.Add("User-Agent", "Netlenium");
-            var Releases = new List<Release>();
-            var RequestUrl = string.Format("{0}repos/{1}/{2}/releases/{3}", Endpoint.ToString(), owner, repo, release_id);
+            var requestUrl = $"{Endpoint}repos/{owner}/{repo}/releases/{releaseId}";
 
             try
             {
-                var ResponseParsed = JObject.Parse(httpClient.DownloadString(RequestUrl));
-                return ParseReleaseJObject(ResponseParsed);
+                var responseParsed = JObject.Parse(httpClient.DownloadString(requestUrl));
+                return ParseReleaseJObject(responseParsed);
             }
             catch(Exception ex)
             {
@@ -99,13 +100,12 @@ namespace Netlenium.WebAPI.GitHub
 
             var httpClient = new WebClient();
             httpClient.Headers.Add("User-Agent", "Netlenium");
-            var Releases = new List<Release>();
-            var RequestUrl = string.Format("{0}repos/{1}/{2}/releases/latest", Endpoint.ToString(), owner, repo);
+            var requestUrl = $"{Endpoint}repos/{owner}/{repo}/releases/latest";
 
             try
             {
-                var ResponseParsed = JObject.Parse(httpClient.DownloadString(RequestUrl));
-                return ParseReleaseJObject(ResponseParsed);
+                var responseParsed = JObject.Parse(httpClient.DownloadString(requestUrl));
+                return ParseReleaseJObject(responseParsed);
             }
             catch (Exception ex)
             {
@@ -116,94 +116,95 @@ namespace Netlenium.WebAPI.GitHub
         /// <summary>
         /// Parses a Release as a Json Object
         /// </summary>
-        /// <param name="JsonObject"></param>
+        /// <param name="jsonObject"></param>
         /// <returns></returns>
-        private static Release ParseReleaseJObject(JObject JsonObject)
+        private static Release ParseReleaseJObject(JObject jsonObject)
         {
-            var ReleaseObject = new Release()
+            var releaseObject = new Release
             {
-                ID = (int)JsonObject["id"],
-                URL = new Uri((string)JsonObject["url"]),
-                HtmlURL = new Uri((string)JsonObject["html_url"]),
-                AssetsURL = new Uri((string)JsonObject["assets_url"]),
-                UploadURL = new Uri((string)JsonObject["upload_url"]),
-                TarballURL = new Uri((string)JsonObject["tarball_url"]),
-                ZipballURL = new Uri((string)JsonObject["zipball_url"]),
-                NodeID = (string)JsonObject["node_id"],
-                TagName = (string)JsonObject["tag_name"],
-                TargetCommitish = (string)JsonObject["target_commitish"],
-                Name = (string)JsonObject["name"],
-                Body = (string)JsonObject["body"],
-                Draft = (bool)JsonObject["draft"],
-                PreRelease = (bool)JsonObject["prerelease"],
-                CreatedAt = (string)JsonObject["created_at"],
-                PublishedAt = (string)JsonObject["published_at"],
-                Author = new User()
+                Id = (int) jsonObject["id"],
+                Url = new Uri((string) jsonObject["url"]),
+                HtmlUrl = new Uri((string) jsonObject["html_url"]),
+                AssetsUrl = new Uri((string) jsonObject["assets_url"]),
+                UploadUrl = new Uri((string) jsonObject["upload_url"]),
+                TarballUrl = new Uri((string) jsonObject["tarball_url"]),
+                ZipballUrl = new Uri((string) jsonObject["zipball_url"]),
+                NodeId = (string) jsonObject["node_id"],
+                TagName = (string) jsonObject["tag_name"],
+                TargetCommitish = (string) jsonObject["target_commitish"],
+                Name = (string) jsonObject["name"],
+                Body = (string) jsonObject["body"],
+                Draft = (bool) jsonObject["draft"],
+                PreRelease = (bool) jsonObject["prerelease"],
+                CreatedAt = (string) jsonObject["created_at"],
+                PublishedAt = (string) jsonObject["published_at"],
+                Author = new User
                 {
-                    ID = (int)JsonObject["author"]["id"],
-                    Login = (string)JsonObject["author"]["login"],
-                    NodeID = (string)JsonObject["author"]["node_id"],
-                    AvatarURL = new Uri((string)JsonObject["author"]["avatar_url"]),
-                    GravatarID = (string)JsonObject["author"]["gravatar_id"],
-                    EventsURL = new Uri((string)JsonObject["author"]["url"]),
-                    FollowersURL = new Uri((string)JsonObject["author"]["followers_url"]),
-                    FollowingURL = new Uri((string)JsonObject["author"]["following_url"]),
-                    GistsURL = new Uri((string)JsonObject["author"]["gists_url"]),
-                    StarredURL = new Uri((string)JsonObject["author"]["starred_url"]),
-                    SiteAdmin = (bool)JsonObject["author"]["site_admin"],
-                    Type = (string)JsonObject["author"]["type"],
-                    HtmlURL = new Uri((string)JsonObject["author"]["html_url"]),
-                    OrganizationsURL = new Uri((string)JsonObject["author"]["organizations_url"]),
-                    ReceivedEventsURL = new Uri((string)JsonObject["author"]["received_events_url"]),
-                    ReposURL = new Uri((string)JsonObject["author"]["repos_url"]),
-                    SubscriptionsURL = new Uri((string)JsonObject["author"]["subscriptions_url"]),
-                    URL = new Uri((string)JsonObject["author"]["url"])
-                }
+                    Id = (int) jsonObject["author"]["id"],
+                    Login = (string) jsonObject["author"]["login"],
+                    NodeId = (string) jsonObject["author"]["node_id"],
+                    AvatarUrl = new Uri((string) jsonObject["author"]["avatar_url"]),
+                    GravatarId = (string) jsonObject["author"]["gravatar_id"],
+                    EventsUrl = new Uri((string) jsonObject["author"]["url"]),
+                    FollowersUrl = new Uri((string) jsonObject["author"]["followers_url"]),
+                    FollowingUrl = new Uri((string) jsonObject["author"]["following_url"]),
+                    GistsUrl = new Uri((string) jsonObject["author"]["gists_url"]),
+                    StarredUrl = new Uri((string) jsonObject["author"]["starred_url"]),
+                    SiteAdmin = (bool) jsonObject["author"]["site_admin"],
+                    Type = (string) jsonObject["author"]["type"],
+                    HtmlUrl = new Uri((string) jsonObject["author"]["html_url"]),
+                    OrganizationsUrl = new Uri((string) jsonObject["author"]["organizations_url"]),
+                    ReceivedEventsUrl = new Uri((string) jsonObject["author"]["received_events_url"]),
+                    ReposUrl = new Uri((string) jsonObject["author"]["repos_url"]),
+                    SubscriptionsUrl = new Uri((string) jsonObject["author"]["subscriptions_url"]),
+                    Url = new Uri((string) jsonObject["author"]["url"])
+                },
+                Assets = new List<Asset>()
             };
 
-            ReleaseObject.Assets = new List<Asset>();
 
-            foreach (JObject AssetJsonObject in JsonObject["assets"])
+            foreach (var jToken in jsonObject["assets"])
             {
-                ReleaseObject.Assets.Add(new Asset()
+                var assetJsonObject = (JObject) jToken;
+                releaseObject.Assets.Add(new Asset
                 {
-                    ID = (int)AssetJsonObject["id"],
-                    URL = new Uri((string)AssetJsonObject["url"]),
-                    BrowserDownloadURL = new Uri((string)AssetJsonObject["browser_download_url"]),
-                    NodeID = (string)AssetJsonObject["node_id"],
-                    Name = (string)AssetJsonObject["name"],
-                    Label = (string)AssetJsonObject["label"],
-                    State = (string)AssetJsonObject["state"],
-                    ContentType = (string)AssetJsonObject["content_type"],
-                    Size = (int)AssetJsonObject["size"],
-                    DownloadCount = (int)AssetJsonObject["download_count"],
-                    CreatedAt = (string)AssetJsonObject["created_at"],
-                    UpdatedAt = (string)AssetJsonObject["updated_at"],
-                    Uploader = new User()
+                    Id = (int)assetJsonObject["id"],
+                    Url = new Uri((string)assetJsonObject["url"]),
+                    BrowserDownloadUrl = new Uri((string)assetJsonObject["browser_download_url"]),
+                    NodeId = (string)assetJsonObject["node_id"],
+                    Name = (string)assetJsonObject["name"],
+                    Label = (string)assetJsonObject["label"],
+                    State = (string)assetJsonObject["state"],
+                    ContentType = (string)assetJsonObject["content_type"],
+                    Size = (int)assetJsonObject["size"],
+                    DownloadCount = (int)assetJsonObject["download_count"],
+                    CreatedAt = (string)assetJsonObject["created_at"],
+                    UpdatedAt = (string)assetJsonObject["updated_at"],
+                    Uploader = new User
                     {
-                        ID = (int)AssetJsonObject["uploader"]["id"],
-                        Login = (string)AssetJsonObject["uploader"]["login"],
-                        NodeID = (string)AssetJsonObject["uploader"]["node_id"],
-                        AvatarURL = new Uri((string)AssetJsonObject["uploader"]["avatar_url"]),
-                        GravatarID = (string)AssetJsonObject["uploader"]["gravatar_id"],
-                        EventsURL = new Uri((string)AssetJsonObject["uploader"]["url"]),
-                        FollowersURL = new Uri((string)AssetJsonObject["uploader"]["followers_url"]),
-                        FollowingURL = new Uri((string)AssetJsonObject["uploader"]["following_url"]),
-                        GistsURL = new Uri((string)AssetJsonObject["uploader"]["gists_url"]),
-                        StarredURL = new Uri((string)AssetJsonObject["uploader"]["starred_url"]),
-                        SiteAdmin = (bool)AssetJsonObject["uploader"]["site_admin"],
-                        Type = (string)AssetJsonObject["uploader"]["type"],
-                        HtmlURL = new Uri((string)AssetJsonObject["uploader"]["html_url"]),
-                        OrganizationsURL = new Uri((string)AssetJsonObject["uploader"]["organizations_url"]),
-                        ReceivedEventsURL = new Uri((string)AssetJsonObject["uploader"]["received_events_url"]),
-                        ReposURL = new Uri((string)AssetJsonObject["uploader"]["repos_url"]),
-                        SubscriptionsURL = new Uri((string)AssetJsonObject["uploader"]["subscriptions_url"]),
-                        URL = new Uri((string)AssetJsonObject["uploader"]["url"])
+                        Id = (int)assetJsonObject["uploader"]["id"],
+                        Login = (string)assetJsonObject["uploader"]["login"],
+                        NodeId = (string)assetJsonObject["uploader"]["node_id"],
+                        AvatarUrl = new Uri((string)assetJsonObject["uploader"]["avatar_url"]),
+                        GravatarId = (string)assetJsonObject["uploader"]["gravatar_id"],
+                        EventsUrl = new Uri((string)assetJsonObject["uploader"]["url"]),
+                        FollowersUrl = new Uri((string)assetJsonObject["uploader"]["followers_url"]),
+                        FollowingUrl = new Uri((string)assetJsonObject["uploader"]["following_url"]),
+                        GistsUrl = new Uri((string)assetJsonObject["uploader"]["gists_url"]),
+                        StarredUrl = new Uri((string)assetJsonObject["uploader"]["starred_url"]),
+                        SiteAdmin = (bool)assetJsonObject["uploader"]["site_admin"],
+                        Type = (string)assetJsonObject["uploader"]["type"],
+                        HtmlUrl = new Uri((string)assetJsonObject["uploader"]["html_url"]),
+                        OrganizationsUrl = new Uri((string)assetJsonObject["uploader"]["organizations_url"]),
+                        ReceivedEventsUrl = new Uri((string)assetJsonObject["uploader"]["received_events_url"]),
+                        ReposUrl = new Uri((string)assetJsonObject["uploader"]["repos_url"]),
+                        SubscriptionsUrl = new Uri((string)assetJsonObject["uploader"]["subscriptions_url"]),
+                        Url = new Uri((string)assetJsonObject["uploader"]["url"])
                     }
                 });
             }
 
-            return ReleaseObject;
+            return releaseObject;
         }
     }
 }

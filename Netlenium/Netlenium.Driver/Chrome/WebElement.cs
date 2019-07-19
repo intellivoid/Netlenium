@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Netlenium.Driver.Chrome
 {
@@ -16,6 +12,7 @@ namespace Netlenium.Driver.Chrome
         /// <summary>
         /// Public Constructor
         /// </summary>
+        /// <param name="driver"></param>
         /// <param name="webElement"></param>
         public WebElement(Driver driver, WebDriver.IWebElement webElement)
         {
@@ -59,7 +56,7 @@ namespace Netlenium.Driver.Chrome
             catch (WebDriver.ElementNotInteractableException)
             {
                 driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement}]", "The WebElement is not interactable");
-                throw new ElementNotInteractableException("The WebElement is not interactable");
+                throw new ElementNotIntractableException("The WebElement is not intractable");
             }
             catch (WebDriver.ElementNotSelectableException)
             {
@@ -116,7 +113,7 @@ namespace Netlenium.Driver.Chrome
             catch (WebDriver.ElementNotInteractableException)
             {
                 driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement}]", "The WebElement is not interactable");
-                throw new ElementNotInteractableException("The WebElement is not interactable");
+                throw new ElementNotIntractableException("The WebElement is not intractable");
             }
             catch(WebDriver.ElementNotSelectableException)
             {

@@ -67,7 +67,7 @@
     <Compile Include="StaleElementReferenceException.cs" />
     <Compile Include="DriverException.cs" />
     <Compile Include="ElementNotSelectableException.cs" />
-    <Compile Include="ElementNotInteractableException.cs" />
+    <Compile Include="ElementNotIntractableException.cs" />
     <Compile Include="ElementNotVisibleException.cs" />
     <Compile Include="UnsupportedArchiveException.cs" />
     <Compile Include="WindowHandleException.cs" />

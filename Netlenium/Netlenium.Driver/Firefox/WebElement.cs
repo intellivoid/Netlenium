@@ -56,7 +56,7 @@ namespace Netlenium.Driver.Firefox
             catch (WebDriver.ElementNotInteractableException)
             {
                 driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement}]", "The WebElement is not interactable");
-                throw new ElementNotInteractableException("The WebElement is not interactable");
+                throw new ElementNotIntractableException("The WebElement is not intractable");
             }
             catch (WebDriver.ElementNotSelectableException)
             {
@@ -113,7 +113,7 @@ namespace Netlenium.Driver.Firefox
             catch (WebDriver.ElementNotInteractableException)
             {
                 driver.Logging.WriteEntry(Logging.MessageType.Error, $"IWebElement[{webElement}]", "The WebElement is not interactable");
-                throw new ElementNotInteractableException("The WebElement is not interactable");
+                throw new ElementNotIntractableException("The WebElement is not intractable");
             }
             catch(WebDriver.ElementNotSelectableException)
             {

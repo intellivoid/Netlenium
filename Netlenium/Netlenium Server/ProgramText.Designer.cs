@@ -99,5 +99,11 @@ namespace NetleniumServer {
                 return ResourceManager.GetString("MaxSessionsInvalidOption_Greater", resourceCulture);
             }
         }
+        
+        public static string HelpMenu {
+            get {
+                return ResourceManager.GetString("HelpMenu", resourceCulture);
+            }
+        }
     }
 }

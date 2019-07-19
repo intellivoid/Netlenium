@@ -76,7 +76,6 @@ namespace NetleniumServer
             if(CommandLineParameters.Help)
             {
                 ShowHelp();
-                Environment.Exit(0);
             }
             
             VerifyValues();
@@ -220,55 +219,8 @@ namespace NetleniumServer
         /// </summary>
         private static void ShowHelp()
         {
-            Console.WriteLine(" USAGE:");
-            Console.WriteLine("     netlenium [OPTIONS]         (main server)");
-            Console.WriteLine();
-            Console.WriteLine(" OPTIONS:");
-            Console.WriteLine("     -h, --help");
-            Console.WriteLine("         Displays the help menu and exits");
-            Console.WriteLine();
-            Console.WriteLine("     --disable-stdout");
-            Console.WriteLine("         Disables standard output");
-            Console.WriteLine();
-            Console.WriteLine("     --disable-file-logging");
-            Console.WriteLine("         Disables logging to files");
-            Console.WriteLine();
-            Console.WriteLine("     --driver-logging-level [0-3]");
-            Console.WriteLine("         Logging level for Driver Sessions");
-            Console.WriteLine("         0 = Silent");
-            Console.WriteLine("         1 = Information, Warning & Errors (Default)");
-            Console.WriteLine("         2 = Verbose");
-            Console.WriteLine("         3 = Debugging");
-            Console.WriteLine();
-            Console.WriteLine("     --server-logging-level [0-3]");
-            Console.WriteLine("         Logging level for the Web Service");
-            Console.WriteLine("         0 = Silent");
-            Console.WriteLine("         1 = Information, Warning & Errors (Default)");
-            Console.WriteLine("         2 = Verbose");
-            Console.WriteLine("         3 = Debugging");
-            Console.WriteLine();
-            Console.WriteLine("     -p, --port [Default: 6410]");
-            Console.WriteLine("         The port to run the Web Service on");
-            Console.WriteLine();
-            Console.WriteLine("     --server-name [Default: 'Netlenium Server']");
-            Console.WriteLine("         Optional custom name for this server");
-            Console.WriteLine();
-            Console.WriteLine("     --max-sessions [Default: 100]");
-            Console.WriteLine("         The max amount of sessions that are allowed to be created");
-            Console.WriteLine();
-            Console.WriteLine("     --session-inactivity-limit [Default: 10]");
-            Console.WriteLine("         The amount of minutes that a session is allowed to be inactive");
-            Console.WriteLine("         before it gets closed. Using 0 as the value will never close");
-            Console.WriteLine("         inactive session");
-            Console.WriteLine();
-            Console.WriteLine("     --disable-chrome-driver");
-            Console.WriteLine("         Disables the ability to start Chrome Drivers");
-            Console.WriteLine();
-            Console.WriteLine("     --disable-firefox-driver");
-            Console.WriteLine("         Disables the ability to start Firefox Drivers");
-            Console.WriteLine();
-            Console.WriteLine("     --auth-password [Optional]");
-            Console.WriteLine("         Authentication Password for Web Service access");
+            Console.WriteLine(ProgramText.HelpMenu);
+            Environment.Exit(0);
         }
 
         /// <summary>

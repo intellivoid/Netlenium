@@ -45,4 +45,56 @@
     <data name="MaxSessionsInvalidOption_Greater" xml:space="preserve">
         <value>The parameter 'max-sessions' cannot have a value that's greater than 99999</value>
     </data>
+    <data name="HelpMenu" xml:space="preserve">
+        <value> USAGE:
+     netlenium [OPTIONS]         (main server)
+
+ OPTIONS:
+     -h, --help
+         Displays the help menu and exits
+
+     --disable-stdout
+         Disables standard output
+            
+     --disable-file-logging
+         Disables logging to files
+            
+     --driver-logging-level [0-3]
+         Logging level for Driver Sessions
+         0 = Silent
+         1 = Information, Warning &amp; Errors (Default)
+         2 = Verbose
+         3 = Debugging
+            
+     --server-logging-level [0-3]
+         Logging level for the Web Service
+         0 = Silent
+         1 = Information, Warning &amp; Errors (Default)
+         2 = Verbose
+         3 = Debugging
+
+     -p, --port [Default: 6410]
+         The port to run the Web Service on
+            
+     --server-name [Default: 'Netlenium Server']
+         Optional custom name for this server
+           
+     --max-sessions [Default: 100]
+         The max amount of sessions that are allowed to be created
+            
+     --session-inactivity-limit [Default: 10]
+         The amount of minutes that a session is allowed to be inactive
+         before it gets closed. Using 0 as the value will never close
+         inactive session
+            
+     --disable-chrome-driver
+         Disables the ability to start Chrome Drivers
+            
+     --disable-firefox-driver
+         Disables the ability to start Firefox Drivers
+            
+     --auth-password [Optional]
+         Authentication Password for Web Service access
+</value>
+    </data>
 </root>

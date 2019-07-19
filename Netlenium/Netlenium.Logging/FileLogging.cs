@@ -14,10 +14,10 @@ namespace Netlenium.Logging
         /// </summary>
         /// <param name="serviceName"></param>
         /// <returns></returns>
-        public static string GetLoggingFilepath(string serviceName)
+        private static string GetLoggingFilepath(string serviceName)
         {
-            var FileName = string.Format("{0}-{1}.log", serviceName, DateTime.Today.ToString("dd-MM-yyyy"));
-            return $"{ApplicationPaths.LoggingDirectory}{Path.DirectorySeparatorChar}{FileName}";
+            var fileName = $"{serviceName}-{DateTime.Today:dd-MM-yyyy}.log";
+            return $"{ApplicationPaths.LoggingDirectory}{Path.DirectorySeparatorChar}{fileName}";
         }
 
         /// <summary>
@@ -29,34 +29,38 @@ namespace Netlenium.Logging
         /// <param name="entry"></param>
         public static void WriteEntry(MessageType messageType, string serviceName, string moduleName, string entry)
         {
-            StringBuilder Output = new StringBuilder();
-            Output.Append($"[{DateTime.Now.ToString("hh:mm:ss tt")}]");
+            var output = new StringBuilder();
+            output.Append($"[{DateTime.Now:hh:mm:ss tt}]");
 
             switch (messageType)
             {
                 case MessageType.Debugging:
-                    Output.Append(" {DEBUG} ");
+                    output.Append(" {DEBUG} ");
                     break;
 
                 case MessageType.Error:
-                    Output.Append(" {ERROR} ");
+                    output.Append(" {ERROR} ");
                     break;
 
                 case MessageType.Information:
-                    Output.Append(" {INFO}  ");
+                    output.Append(" {INFO}  ");
                     break;
 
                 case MessageType.Verbose:
-                    Output.Append(" {VERBO} ");
+                    output.Append(" {VERBO} ");
                     break;
 
                 case MessageType.Warning:
-                    Output.Append(" {WARN}  ");
+                    output.Append(" {WARN}  ");
+                    break;
+             
+                default:
+                    output.Append(" {????}  ");
                     break;
             }
 
-            Output.Append($"=> {serviceName}.{moduleName} ::   {entry}{Environment.NewLine}");
-            File.AppendAllText(GetLoggingFilepath(serviceName), Output.ToString());
+            output.Append($"=> {serviceName}.{moduleName} ::   {entry}{Environment.NewLine}");
+            File.AppendAllText(GetLoggingFilepath(serviceName), output.ToString());
         }
 
     }

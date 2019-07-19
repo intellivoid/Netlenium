@@ -13,8 +13,9 @@ namespace Netlenium.Driver.Chrome
         /// <summary>
         /// The main chrome driver
         /// </summary>
-        private Driver driver;
+        private readonly Driver driver;
         
+        /// <inheritdoc />
         /// <summary>
         /// Determines if the Driver is currently installed
         /// </summary>
@@ -22,38 +23,40 @@ namespace Netlenium.Driver.Chrome
         {
             get
             {
-                var DriverDirectoryPath = string.Format("{0}{1}{2}",
-                    ApplicationPaths.DriverDirectory, Path.DirectorySeparatorChar,
-                    Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)
-                );
+                var driverDirectoryPath =
+                    $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)}";
 
-                var VersionFilePath = string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "version");
+                var versionFilePath = $"{driverDirectoryPath}{Path.DirectorySeparatorChar}version";
 
-                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("Checking if the directory '{0}' exists", DriverDirectoryPath));
-                if(Directory.Exists(DriverDirectoryPath) == false)
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager",
+                    $"Checking if the directory '{driverDirectoryPath}' exists");
+                if(Directory.Exists(driverDirectoryPath) == false)
                 {
-                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("Directory '{0}' does not exists", DriverDirectoryPath));
+                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager",
+                        $"Directory '{driverDirectoryPath}' does not exists");
                     return false;
                 }
 
-                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("Checking if the file '{0}' exists", VersionFilePath));
-                if (File.Exists(VersionFilePath) == false)
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager",
+                    $"Checking if the file '{versionFilePath}' exists");
+                if (File.Exists(versionFilePath) == false)
                 {
-                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("File '{0}' does not exists", VersionFilePath));
+                    driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager",
+                        $"File '{versionFilePath}' does not exists");
                     return false;
                 }
 
                 switch(driver.TargetPlatform)
                 {
                     case Platform.Linux32 | Platform.Linux64:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, DriverExecutableName)) == false)
+                        if (File.Exists($"{driverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}") == false)
                         {
                             return false;
                         }
                         break;
 
                     case Platform.Windows32 | Platform.Windows64:
-                        if (File.Exists(string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, DriverExecutableName)) == false)
+                        if (File.Exists($"{driverDirectoryPath}{Path.DirectorySeparatorChar}{DriverExecutableName}") == false)
                         {
                             return false;
                         }
@@ -80,7 +83,8 @@ namespace Netlenium.Driver.Chrome
                         return "chromedriver";
 
                     default:
-                        driver.Logging.WriteEntry(MessageType.Error, "DriverManager", string.Format("The platform '{0}' is not supported for this driver", driver.TargetPlatform));
+                        driver.Logging.WriteEntry(MessageType.Error, "DriverManager",
+                            $"The platform '{driver.TargetPlatform}' is not supported for this driver");
                         throw new UnsupportedPlatformException();
                 }
             }
@@ -90,8 +94,8 @@ namespace Netlenium.Driver.Chrome
         {
             get
             {
-                var DirectoryName = Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser);
-                return $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{DirectoryName}";
+                var directoryName = Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser);
+                return $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{directoryName}";
             }
         }
 
@@ -107,9 +111,9 @@ namespace Netlenium.Driver.Chrome
             this.driver = driver;
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Gets the current version that's installed
-        /// 
         /// Throws an exception if the driver is not installed
         /// </summary>
         /// <returns></returns>
@@ -120,36 +124,37 @@ namespace Netlenium.Driver.Chrome
                 throw new DriverNotInstalledException();
             }
 
-            var DriverDirectoryPath = string.Format("{0}{1}{2}",
-                   ApplicationPaths.DriverDirectory, Path.DirectorySeparatorChar,
-                   Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)
-               );
+            var driverDirectoryPath =
+                $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)}";
 
-            var VersionFilePath = string.Format("{0}{1}{2}", DriverDirectoryPath, Path.DirectorySeparatorChar, "version");
+            var versionFilePath = $"{driverDirectoryPath}{Path.DirectorySeparatorChar}version";
 
-            return new Version(File.ReadAllText(VersionFilePath));
+            return new Version(File.ReadAllText(versionFilePath));
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Gets the current version that's publicly available from
-        /// Google's storage content
+        /// Google storage content
         /// </summary>
         /// <returns></returns>
         public Version GetLatestVersion()
         {
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Creating HTTP/S Request to Google Storage for Resource 'LATEST_RELEASE'");
 
-            var ResourceContent = WebAPI.Google.Storage.FetchResource("LATEST_RELEASE");
+            var resourceContent = WebAPI.Google.Storage.FetchResource("LATEST_RELEASE");
 
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", string.Format("Access Location => {0}", ResourceContent.AccessLocation.ToString()));
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", string.Format("ETag => {0}", ResourceContent.ETag));
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager",
+                $"Access Location => {resourceContent.AccessLocation}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"ETag => {resourceContent.ETag}");
             
             try
             {
-                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("Creating HTTP/S Request to {0}", ResourceContent.AccessLocation.ToString()));
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager",
+                    $"Creating HTTP/S Request to {resourceContent.AccessLocation}");
                 var httpWebClient = new WebClient();
-                var response = httpWebClient.DownloadString(ResourceContent.AccessLocation);
-                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", string.Format("HTTP Resposne: {0}", response));
+                var response = httpWebClient.DownloadString(resourceContent.AccessLocation);
+                driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"HTTP Resposne: {response}");
                 return new Version(response);
             }
             catch(Exception e)
@@ -158,6 +163,7 @@ namespace Netlenium.Driver.Chrome
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Installs the driver if it isn't installed
         /// and updates outdated resources
@@ -173,76 +179,78 @@ namespace Netlenium.Driver.Chrome
                 return;
             }
 
-            var LatestVersion = GetLatestVersion();
-            var CurrentVersion = GetCurrentVersion();
+            var latestVersion = GetLatestVersion();
+            var currentVersion = GetCurrentVersion();
 
-            if(CurrentVersion.CompareTo(LatestVersion) != 0)
+            if(currentVersion.CompareTo(latestVersion) != 0)
             {
-                driver.Logging.WriteEntry(MessageType.Warning, "DriverManager", string.Format("The current driver ({0}) does not match the latest version {1}", CurrentVersion, LatestVersion));
+                driver.Logging.WriteEntry(MessageType.Warning, "DriverManager",
+                    $"The current driver ({currentVersion}) does not match the latest version {latestVersion}");
                 driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Attempting to update the driver resources");
                 InstallLatestDriver();
                 return;
             }
 
             driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Driver resources are up to date");
-            return;
         }
 
         /// <summary>
         /// Installs the latest driver
         /// </summary>
-        public void InstallLatestDriver()
+        private void InstallLatestDriver()
         {
-            WebAPI.Google.Content Resource;
-            var LatestVersion = GetLatestVersion();
+            WebAPI.Google.Content resource;
+            var latestVersion = GetLatestVersion();
 
-            var TemporaryFileDownloadPath = string.Format($"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}chromedriver_tmp.zip");
-            var DriverVersionFilePath = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}version";
-            var PermissionsRequired = false;
+            var temporaryFileDownloadPath = string.Format($"{ApplicationPaths.TemporaryDirectory}{Path.DirectorySeparatorChar}chromedriver_tmp.zip");
+            var driverVersionFilePath = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}version";
+            bool permissionsRequired;
 
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", string.Format("Requesting Google Storage Resource '{0}'", $"{LatestVersion}/chromedriver_win32.zip"));
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager",
+                $"Requesting Google Storage Resource '{latestVersion}/chromedriver_win32.zip'");
             switch (driver.TargetPlatform)
             {
                 case Platform.Windows32:
-                    Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_win32.zip");
-                    PermissionsRequired = false;
+                    resource = WebAPI.Google.Storage.FetchResource($"{latestVersion}/chromedriver_win32.zip");
+                    permissionsRequired = false;
                     break;
 
                 case Platform.Windows64:
-                    Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_win32.zip");
-                    PermissionsRequired = false;
+                    resource = WebAPI.Google.Storage.FetchResource($"{latestVersion}/chromedriver_win32.zip");
+                    permissionsRequired = false;
                     break;
 
                 case Platform.Linux32:
-                    Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_linux32.zip");
-                    PermissionsRequired = true;
+                    resource = WebAPI.Google.Storage.FetchResource($"{latestVersion}/chromedriver_linux32.zip");
+                    permissionsRequired = true;
                     break;
 
                 case Platform.Linux64:
-                    Resource = WebAPI.Google.Storage.FetchResource($"{LatestVersion}/chromedriver_linux64.zip");
-                    PermissionsRequired = true;
+                    resource = WebAPI.Google.Storage.FetchResource($"{latestVersion}/chromedriver_linux64.zip");
+                    permissionsRequired = true;
                     break;
 
                 default:
-                    driver.Logging.WriteEntry(MessageType.Error, "DriverManager", string.Format("The platform '{0}' is not supported for this driver", driver.TargetPlatform));
+                    driver.Logging.WriteEntry(MessageType.Error, "DriverManager",
+                        $"The platform '{driver.TargetPlatform}' is not supported for this driver");
                     throw new UnsupportedPlatformException();
             }
 
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Temporary File Download Path: {TemporaryFileDownloadPath}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Temporary File Download Path: {temporaryFileDownloadPath}");
             driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Executable Name: {DriverExecutableName}");
             driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Directory Path: {DriverDirectoryPath}");
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Version File Path: {DriverVersionFilePath}");
-            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Permissions Required (chmod): {PermissionsRequired}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Driver Version File Path: {driverVersionFilePath}");
+            driver.Logging.WriteEntry(MessageType.Debugging, "DriverManager", $"Permissions Required (chmod): {permissionsRequired}");
 
             // Check files before modification
-            if (File.Exists(TemporaryFileDownloadPath) == true)
+            if (File.Exists(temporaryFileDownloadPath))
             {
-                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{TemporaryFileDownloadPath}' already exists, this file will be deleted");
-                File.Delete(TemporaryFileDownloadPath);
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The file '{temporaryFileDownloadPath}' already exists, this file will be deleted");
+                File.Delete(temporaryFileDownloadPath);
             }
 
             // Check files before modification
-            if (Directory.Exists(DriverDirectoryPath) == true)
+            if (Directory.Exists(DriverDirectoryPath))
             {
                 driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"The directory '{DriverDirectoryPath}' already exists, this directory will be deleted");
                 Directory.Delete(DriverDirectoryPath, true);
@@ -253,21 +261,21 @@ namespace Netlenium.Driver.Chrome
 
             // Download the archive
             var webClient = new WebClient();
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Downloading archive from '{Resource.AccessLocation.ToString()}'");
-            webClient.DownloadFile(Resource.AccessLocation.ToString(), TemporaryFileDownloadPath);
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Downloading archive from '{resource.AccessLocation}'");
+            webClient.DownloadFile(resource.AccessLocation.ToString(), temporaryFileDownloadPath);
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Download completed");
 
             // Extract archive and create version file
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Extracting driver resources from archive '{TemporaryFileDownloadPath}'");
-            FileArchive.ExtractArchive(TemporaryFileDownloadPath, DriverDirectoryPath);
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Extracting driver resources from archive '{temporaryFileDownloadPath}'");
+            FileArchive.ExtractArchive(temporaryFileDownloadPath, DriverDirectoryPath);
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Creating version file");
-            File.WriteAllText(DriverVersionFilePath, LatestVersion.ToString());
+            File.WriteAllText(driverVersionFilePath, latestVersion.ToString());
 
             // Cleanup temporary files
-            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{TemporaryFileDownloadPath}'");
-            File.Delete(TemporaryFileDownloadPath);
+            driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{temporaryFileDownloadPath}'");
+            File.Delete(temporaryFileDownloadPath);
             
-            driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "The driver installalation has completed successfully");
+            driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "The driver installation has completed successfully");
         }
         
         

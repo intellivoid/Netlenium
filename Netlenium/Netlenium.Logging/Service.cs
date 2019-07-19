@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Netlenium.Logging
 {
@@ -18,7 +19,7 @@ namespace Netlenium.Logging
         public bool InformationEntriesEnabled { get; set; }
 
         /// <summary>
-        /// Option for if Warning Type Entires are allowed to be logged
+        /// Option for if Warning Type Entries are allowed to be logged
         /// </summary>
         public bool WarningEntriesEnabled { get; set; }
 
@@ -96,30 +97,33 @@ namespace Netlenium.Logging
                         return;
                     }
                     break;
+                
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(messageType), messageType, null);
             }
 
-            if(CommandLineLoggingEnabled == true)
+            if(CommandLineLoggingEnabled)
             {
                 CommandLine.PrintEntry(
-                    messageType: messageType,
-                    serviceName: Name,
-                    moduleName: moduleName,
-                    entry: message
+                    messageType,
+                    Name,
+                    moduleName,
+                    message
                 );
             }
 
-            if(FileLoggingEnabled == true)
+            if(FileLoggingEnabled)
             {
-                FileLogging.WriteEntry(messageType: messageType,
-                    serviceName: Name,
-                    moduleName: moduleName,
-                    entry: message
+                FileLogging.WriteEntry(messageType,
+                    Name,
+                    moduleName,
+                    message
                 );
             }
 
-            if(DebuggingOutputEnabled == true)
+            if(DebuggingOutputEnabled)
             {
-                Debug.Print(string.Format("[{0}] {1} => {2} :: {3}", messageType.ToString(), Name, moduleName, message));
+                Debug.Print($"[{messageType.ToString()}] {Name} => {moduleName} :: {message}");
             }
         }
     }

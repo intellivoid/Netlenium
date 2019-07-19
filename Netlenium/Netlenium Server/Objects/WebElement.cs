@@ -22,10 +22,10 @@ namespace NetleniumServer.Objects
 
         public string InnerText { get; private set; }
 
-        public string InnerHTML { get; private set; }
+        public string InnerHtml { get; private set; }
 
         /// <summary>
-        /// Public Consturctor
+        /// Public Constructor
         /// </summary>
         /// <param name="webElement"></param>
         public WebElement(IWebElement webElement)
@@ -36,7 +36,7 @@ namespace NetleniumServer.Objects
             ElementSize = new SizeProperty(webElement.Size);
             TagName = webElement.TagName;
             InnerText = webElement.Text;
-            InnerHTML = webElement.InnerHTML;
+            InnerHtml = webElement.InnerHTML;
         }
     }
 }

@@ -11,12 +11,12 @@ namespace NetleniumServer.Objects
         /// <summary>
         /// The Window ID
         /// </summary>
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// The current URL that the window is loaded on
         /// </summary>
-        public string URL { get; set; }
+        public string Url { get; set; }
 
         /// <summary>
         /// The current of the Window

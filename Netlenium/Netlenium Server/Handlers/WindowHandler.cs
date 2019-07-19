@@ -67,9 +67,9 @@ namespace NetleniumServer.Handlers
             {
                 var currentWindowObject = new CurrentWindow
                 {
-                    ID = SessionManager.activeSessions[sessionId].Driver.Actions.CurrentWindow.ID,
+                    Id = SessionManager.activeSessions[sessionId].Driver.Actions.CurrentWindow.ID,
                     Title = SessionManager.activeSessions[sessionId].Driver.Document.Title,
-                    URL = SessionManager.activeSessions[sessionId].Driver.Document.Uri
+                    Url = SessionManager.activeSessions[sessionId].Driver.Document.Uri
                 };
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new CurrentWindowResponse(currentWindowObject));
             }

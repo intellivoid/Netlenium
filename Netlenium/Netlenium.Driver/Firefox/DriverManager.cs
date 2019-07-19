@@ -116,7 +116,7 @@ namespace Netlenium.Driver.Firefox
             var driverDirectoryPath =
                 $"{ApplicationPaths.DriverDirectory}{Path.DirectorySeparatorChar}{Utilities.GetDriverDirectoryName(driver.TargetPlatform, driver.TargetBrowser)}";
 
-            var versionFilePath = $"{driverDirectoryPath}{Path.DirectorySeparatorChar}{"version"}";
+            var versionFilePath = $"{driverDirectoryPath}{Path.DirectorySeparatorChar}version";
 
             return new Version(File.ReadAllText(versionFilePath));
         }
@@ -238,7 +238,7 @@ namespace Netlenium.Driver.Firefox
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{temporaryFileDownloadPath}'");
             File.Delete(temporaryFileDownloadPath);
 
-            driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "The driver installalation has completed successfully");
+            driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "The driver installation has completed successfully");
         }
     }
 }

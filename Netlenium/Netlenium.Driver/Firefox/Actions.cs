@@ -4,9 +4,13 @@ using System.Collections.Generic;
 
 namespace Netlenium.Driver.Firefox
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Firefox Driver Actions
+    /// </summary>
     public class Actions : IActions
     {
-        private Driver driver;
+        private readonly Driver driver;
         private IJavaScriptExecutor javaScriptExecutor;
 
         public Actions(Driver driver)
@@ -29,10 +33,10 @@ namespace Netlenium.Driver.Firefox
                 throw new WindowHandleException();
             }
 
-            var CurrentWindows = GetWindows();
-            if (CurrentWindows.Count > 0)
+            var currentWindows = GetWindows();
+            if (currentWindows.Count > 0)
             {
-                CurrentWindows[0].SwitchTo();
+                currentWindows[0].SwitchTo();
                 return;
             }
 
@@ -44,7 +48,7 @@ namespace Netlenium.Driver.Firefox
             driver.Logging.WriteEntry(Logging.MessageType.Information, "Actions", $"Executing JS '{code}'");
             try
             {
-                javaScriptExecutor = (IJavaScriptExecutor)driver.RemoteDriver;
+                javaScriptExecutor = driver.RemoteDriver;
                 var results = (string)javaScriptExecutor.ExecuteScript(code);
                 driver.Logging.WriteEntry(Logging.MessageType.Verbose, "Actions", $"Returned '{results}'");
                 return results;
@@ -56,23 +60,23 @@ namespace Netlenium.Driver.Firefox
             }
         }
 
-        public IWindow GetWindow(string Id)
+        public IWindow GetWindow(string id)
         {
-            var WindowHandles = driver.RemoteDriver.WindowHandles;
-            if (WindowHandles.Contains(Id) == false)
+            var windowHandles = driver.RemoteDriver.WindowHandles;
+            if (windowHandles.Contains(id) == false)
             {
                 throw new NoSuchWindowException();
             }
 
-            return new Window(driver, WindowHandles[WindowHandles.IndexOf(Id)]);
+            return new Window(driver, windowHandles[windowHandles.IndexOf(id)]);
         }
 
         public List<IWindow> GetWindows()
         {
-            List<IWindow> results = new List<IWindow>();
-            foreach (var WindowHandle in driver.RemoteDriver.WindowHandles)
+            var results = new List<IWindow>();
+            foreach (var windowHandle in driver.RemoteDriver.WindowHandles)
             {
-                results.Add(new Window(driver, WindowHandle));
+                results.Add(new Window(driver, windowHandle));
             }
             return results;
         }
@@ -93,7 +97,7 @@ namespace Netlenium.Driver.Firefox
 
         public void LoadURI(Uri location)
         {
-            driver.Logging.WriteEntry(Logging.MessageType.Information, "Actions", $"Navigating to '{location.ToString()}'");
+            driver.Logging.WriteEntry(Logging.MessageType.Information, "Actions", $"Navigating to '{location}'");
             driver.RemoteDriver.Navigate().GoToUrl(location.ToString());
             driver.Logging.WriteEntry(Logging.MessageType.Verbose, "Actions", "Navigation completed");
         }

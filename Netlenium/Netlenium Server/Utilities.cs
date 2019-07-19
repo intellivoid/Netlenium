@@ -73,22 +73,20 @@ namespace NetleniumServer
 
             try
             {
-                var Elements = SessionManager.activeSessions[sessionId].Driver.Document.GetElements(Utilities.ParseSearchBy(searchBy), searchValue);
+                var elements = SessionManager.activeSessions[sessionId].Driver.Document.GetElements(ParseSearchBy(searchBy), searchValue);
 
-                if (Elements.Count == 0)
+                if (elements.Count == 0)
                 {
                     WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.ElementNotFoundResponse(), 404);
                     return null;
                 }
 
-                if (Convert.ToInt32(indexValue) >= 0 && Convert.ToInt32(indexValue) < Elements.Count)
+                if (Convert.ToInt32(indexValue) >= 0 && Convert.ToInt32(indexValue) < elements.Count)
                 {
-                    return Elements[Convert.ToInt32(indexValue)];
+                    return elements[Convert.ToInt32(indexValue)];
                 }
-                else
-                {
-                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.ElementNotFoundResponse(), 404);
-                }
+
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.ElementNotFoundResponse(), 404);
 
                 return null;
             }

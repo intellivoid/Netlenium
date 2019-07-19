@@ -98,7 +98,7 @@ namespace NetleniumServer.Intellivoid
 
             State = HttpServerState.Starting;
 
-            NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", $"Starting HTTP server at {EndPoint}");
+            NetleniumServer.WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", $"Starting HTTP server at {EndPoint}");
 
             TimeoutManager = new HttpTimeoutManager(this);
 
@@ -116,12 +116,12 @@ namespace NetleniumServer.Intellivoid
 
                 ServerUtility = new HttpServerUtility();
 
-                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", String.Format("HTTP server running at {0}", EndPoint));
+                NetleniumServer.WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", String.Format("HTTP server running at {0}", EndPoint));
             }
             catch (Exception ex)
             {
                 State = HttpServerState.Stopped;
-                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "HyperWS", $"Failed to start HTTP server, {ex.Message}");
+                NetleniumServer.WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "HyperWS", $"Failed to start HTTP server, {ex.Message}");
                 throw new WebServerException("Failed to start HTTP server", ex);
             }
 
@@ -133,7 +133,7 @@ namespace NetleniumServer.Intellivoid
         public void Stop()
         {
             VerifyState(HttpServerState.Started);
-            NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", "Stopping HTTP Server");
+            NetleniumServer.WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", "Stopping HTTP Server");
             
             State = HttpServerState.Stopping;
 
@@ -149,7 +149,7 @@ namespace NetleniumServer.Intellivoid
             }
             catch (Exception ex)
             {
-                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "HyperWS", $"Failed to stop HTTP server; {ex}");
+                NetleniumServer.WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "HyperWS", $"Failed to stop HTTP server; {ex}");
                 throw new WebServerException("Failed to stop HTTP server", ex);
             }
             finally
@@ -157,7 +157,7 @@ namespace NetleniumServer.Intellivoid
                 _listener = null;
 
                 State = HttpServerState.Stopped;
-                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", "Stopped HTTP server");
+                NetleniumServer.WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", "Stopped HTTP server");
             }
         }
 
@@ -272,7 +272,7 @@ namespace NetleniumServer.Intellivoid
             }
             catch (Exception ex)
             {
-                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", $"Failed to accept TCP client {ex}");
+                NetleniumServer.WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", $"Failed to accept TCP client {ex}");
             }
         }
 
@@ -306,7 +306,7 @@ namespace NetleniumServer.Intellivoid
             }
             catch(Exception exception)
             {
-                NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HyperWS", $"Cannot unregister client; {exception.Message}");
+                NetleniumServer.WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HyperWS", $"Cannot unregister client; {exception.Message}");
             }
         }
 

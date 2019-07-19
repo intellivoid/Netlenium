@@ -211,7 +211,7 @@ namespace NetleniumServer.Intellivoid
 
                 if (name == null)
                 {
-                    NetleniumServer.WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", "Received multipart item without name");
+                    NetleniumServer.WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", "Received multipart item without name");
                     continue;
                 }
 

@@ -44,7 +44,7 @@ namespace NetleniumServer
         /// <returns></returns>
         public static Session CreateSession(Browser targetBrowser)
         {
-            WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Creating new session for '{targetBrowser.ToString()}'");
+            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Creating new session for '{targetBrowser.ToString()}'");
 
             var SessionObject = new Session(targetBrowser)
             {
@@ -56,10 +56,10 @@ namespace NetleniumServer
                 activeSessions = new Dictionary<string, Session>();
             }
 
-            WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Session '{SessionObject.ID}' created, starting driver");
+            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Session '{SessionObject.ID}' created, starting driver");
             SessionObject.Driver.Start();
 
-            WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Session ready");
+            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Session ready");
             activeSessions.Add(SessionObject.ID, SessionObject);
 
             return SessionObject;
@@ -111,11 +111,11 @@ namespace NetleniumServer
         /// <param name="sessionID"></param>
         public static void StopSession(string sessionId)
         {
-            WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Closing session '{sessionId}'");
+            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Closing session '{sessionId}'");
 
             if(SessionExists(sessionId) == false)
             {
-                WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "SessionManager", $"Cannot close session '{sessionId}', it does not exist or it has already been closed");
+                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "SessionManager", $"Cannot close session '{sessionId}', it does not exist or it has already been closed");
                 throw new SessionNotFoundException();
             }
 
@@ -128,15 +128,15 @@ namespace NetleniumServer
                 }
                 catch(DriverNotRunningException)
                 {
-                    WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "SessionManager", $"The driver for '{sessionId}' cannot be stopped because it is not running");
+                    WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "SessionManager", $"The driver for '{sessionId}' cannot be stopped because it is not running");
                 }
 
                 activeSessions.Remove(sessionId);
-                WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"The session '{sessionId}' has been closed");
+                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"The session '{sessionId}' has been closed");
             }
             catch (Exception exception)
             {
-                WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "SessionManager", $"Cannot close session '{sessionId}', {exception.Message}");
+                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "SessionManager", $"Cannot close session '{sessionId}', {exception.Message}");
                 throw;
             }
         }
@@ -156,7 +156,7 @@ namespace NetleniumServer
                     var total_inactivity = Convert.ToInt32((current_time - active_session.Value.LastActivity).TotalMinutes);
                     if (total_inactivity > CommandLineParameters.SessionInactivityLimit)
                     {
-                        WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "SessionManager", $"The session '{session_id}' has expired due to {total_inactivity} minute(s) of inactivity");
+                        WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "SessionManager", $"The session '{session_id}' has expired due to {total_inactivity} minute(s) of inactivity");
                         StopSession(session_id);
                         if(expiredSessions == null)
                         {

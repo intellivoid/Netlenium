@@ -80,40 +80,40 @@ namespace NetleniumServer
             
             VerifyValues();
 
-            WebService.logging.Name = "Netlenium.Server";
+            WebService.Logging.Name = "Netlenium.Server";
 
             switch (CommandLineParameters.ServerLoggingLevel)
             {
                 case 0:
-                    WebService.logging.InformationEntriesEnabled = false;
-                    WebService.logging.WarningEntriesEnabled = false;
-                    WebService.logging.ErrorEntriesEnabled = false;
-                    WebService.logging.VerboseEntriesEnabled = false;
-                    WebService.logging.DebuggingEntriesEnabled = false;
+                    WebService.Logging.InformationEntriesEnabled = false;
+                    WebService.Logging.WarningEntriesEnabled = false;
+                    WebService.Logging.ErrorEntriesEnabled = false;
+                    WebService.Logging.VerboseEntriesEnabled = false;
+                    WebService.Logging.DebuggingEntriesEnabled = false;
                     break;
 
                 case 1:
-                    WebService.logging.InformationEntriesEnabled = true;
-                    WebService.logging.WarningEntriesEnabled = true;
-                    WebService.logging.ErrorEntriesEnabled = true;
-                    WebService.logging.VerboseEntriesEnabled = false;
-                    WebService.logging.DebuggingEntriesEnabled = false;
+                    WebService.Logging.InformationEntriesEnabled = true;
+                    WebService.Logging.WarningEntriesEnabled = true;
+                    WebService.Logging.ErrorEntriesEnabled = true;
+                    WebService.Logging.VerboseEntriesEnabled = false;
+                    WebService.Logging.DebuggingEntriesEnabled = false;
                     break;
 
                 case 2:
-                    WebService.logging.InformationEntriesEnabled = true;
-                    WebService.logging.WarningEntriesEnabled = true;
-                    WebService.logging.ErrorEntriesEnabled = true;
-                    WebService.logging.VerboseEntriesEnabled = true;
-                    WebService.logging.DebuggingEntriesEnabled = false;
+                    WebService.Logging.InformationEntriesEnabled = true;
+                    WebService.Logging.WarningEntriesEnabled = true;
+                    WebService.Logging.ErrorEntriesEnabled = true;
+                    WebService.Logging.VerboseEntriesEnabled = true;
+                    WebService.Logging.DebuggingEntriesEnabled = false;
                     break;
 
                 case 3:
-                    WebService.logging.InformationEntriesEnabled = true;
-                    WebService.logging.WarningEntriesEnabled = true;
-                    WebService.logging.ErrorEntriesEnabled = true;
-                    WebService.logging.VerboseEntriesEnabled = true;
-                    WebService.logging.DebuggingEntriesEnabled = true;
+                    WebService.Logging.InformationEntriesEnabled = true;
+                    WebService.Logging.WarningEntriesEnabled = true;
+                    WebService.Logging.ErrorEntriesEnabled = true;
+                    WebService.Logging.VerboseEntriesEnabled = true;
+                    WebService.Logging.DebuggingEntriesEnabled = true;
                     break;
 
                 default:
@@ -197,20 +197,20 @@ namespace NetleniumServer
 
             if(CommandLineParameters.DisabledStdout)
             {
-                WebService.logging.CommandLineLoggingEnabled = false;
+                WebService.Logging.CommandLineLoggingEnabled = false;
             }
             else
             {
-                WebService.logging.CommandLineLoggingEnabled = true;
+                WebService.Logging.CommandLineLoggingEnabled = true;
             }
 
             if(CommandLineParameters.DisableFileLogging)
             {
-                WebService.logging.FileLoggingEnabled = false;
+                WebService.Logging.FileLoggingEnabled = false;
             }
             else
             {
-                WebService.logging.FileLoggingEnabled = true;
+                WebService.Logging.FileLoggingEnabled = true;
             }
         }
 
@@ -238,12 +238,12 @@ namespace NetleniumServer
         /// </summary>
         private static void GracefullyShutdown()
         {
-            WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Shutting down server");
+            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Shutting down server");
             WebService.Stop();
 
             if (SessionManager.activeSessions != null)
             {
-                WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Closing active sessions");
+                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Closing active sessions");
                 
                 while(true)
                 {
@@ -263,7 +263,7 @@ namespace NetleniumServer
                             }
                             catch (Exception ex)
                             {
-                                WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "Application", $"Cannot close session '{session}', {ex.Message}");
+                                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "Application", $"Cannot close session '{session}', {ex.Message}");
                             }
                         }
 
@@ -271,14 +271,14 @@ namespace NetleniumServer
                     }
                     catch(Exception)
                     {
-                        WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Error, "Application", "SessionManager is busy, trying again in 2 seconds");
+                        WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "Application", "SessionManager is busy, trying again in 2 seconds");
                         Thread.Sleep(2000);
                     }
                 }
                 
             }
 
-            WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Closing process");
+            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Closing process");
             Environment.Exit(0);
         }
     }

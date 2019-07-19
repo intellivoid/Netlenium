@@ -63,7 +63,7 @@ namespace NetleniumServer.Handlers
             {
                 if (SessionManager.activeSessions.Count == CommandLineParameters.MaxSessions)
                 {
-                    WebService.logging.WriteEntry(MessageType.Error, "SessionManager", $"Cannot create session for '{targetBrowser}', {CommandLineParameters.MaxSessions} Session(s) are allowed at the same time");
+                    WebService.Logging.WriteEntry(MessageType.Error, "SessionManager", $"Cannot create session for '{targetBrowser}', {CommandLineParameters.MaxSessions} Session(s) are allowed at the same time");
                     WebService.SendJsonResponse(httpRequestEventArgs.Response, new MaxSessionsErrorResponse(), 403);
                     return;
                 }

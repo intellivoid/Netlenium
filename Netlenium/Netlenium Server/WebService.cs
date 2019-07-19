@@ -1,29 +1,32 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Netlenium.Logging;
+using NetleniumServer.Handlers;
 using NetleniumServer.Intellivoid;
+using NetleniumServer.Responses;
+using Newtonsoft.Json;
 
 namespace NetleniumServer
 {
     /// <summary>
     /// The main Web Service that handles requests
     /// </summary>
-    public class WebService
+    public static class WebService
     {
         /// <summary>
         /// Private Server Object
         /// </summary>
-        private static HttpServer Server;
+        private static HttpServer server;
 
         /// <summary>
         /// Logging configuration for the Web Server
         /// </summary>
-        public static Netlenium.Logging.Service logging = new Netlenium.Logging.Service();
+        public static Service Logging = new Service();
 
         private static CancellationToken cancellationToken;
 
@@ -49,20 +52,20 @@ namespace NetleniumServer
         /// <returns></returns>
         public static string Start(int port = 0)
         {
-            Server = new HttpServer();
+            server = new HttpServer();
 
             if (port != 0)
             {
-                Server.EndPoint = new IPEndPoint(IPAddress.Loopback, port);
+                server.EndPoint = new IPEndPoint(IPAddress.Loopback, port);
             }
 
-            Server.RequestReceived += (s, e) => { RequestReceived(s, e); };
-            Server.Start();
+            server.RequestReceived += (s, e) => { RequestReceived(e); };
+            server.Start();
 
             cancellationToken = new CancellationToken();
             Task.Run(async () => await BackgroundTasks(cancellationToken));
 
-            return $"http://{Server.EndPoint}/";
+            return $"http://{server.EndPoint}/";
         }
 
         /// <summary>
@@ -70,7 +73,7 @@ namespace NetleniumServer
         /// </summary>
         public static void Stop()
         {
-            Server.Stop();
+            server.Stop();
         }
 
 
@@ -111,9 +114,9 @@ namespace NetleniumServer
         {
             httpResponse.Headers.Add("X-Powered-By", "Netlenium Framework");
 
-            using (var Stream = File.OpenRead(filepath))
+            using (var stream = File.OpenRead(filepath))
             {
-                Stream.CopyTo(httpResponse.OutputStream);
+                stream.CopyTo(httpResponse.OutputStream);
             }
         }
 
@@ -129,28 +132,27 @@ namespace NetleniumServer
                 return true;
             }
 
-            var AuthenticationPassword = GetParameter(httpRequestEvent.Request, "auth");
+            var authenticationPassword = GetParameter(httpRequestEvent.Request, "auth");
 
-            if (AuthenticationPassword == null)
+            if (authenticationPassword == null)
             {
-                logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "WebService", "Authentication Failed, Reason: Missing Parameter 'auth'");
+                Logging.WriteEntry(MessageType.Warning, "WebService", "Authentication Failed, Reason: Missing Parameter 'auth'");
                 return false;
             }
 
-            if(AuthenticationPassword != CommandLineParameters.AuthPassword)
+            if(authenticationPassword != CommandLineParameters.AuthPassword)
             {
-                logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "WebService", "Authentication Failed, Reason: Incorrect Password");
+                Logging.WriteEntry(MessageType.Warning, "WebService", "Authentication Failed, Reason: Incorrect Password");
                 return false;
             }
 
             return true;
         }
-        
+
         /// <summary>
         /// Verifies if the given session is valid
         /// </summary>
         /// <param name="httpRequestEvent"></param>
-        /// <param name="session_id"></param>
         /// <returns></returns>
         public static bool VerifySession(HttpRequestEventArgs httpRequestEvent)
         {
@@ -158,19 +160,19 @@ namespace NetleniumServer
 
             if (sessionId == null)
             {
-                SendJsonResponse(httpRequestEvent.Response, new Responses.MissingParameterResponse("session_id"), 400);
+                SendJsonResponse(httpRequestEvent.Response, new MissingParameterResponse("session_id"), 400);
                 return false;
             }
 
-            if (SessionManager.SessionExpired(sessionId) == true)
+            if (SessionManager.SessionExpired(sessionId))
             {
-                SendJsonResponse(httpRequestEvent.Response, new Responses.SessionExpiredResponse(), 400);
+                SendJsonResponse(httpRequestEvent.Response, new SessionExpiredResponse(), 400);
                 return false;
             }
 
             if(SessionManager.SessionExists(sessionId) == false)
             {
-                SendJsonResponse(httpRequestEvent.Response, new Responses.SessionNotFoundResponse(sessionId), 404);
+                SendJsonResponse(httpRequestEvent.Response, new SessionNotFoundResponse(sessionId), 404);
                 return false;
             }
 
@@ -184,10 +186,8 @@ namespace NetleniumServer
         /// <summary>
         /// Raised when a request is received
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="
-        /// "></param>
-        public static void RequestReceived(object sender, HttpRequestEventArgs httpRequestEvent)
+        /// <param name="httpRequestEvent"></param>
+        private static void RequestReceived(HttpRequestEventArgs httpRequestEvent)
         {
             if (httpRequestEvent.Request.RequestType.ToUpper() != "GET" && httpRequestEvent.Request.RequestType.ToUpper() != "POST")
             {
@@ -195,57 +195,54 @@ namespace NetleniumServer
                 return;
             }
 
-            var RequestPath = httpRequestEvent.Request.Path.ToLower().Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-            if(RequestPath.Length > 0)
+            var requestPath = httpRequestEvent.Request.Path.ToLower().Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+            if(requestPath.Length > 0)
             {
-                switch(RequestPath[0])
+                switch(requestPath[0])
                 {
                     case "actions":
-                        Handlers.Actions.HandleRequest(RequestPath, httpRequestEvent);
+                        Actions.HandleRequest(requestPath, httpRequestEvent);
                         break;
 
                     case "navigation":
-                        Handlers.Navigation.HandleRequest(RequestPath, httpRequestEvent);
+                        Navigation.HandleRequest(requestPath, httpRequestEvent);
                         break;
 
                     case "sessions":
-                        Handlers.Sessions.HandleRequest(RequestPath, httpRequestEvent);
+                        Sessions.HandleRequest(requestPath, httpRequestEvent);
                         break;
 
                     case "web_element":
-                        Handlers.WebElement.HandleRequest(RequestPath, httpRequestEvent);
+                        WebElement.HandleRequest(requestPath, httpRequestEvent);
                         break;
 
                     case "window_handler":
-                        Handlers.WindowHandler.HandleRequest(RequestPath, httpRequestEvent);
+                        WindowHandler.HandleRequest(requestPath, httpRequestEvent);
                         break;
 
                     case "favicon.ico":
-                        var FaviconLocation = $"{AssemblyDirectory}{Path.DirectorySeparatorChar}WebResources{Path.DirectorySeparatorChar}favicon.ico";
-                        if (File.Exists(FaviconLocation))
+                        var faviconLocation = $"{AssemblyDirectory}{Path.DirectorySeparatorChar}WebResources{Path.DirectorySeparatorChar}favicon.ico";
+                        if (File.Exists(faviconLocation))
                         {
                             httpRequestEvent.Response.Headers.Add("Content-Type", "image/ico");
-                            SendFile(httpRequestEvent.Response, FaviconLocation);
+                            SendFile(httpRequestEvent.Response, faviconLocation);
                         }
                         break;
 
                     default:
-                        SendJsonResponse(httpRequestEvent.Response, new Responses.NotFoundResponse(), 404);
+                        SendJsonResponse(httpRequestEvent.Response, new NotFoundResponse(), 404);
                         break;
                 }
-
-                return;
             }
             else
             {
                 if (IsAuthorized(httpRequestEvent) == false)
                 {
-                    SendJsonResponse(httpRequestEvent.Response, new Responses.UnauthorizedRequestResponse(), 401);
+                    SendJsonResponse(httpRequestEvent.Response, new UnauthorizedRequestResponse(), 401);
                     return;
                 }
 
-                SendJsonResponse(httpRequestEvent.Response, new Responses.RootResponse(), 200);
-                return;
+                SendJsonResponse(httpRequestEvent.Response, new RootResponse());
             }
         }
 
@@ -254,7 +251,7 @@ namespace NetleniumServer
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task BackgroundTasks(CancellationToken cancellationToken)
+        private static async Task BackgroundTasks(CancellationToken cancellationToken)
         {
 
             await Task.Run(async () =>
@@ -264,14 +261,14 @@ namespace NetleniumServer
                     SessionManager.Sync();
                     await Task.Delay(5000, cancellationToken);
                     if (cancellationToken.IsCancellationRequested) break;
-                    if (Server.State == HttpServerState.Stopped) break;
+                    if (server.State == HttpServerState.Stopped) break;
                 }
-            });
+            }, cancellationToken);
 
         }
 
         /// <summary>
-        /// Gets the paramerter either from a GET or POST request
+        /// Gets the parameter either from a GET or POST request
         /// </summary>
         /// <param name="httpRequest"></param>
         /// <param name="parameter"></param>

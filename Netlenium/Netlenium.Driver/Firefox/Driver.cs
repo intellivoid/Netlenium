@@ -100,7 +100,6 @@ namespace Netlenium.Driver.Firefox
             };
 
             HeadlessWindowSize = new Size(1920, 1080);
-
             DriverManager = new DriverManager(this);
             actions = new Actions(this);
             document = new Document(this);

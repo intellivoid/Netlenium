@@ -8,6 +8,9 @@ namespace Netlenium.Logging
     /// </summary>
     public static class ApplicationPaths
     {
+        /// <summary>
+        /// The application data path for Netlenium
+        /// </summary>
         private static string AppData
         {
             get

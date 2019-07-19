@@ -9,9 +9,12 @@ namespace Netlenium.WebAPI.GitHub
     /// <summary>
     /// Releases Manager for GitHub
     /// </summary>
-    public class Releases
+    public static class Releases
     {
-        public static Uri Endpoint = new Uri("https://api.github.com/");
+        /// <summary>
+        /// The GitHub API Endpoint to make HTTP Requests to
+        /// </summary>
+        private static Uri Endpoint { get; } = new Uri("https://api.github.com/");
 
         /// <summary>
         /// Retrieves a all releases

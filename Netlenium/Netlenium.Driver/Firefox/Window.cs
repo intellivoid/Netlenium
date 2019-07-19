@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Netlenium.Driver.Firefox
 {
     public class Window : IWindow
     {
-        private string id;
+        private readonly string id;
         public string ID => id;
 
-        private Driver driver;
+        private readonly Driver driver;
 
         /// <summary>
         /// Public Constructor

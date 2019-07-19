@@ -275,6 +275,13 @@ namespace Netlenium.Driver.Chrome
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{temporaryFileDownloadPath}'");
             File.Delete(temporaryFileDownloadPath);
             
+            // Add missing permissions
+            if (permissionsRequired)
+            {
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Applying executable permissions to '{DriverExecutablePath}'");
+                Utilities.GiveExecutablePermissions(DriverExecutablePath);
+            }
+            
             driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "The driver installation has completed successfully");
         }
         

@@ -9,7 +9,7 @@ namespace NetleniumServer
     /// <summary>
     /// Main Program Class
     /// </summary>
-    internal class Program
+    internal static class Program
     {
         /// <summary>
         /// Main Execution Pointer
@@ -32,7 +32,8 @@ namespace NetleniumServer
             CommandLineParameters.AuthPassword = string.Empty;
             
 
-            var p = new OptionSet() {
+            var p = new OptionSet
+            {
 
                 { "h|help",  "Displays the help menu and exit",
                   v => CommandLineParameters.Help = v != null },
@@ -195,23 +196,8 @@ namespace NetleniumServer
                 }
             }
 
-            if(CommandLineParameters.DisabledStdout)
-            {
-                WebService.Logging.CommandLineLoggingEnabled = false;
-            }
-            else
-            {
-                WebService.Logging.CommandLineLoggingEnabled = true;
-            }
-
-            if(CommandLineParameters.DisableFileLogging)
-            {
-                WebService.Logging.FileLoggingEnabled = false;
-            }
-            else
-            {
-                WebService.Logging.FileLoggingEnabled = true;
-            }
+            WebService.Logging.CommandLineLoggingEnabled = !CommandLineParameters.DisabledStdout;
+            WebService.Logging.FileLoggingEnabled = !CommandLineParameters.DisableFileLogging;
         }
 
         /// <summary>

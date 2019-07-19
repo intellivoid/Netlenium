@@ -179,7 +179,7 @@ namespace Netlenium.Driver.Firefox
             var latestVersion = GetLatestVersion();
 
             var driverVersionFilePath = $"{DriverDirectoryPath}{Path.DirectorySeparatorChar}version";
-            const bool permissionsRequired = false;
+            bool permissionsRequired;
 
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", "Creating HTTP/S Request to GitHub API For the latest Release on 'mozilla/geckodriver'");
             var release = WebAPI.GitHub.Releases.GetLatestRelease("mozilla", "geckodriver");
@@ -193,6 +193,21 @@ namespace Netlenium.Driver.Firefox
                 break;
             }
 
+            switch (driver.TargetPlatform)
+            {
+                case Platform.Linux32:
+                    permissionsRequired = true;
+                    break;
+                
+                case Platform.Linux64:
+                    permissionsRequired = true;
+                    break;
+                
+                default:
+                    permissionsRequired = false;
+                    break;
+            }
+            
             if(targetAsset == null)
             {
                 throw new PlatformNotSupportedException($"No driver for the platform '{driver.TargetPlatform}' could be found");
@@ -237,6 +252,13 @@ namespace Netlenium.Driver.Firefox
             // Cleanup temporary files
             driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Deleting temporary file '{temporaryFileDownloadPath}'");
             File.Delete(temporaryFileDownloadPath);
+            
+            // Add missing permissions
+            if (permissionsRequired)
+            {
+                driver.Logging.WriteEntry(MessageType.Verbose, "DriverManager", $"Applying executable permissions to '{DriverExecutablePath}'");
+                Utilities.GiveExecutablePermissions(DriverExecutablePath);
+            }
 
             driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "The driver installation has completed successfully");
         }

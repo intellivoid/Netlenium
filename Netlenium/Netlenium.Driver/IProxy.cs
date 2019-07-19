@@ -1,43 +1,43 @@
 ﻿namespace Netlenium.Driver
 {
     /// <summary>
-    /// Proxy Configuration Interface
+    ///     Proxy Configuration Interface
     /// </summary>
     public interface IProxy
     {
         /// <summary>
-        /// If the browser is configured to use a proxy
+        ///     If the browser is configured to use a proxy
         /// </summary>
         bool Enabled { get; set; }
 
         /// <summary>
-        /// The supported scheme that this proxy uses
+        ///     The supported scheme that this proxy uses
         /// </summary>
         ProxyScheme Scheme { get; set; }
 
         /// <summary>
-        /// The host to connect to
+        ///     The host to connect to
         /// </summary>
         string Host { get; set; }
 
         /// <summary>
-        /// The port to connect to
+        ///     The port to connect to
         /// </summary>
         int Port { get; set; }
 
         /// <summary>
-        /// If authentication is required
+        ///     If authentication is required
         /// </summary>
         bool AuthenticationRequired { get; set; }
 
         /// <summary>
-        /// Username for authentication
+        ///     Username for authentication
         /// </summary>
         string Username { get; set; }
 
 
         /// <summary>
-        /// Password for authentication
+        ///     Password for authentication
         /// </summary>
         string Password { get; set; }
     }

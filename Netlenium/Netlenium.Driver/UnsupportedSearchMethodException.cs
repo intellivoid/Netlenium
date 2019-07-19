@@ -14,11 +14,13 @@ namespace Netlenium.Driver
         {
         }
 
-        public UnsupportedSearchMethodException(string message, Exception innerException) : base(message, innerException)
+        public UnsupportedSearchMethodException(string message, Exception innerException) : base(message,
+            innerException)
         {
         }
 
-        protected UnsupportedSearchMethodException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected UnsupportedSearchMethodException(SerializationInfo info, StreamingContext context) : base(info,
+            context)
         {
         }
     }

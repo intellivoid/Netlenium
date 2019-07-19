@@ -4,7 +4,7 @@ using System.IO;
 namespace Netlenium.Driver
 {
     /// <summary>
-    /// Application Directory Paths that are available
+    ///     Application Directory Paths that are available
     /// </summary>
     public static class ApplicationPaths
     {
@@ -12,19 +12,17 @@ namespace Netlenium.Driver
         {
             get
             {
-                var directoryPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}{Path.DirectorySeparatorChar}Netlenium";
+                var directoryPath =
+                    $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}{Path.DirectorySeparatorChar}Netlenium";
 
-                if (Directory.Exists(directoryPath) == false)
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
+                if (Directory.Exists(directoryPath) == false) Directory.CreateDirectory(directoryPath);
 
                 return directoryPath;
             }
         }
 
         /// <summary>
-        /// Driver installations in the Netlenium Application Directory
+        ///     Driver installations in the Netlenium Application Directory
         /// </summary>
         public static string DriverDirectory
         {
@@ -32,17 +30,14 @@ namespace Netlenium.Driver
             {
                 var directoryPath = $"{AppData}{Path.DirectorySeparatorChar}Drivers";
 
-                if (Directory.Exists(directoryPath) == false)
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
+                if (Directory.Exists(directoryPath) == false) Directory.CreateDirectory(directoryPath);
 
                 return directoryPath;
             }
         }
 
         /// <summary>
-        /// Gets the temporary directory from the Netlenium Application directory
+        ///     Gets the temporary directory from the Netlenium Application directory
         /// </summary>
         public static string TemporaryDirectory
         {
@@ -50,17 +45,14 @@ namespace Netlenium.Driver
             {
                 var directoryPath = $"{AppData}{Path.DirectorySeparatorChar}tmp";
 
-                if (Directory.Exists(directoryPath) == false)
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
+                if (Directory.Exists(directoryPath) == false) Directory.CreateDirectory(directoryPath);
 
                 return directoryPath;
             }
         }
 
         /// <summary>
-        /// Gets the directory dedicated for storing log files
+        ///     Gets the directory dedicated for storing log files
         /// </summary>
         public static string LoggingDirectory
         {
@@ -68,10 +60,7 @@ namespace Netlenium.Driver
             {
                 var directoryPath = $"{AppData}{Path.DirectorySeparatorChar}logs";
 
-                if (Directory.Exists(directoryPath) == false)
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
+                if (Directory.Exists(directoryPath) == false) Directory.CreateDirectory(directoryPath);
 
                 return directoryPath;
             }

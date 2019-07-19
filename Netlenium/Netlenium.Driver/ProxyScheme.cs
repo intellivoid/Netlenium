@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Netlenium.Driver
+﻿namespace Netlenium.Driver
 {
     /// <summary>
-    /// Supported Proxy Scheme
+    ///     Supported Proxy Scheme
     /// </summary>
     public enum ProxyScheme
     {

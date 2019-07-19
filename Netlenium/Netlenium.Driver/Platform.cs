@@ -3,7 +3,7 @@
 namespace Netlenium.Driver
 {
     /// <summary>
-    /// The platform type
+    ///     The platform type
     /// </summary>
     [Flags]
     public enum Platform

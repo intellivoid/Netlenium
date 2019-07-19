@@ -1,7 +1,7 @@
-﻿using Intellivoid.HyperWS;
-using Netlenium.Driver;
+﻿using Netlenium.Driver;
 using System;
 using System.Collections.Generic;
+using NetleniumServer.Intellivoid;
 
 namespace NetleniumServer.Handlers
 {

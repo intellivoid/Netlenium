@@ -6,7 +6,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace Intellivoid.HyperWS
+namespace NetleniumServer.Intellivoid
 {
     public class HttpRequest
     {

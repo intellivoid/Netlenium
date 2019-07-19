@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Intellivoid.HyperWS
+﻿namespace NetleniumServer.Intellivoid
 {
     public enum HttpServerState
     {

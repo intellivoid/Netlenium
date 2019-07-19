@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
-namespace Intellivoid.HyperWS
+namespace NetleniumServer.Intellivoid
 {
     [Serializable]
     internal class ProtocolException : Exception

@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Intellivoid.HyperWS
+namespace NetleniumServer.Intellivoid
 {
     /// <inheritdoc />
     /// <summary>

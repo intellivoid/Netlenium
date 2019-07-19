@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Text;
 
-namespace Intellivoid.HyperWS
+namespace NetleniumServer.Intellivoid
 {
     internal static class HttpUtil
     {

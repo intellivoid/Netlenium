@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections.Specialized;
 
-namespace Intellivoid.HyperWS
+namespace NetleniumServer.Intellivoid
 {
     public class HttpFileCollection : NameObjectCollectionBase
     {

@@ -1,22 +1,21 @@
-﻿using Mono.Options;
-using NetleniumServer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Mono.Options;
 
-namespace Netlenium_Server
+namespace NetleniumServer
 {
 
     /// <summary>
     /// Main Program Class
     /// </summary>
-    class Program
+    internal class Program
     {
         /// <summary>
         /// Main Execution Pointer
         /// </summary>
         /// <param name="args"></param>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             // Parse the command-line arguments
             CommandLineParameters.Help = false;
@@ -25,7 +24,7 @@ namespace Netlenium_Server
             CommandLineParameters.DriverLoggingLevel = 1;
             CommandLineParameters.ServerLoggingLevel = 1;
             CommandLineParameters.Port = 6410;
-            CommandLineParameters.ServerName = "Netlenium Server";
+            CommandLineParameters.ServerName = ProgramText.ProgramTitle;
             CommandLineParameters.MaxSessions = 100;
             CommandLineParameters.SessionInactivityLimit = 10;
             CommandLineParameters.DisableChromeDriver = false;
@@ -74,7 +73,7 @@ namespace Netlenium_Server
             };
             p.Parse(args);
 
-            if(CommandLineParameters.Help == true)
+            if(CommandLineParameters.Help)
             {
                 ShowHelp();
                 Environment.Exit(0);
@@ -119,25 +118,25 @@ namespace Netlenium_Server
                     break;
 
                 default:
-                    Console.WriteLine("The parameter 'server-logging-level' must have a value between 0-3");
+                    Console.WriteLine(ProgramText.ServerLoggingLevelInvalidOption);
                     Environment.Exit(1);
                     break;
             }
 
             if(CommandLineParameters.DriverLoggingLevel < 0)
             {
-                Console.WriteLine("The parameter 'driver-logging-level' must have a value between 0-3");
+                Console.WriteLine(ProgramText.DriverLoggingLevelInvalidOption);
                 Environment.Exit(1);
             }
 
             if(CommandLineParameters.DriverLoggingLevel > 3)
             {
-                Console.WriteLine("The parameter 'driver-logging-level' must have a value between 0-3");
+                Console.WriteLine(ProgramText.DriverLoggingLevelInvalidOption);
                 Environment.Exit(1);
             }
 
-            Console.Title = "Netlenium Server";
-            Console.CancelKeyPress += new ConsoleCancelEventHandler(CommandCancelEventHandler);
+            Console.Title = ProgramText.ProgramTitle;
+            Console.CancelKeyPress += CommandCancelEventHandler;
 
             try
             {
@@ -148,45 +147,43 @@ namespace Netlenium_Server
                 Environment.Exit(1);
             }
 
-            while (true)
-            {
-                Console.ReadKey(true);
-            };
+            while (true) { Console.ReadKey(true); }
 
+            // ReSharper disable once FunctionNeverReturns
         }
 
         /// <summary>
         /// Verifies the values in the given arguments
         /// </summary>
-        static void VerifyValues()
+        private static void VerifyValues()
         {
             if (CommandLineParameters.MaxSessions < 1)
             {
-                Console.WriteLine("The parameter 'max-sessions' cannot have a value that's less than 1");
+                Console.WriteLine(ProgramText.MaxSessionsInvalidOption_Less);
                 Environment.Exit(64);
             }
 
             if (CommandLineParameters.MaxSessions > 99999)
             {
-                Console.WriteLine("The parameter 'max-sessions' cannot have a value that's greater than 99999");
+                Console.WriteLine(ProgramText.MaxSessionsInvalidOption_Greater);
                 Environment.Exit(64);
             }
 
             if(CommandLineParameters.SessionInactivityLimit < 0)
             {
-                Console.WriteLine("The parameter 'session-inactivity-limit' cannot have a value that's less than 0");
+                Console.WriteLine(ProgramText.SessionInactivityLimitInvalidValue_Less);
                 Environment.Exit(64);
             }
 
             if(CommandLineParameters.ServerName.Length < 1)
             {
-                Console.WriteLine("The parameter 'server-name' cannot be empty");
+                Console.WriteLine(ProgramText.ServerNameInvalidOption_Empty);
                 Environment.Exit(64);
             }
 
             if (CommandLineParameters.SessionInactivityLimit > 99999)
             {
-                Console.WriteLine("The parameter 'session-inactivity-limit' cannot have a value that's greater than 99999");
+                Console.WriteLine(ProgramText.SessionInactivityLimitInvalidValue_Greater);
                 Environment.Exit(64);
             }
             
@@ -194,12 +191,12 @@ namespace Netlenium_Server
             {
                 if(CommandLineParameters.AuthPassword.Length < 6)
                 {
-                    Console.WriteLine("The parameter 'auth-password' is invalid, the password must be greater than 6 characters");
+                    Console.WriteLine(ProgramText.InavlidAuthPasswordOption);
                     Environment.Exit(64);
                 }
             }
 
-            if(CommandLineParameters.DisabledStdout == true)
+            if(CommandLineParameters.DisabledStdout)
             {
                 WebService.logging.CommandLineLoggingEnabled = false;
             }
@@ -208,7 +205,7 @@ namespace Netlenium_Server
                 WebService.logging.CommandLineLoggingEnabled = true;
             }
 
-            if(CommandLineParameters.DisableFileLogging == true)
+            if(CommandLineParameters.DisableFileLogging)
             {
                 WebService.logging.FileLoggingEnabled = false;
             }
@@ -221,7 +218,7 @@ namespace Netlenium_Server
         /// <summary>
         /// Displays the Help Menu
         /// </summary>
-        static void ShowHelp()
+        private static void ShowHelp()
         {
             Console.WriteLine(" USAGE:");
             Console.WriteLine("     netlenium [OPTIONS]         (main server)");
@@ -279,7 +276,7 @@ namespace Netlenium_Server
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        static void CommandCancelEventHandler(object sender, ConsoleCancelEventArgs e)
+        private static void CommandCancelEventHandler(object sender, ConsoleCancelEventArgs e)
         {
             GracefullyShutdown();
         }
@@ -287,7 +284,7 @@ namespace Netlenium_Server
         /// <summary>
         /// Gracefully shuts down the server and closes the process
         /// </summary>
-        static void GracefullyShutdown()
+        private static void GracefullyShutdown()
         {
             WebService.logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Shutting down server");
             WebService.Stop();
@@ -298,15 +295,15 @@ namespace Netlenium_Server
                 
                 while(true)
                 {
-                    var CurrentActiveSessions = new List<string>();
-                    foreach (string session in SessionManager.activeSessions.Keys)
+                    var currentActiveSessions = new List<string>();
+                    foreach (var session in SessionManager.activeSessions.Keys)
                     {
-                        CurrentActiveSessions.Add(session);
+                        currentActiveSessions.Add(session);
                     }
 
                     try
                     {
-                        foreach (string session in CurrentActiveSessions)
+                        foreach (var session in currentActiveSessions)
                         {
                             try
                             {

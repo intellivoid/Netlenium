@@ -1,4 +1,4 @@
-﻿namespace Intellivoid.HyperWS
+﻿namespace NetleniumServer.Intellivoid
 {
     
     /// <summary>

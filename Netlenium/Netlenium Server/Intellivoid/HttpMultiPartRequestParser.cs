@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Intellivoid.HyperWS
+namespace NetleniumServer.Intellivoid
 {
     internal class HttpMultiPartRequestParser : HttpRequestParser
     {

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;
 
-namespace Intellivoid.HyperWS
+namespace NetleniumServer.Intellivoid
 {
     public class HttpCookieCollection : NameObjectCollectionBase
     {

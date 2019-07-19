@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Intellivoid.HyperWS
+namespace NetleniumServer.Intellivoid
 {
     [Serializable]
     internal class WebServerException : Exception

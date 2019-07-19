@@ -88,6 +88,7 @@
     <Compile Include="Objects\SizeProperty.cs" />
     <Compile Include="Objects\WebElement.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ProgramText.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\AttributeNotFoundResponse.cs" />
     <Compile Include="Responses\AttributeValueResponse.cs" />
@@ -138,6 +139,9 @@
     <Content Include="WebResources\favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProgramText.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

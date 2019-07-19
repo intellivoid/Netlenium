@@ -24,7 +24,7 @@ namespace Netlenium.WebAPI.Google
 
             foreach (XmlNode contentNode in xmlDocument.GetElementsByTagName("Contents"))
             {
-                contentResults.Add(new Content()
+                contentResults.Add(new Content
                 {
                     Name = contentNode["Key"].InnerText,
                     Generation = contentNode["Generation"].InnerText,

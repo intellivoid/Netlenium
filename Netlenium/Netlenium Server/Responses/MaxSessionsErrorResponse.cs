@@ -1,18 +1,13 @@
 ﻿namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// A Response for when the maximum sessions are maxed out
+    ///     A Response for when the maximum sessions are maxed out
     /// </summary>
-    class MaxSessionsErrorResponse : IResponse
+    internal class MaxSessionsErrorResponse : IResponse
     {
-        public bool Status { get; set;  }
-
-        public int ResponseCode { get; set;  }
-
-        public string Message { get; set; }
-
         /// <summary>
-        /// Public Consturctor
+        ///     Public Constructor
         /// </summary>
         public MaxSessionsErrorResponse()
         {
@@ -20,5 +15,11 @@
             ResponseCode = 403;
             Message = $"A maximum of {CommandLineParameters.MaxSessions} session(s) are allowed to be created";
         }
+
+        public string Message { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

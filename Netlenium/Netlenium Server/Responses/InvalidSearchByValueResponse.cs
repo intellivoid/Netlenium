@@ -2,20 +2,15 @@
 
 namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// This response is returned when the given SearchBy Paramerter is invalid
+    ///     This response is returned when the given SearchBy Paramerter is invalid
     /// </summary>
     [Serializable]
     public class InvalidSearchByValueResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public string Message { get; set; }
-
         /// <summary>
-        /// Public Consturctor
+        ///     Public Constructor
         /// </summary>
         public InvalidSearchByValueResponse()
         {
@@ -23,5 +18,11 @@ namespace NetleniumServer.Responses
             ResponseCode = 400;
             Message = "The given value for 'by' is invalid";
         }
+
+        public string Message { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

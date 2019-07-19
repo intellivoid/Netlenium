@@ -2,20 +2,15 @@
 
 namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Response given when the Javascript execution failed
+    ///     Response given when the Javascript execution failed
     /// </summary>
     [Serializable]
     public class JavascriptExecutionErrorResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public string Error { get; set; }
-
         /// <summary>
-        /// Public Constructor
+        ///     Public Constructor
         /// </summary>
         /// <param name="exceptionMessage"></param>
         public JavascriptExecutionErrorResponse(string exceptionMessage)
@@ -24,5 +19,11 @@ namespace NetleniumServer.Responses
             ResponseCode = 500;
             Error = exceptionMessage;
         }
+
+        public string Error { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

@@ -1,22 +1,17 @@
-﻿using NetleniumServer.Objects;
-using System;
+﻿using System;
+using NetleniumServer.Objects;
 
 namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Response given to return the details of the current window
+    ///     Response given to return the details of the current window
     /// </summary>
     [Serializable]
     public class CurrentWindowResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public CurrentWindow CurrentWindow { get; set; }
-
         /// <summary>
-        /// Public Constructor
+        ///     Public Constructor
         /// </summary>
         /// <param name="currentWindow"></param>
         public CurrentWindowResponse(CurrentWindow currentWindow)
@@ -25,5 +20,11 @@ namespace NetleniumServer.Responses
             ResponseCode = 200;
             CurrentWindow = currentWindow;
         }
+
+        public CurrentWindow CurrentWindow { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

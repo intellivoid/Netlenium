@@ -2,20 +2,15 @@
 
 namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Returned when the given request is unauthorized
+    ///     Returned when the given request is unauthorized
     /// </summary>
     [Serializable]
-    class UnauthorizedRequestResponse : IResponse
+    internal class UnauthorizedRequestResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public string Message { get; set; }
-
         /// <summary>
-        /// Public Constructor
+        ///     Public Constructor
         /// </summary>
         public UnauthorizedRequestResponse()
         {
@@ -23,5 +18,11 @@ namespace NetleniumServer.Responses
             ResponseCode = 401;
             Message = "Unauthorized Request";
         }
+
+        public string Message { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

@@ -2,20 +2,15 @@
 
 namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Generic Response for the root request
+    ///     Generic Response for the root request
     /// </summary>
     [Serializable]
     public class RootResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public string ServerName { get; set; }
-
         /// <summary>
-        /// Public Constructor
+        ///     Public Constructor
         /// </summary>
         public RootResponse()
         {
@@ -23,5 +18,11 @@ namespace NetleniumServer.Responses
             ResponseCode = 200;
             ServerName = CommandLineParameters.ServerName;
         }
+
+        public string ServerName { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Response for listing all the Window Handles that are currently available
+    ///     Response for listing all the Window Handles that are currently available
     /// </summary>
     [Serializable]
     public class ListWindowHandlesResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public List<string> WindowHandles { get; set; }
-
         /// <summary>
-        /// Public Constructor
+        ///     Public Constructor
         /// </summary>
         /// <param name="windowHandles"></param>
         public ListWindowHandlesResponse(List<string> windowHandles)
@@ -26,5 +20,11 @@ namespace NetleniumServer.Responses
             ResponseCode = 200;
             WindowHandles = windowHandles;
         }
+
+        public List<string> WindowHandles { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

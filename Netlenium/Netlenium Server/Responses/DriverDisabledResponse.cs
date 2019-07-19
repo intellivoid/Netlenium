@@ -2,20 +2,15 @@
 
 namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Response given when the requested driver is disabled
+    ///     Response given when the requested driver is disabled
     /// </summary>
     [Serializable]
     public class DriverDisabledResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public string Message { get; set; }
-
         /// <summary>
-        /// Public Constructor
+        ///     Public Constructor
         /// </summary>
         /// <param name="targetBrowser"></param>
         public DriverDisabledResponse(string targetBrowser)
@@ -24,5 +19,11 @@ namespace NetleniumServer.Responses
             ResponseCode = 403;
             Message = $"The driver for '{targetBrowser}' is disabled";
         }
+
+        public string Message { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

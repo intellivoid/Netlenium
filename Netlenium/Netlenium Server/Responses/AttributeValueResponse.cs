@@ -2,20 +2,15 @@
 
 namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Response given for the value of an attribute from a element
+    ///     Response given for the value of an attribute from a element
     /// </summary>
     [Serializable]
     public class AttributeValueResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public string AttributeValue { get; set; }
-
         /// <summary>
-        /// Public Constructor
+        ///     Public Constructor
         /// </summary>
         /// <param name="attributeValue"></param>
         public AttributeValueResponse(string attributeValue)
@@ -24,5 +19,11 @@ namespace NetleniumServer.Responses
             ResponseCode = 200;
             AttributeValue = attributeValue;
         }
+
+        public string AttributeValue { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

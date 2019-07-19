@@ -2,20 +2,15 @@
 
 namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Response given when there was an unexpected error
+    ///     Response given when there was an unexpected error
     /// </summary>
     [Serializable]
     public class UnexpectedErrorResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public string Message { get; set; }
-
         /// <summary>
-        /// Public Constructor
+        ///     Public Constructor
         /// </summary>
         /// <param name="exceptionMessage"></param>
         public UnexpectedErrorResponse(string exceptionMessage)
@@ -24,5 +19,11 @@ namespace NetleniumServer.Responses
             ResponseCode = 500;
             Message = exceptionMessage;
         }
+
+        public string Message { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

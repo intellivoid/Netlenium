@@ -2,20 +2,15 @@
 
 namespace NetleniumServer.Responses
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Response for when a paramerter is missing
+    ///     Response for when a parameter is missing
     /// </summary>
     [Serializable]
     public class MissingParameterResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public string Message { get; set; }
-
         /// <summary>
-        /// Public Consturctor
+        ///     Public Constructor
         /// </summary>
         /// <param name="parameterName"></param>
         public MissingParameterResponse(string parameterName)
@@ -24,5 +19,11 @@ namespace NetleniumServer.Responses
             ResponseCode = 400;
             Message = $"The required parameter '{parameterName}' is missing";
         }
+
+        public string Message { get; set; }
+        
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
     }
 }

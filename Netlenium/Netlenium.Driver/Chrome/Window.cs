@@ -8,10 +8,10 @@ namespace Netlenium.Driver.Chrome
 {
     public class Window : IWindow
     {
-        private string id;
+        private readonly string id;
         public string ID => id;
 
-        private Driver driver;
+        private readonly Driver driver;
 
         /// <summary>
         /// Public Constructor

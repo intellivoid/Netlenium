@@ -13,7 +13,7 @@ namespace Netlenium.Driver.Chrome
     /// </summary>
     public class Driver : IDriver
     {
-        private Service logging;
+        private readonly Service logging;
         public Service Logging => logging;
 
         private readonly IDriverManager driverManager;
@@ -21,10 +21,10 @@ namespace Netlenium.Driver.Chrome
 
         public Browser TargetBrowser => Browser.Chrome;
 
-        private Actions actions;
+        private readonly Actions actions;
         public IActions Actions => actions;
 
-        private Document document;
+        private readonly Document document;
         public IDocument Document => document;
 
         private bool headless;
@@ -84,7 +84,7 @@ namespace Netlenium.Driver.Chrome
         private bool driverVerboseLoggingEnabled;
         public bool DriverVerboseLoggingEnabled { get => driverVerboseLoggingEnabled; set => driverVerboseLoggingEnabled = value; }
 
-        private Proxy proxyConfiguration;
+        private readonly Proxy proxyConfiguration;
         public IProxy ProxyConfiguration => proxyConfiguration;
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace Netlenium.Driver.Chrome
 
             foreach (var option in options)
             {
-                var Argument = option.Value == string.Empty ? option.Key : $"{option.Key}={option.Value}";
-                logging.WriteEntry(MessageType.Debugging, "Driver", $"Setting argument '{Argument}'");
-                DriverOptions.AddArgument(Argument);
+                var argument = option.Value == string.Empty ? option.Key : $"{option.Key}={option.Value}";
+                logging.WriteEntry(MessageType.Debugging, "Driver", $"Setting argument '{argument}'");
+                DriverOptions.AddArgument(argument);
             }
         }
 
@@ -165,8 +165,8 @@ namespace Netlenium.Driver.Chrome
 
             if (proxyConfiguration.Enabled == true)
             {
-                var ProxyExtensionPath = proxyConfiguration.BuildExtension();
-                options.Add("load-extension", ProxyExtensionPath);
+                var proxyExtensionPath = proxyConfiguration.BuildExtension();
+                options.Add("load-extension", proxyExtensionPath);
             }
 
             if (driverLoggingEnabled == false)
@@ -194,9 +194,9 @@ namespace Netlenium.Driver.Chrome
             logging.WriteEntry(MessageType.Verbose, "Driver", "Setting options for driver");
             SetOptions(options);
 
-            var LoggingPath = $"{ApplicationPaths.LoggingDirectory}{Path.DirectorySeparatorChar}chrome_driver.log";
-            logging.WriteEntry(MessageType.Verbose, "Driver", $"Setting logging path '{LoggingPath}'");
-            DriverService.LogPath = LoggingPath;
+            var loggingPath = $"{ApplicationPaths.LoggingDirectory}{Path.DirectorySeparatorChar}chrome_driver.log";
+            logging.WriteEntry(MessageType.Verbose, "Driver", $"Setting logging path '{loggingPath}'");
+            DriverService.LogPath = loggingPath;
 
             logging.WriteEntry(MessageType.Verbose, "Driver", "Starting Driver Service");
             DriverService.Start();

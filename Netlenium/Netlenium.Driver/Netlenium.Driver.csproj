@@ -33,16 +33,26 @@
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug x64|AnyCPU' ">
-    <OutputPath>bin\Linux Debug x64\</OutputPath>
+    <OutputPath>../../Build/Netlenium.Driver/debug_linux_x64/</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release x86|AnyCPU' ">
-    <OutputPath>bin\Linux Release x86\</OutputPath>
+    <OutputPath>../../Build/Netlenium.Driver/release_linux_x86/</OutputPath>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug x86|AnyCPU' ">
-    <OutputPath>bin\Linux Debug x86\</OutputPath>
+    <OutputPath>../../Build/Netlenium.Driver/debug_linux_x86/</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release x64|AnyCPU' ">
-    <OutputPath>bin\Linux Release x64\</OutputPath>
+    <OutputPath>../../Build/Netlenium.Driver/release_linux_x64/</OutputPath>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.1.0.145, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">

@@ -67,7 +67,7 @@ namespace Netlenium.Driver.Firefox
         private FirefoxDriverService DriverService { get; set; }
 
         /// <summary>
-        /// Options that are passed on to the Chrome Driver
+        /// Options that are passed on to the Firefox Driver
         /// </summary>
         private FirefoxOptions DriverOptions { get; set; }
         
@@ -110,7 +110,7 @@ namespace Netlenium.Driver.Firefox
 
 
         /// <summary>
-        /// Sets the current options for Chrome Driver
+        /// Sets the current options for Firefox Driver
         /// </summary>
         /// <param name="options"></param>
         private void SetOptions(Dictionary<string, string> options)

@@ -64,6 +64,13 @@
     <Compile Include="Firefox\Proxy.cs" />
     <Compile Include="Firefox\WebElement.cs" />
     <Compile Include="Firefox\Window.cs" />
+    <Compile Include="Opera\Actions.cs" />
+    <Compile Include="Opera\Document.cs" />
+    <Compile Include="Opera\Driver.cs" />
+    <Compile Include="Opera\DriverManager.cs" />
+    <Compile Include="Opera\Proxy.cs" />
+    <Compile Include="Opera\WebElement.cs" />
+    <Compile Include="Opera\Window.cs" />
     <Compile Include="StaleElementReferenceException.cs" />
     <Compile Include="DriverException.cs" />
     <Compile Include="ElementNotSelectableException.cs" />

@@ -94,6 +94,11 @@ namespace NetleniumServer.Handlers
 
                     sessionObject = SessionManager.CreateSession(Browser.Firefox);
                     break;
+                
+                case "opera":
+
+                    sessionObject = SessionManager.CreateSession(Browser.Opera);
+                    break;
 
                 default:
                     WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnsupportedBrowserResponse(), 400);

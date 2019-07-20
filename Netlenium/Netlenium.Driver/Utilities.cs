@@ -72,6 +72,10 @@ namespace Netlenium.Driver
                 case Browser.Firefox:
                     Results = "firefox";
                     break;
+                
+                case Browser.Opera:
+                    Results = "opera";
+                    break;
 
                 default:
                     Results = "unknown";

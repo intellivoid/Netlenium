@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
@@ -46,10 +48,36 @@ namespace Netlenium.Driver
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="destinationPath"></param>
-        public static void ExtractZip(string filename, string destinationPath)
+        private static void ExtractZip(string filename, string destinationPath)
         {
-            var fastZip = new FastZip();
-            fastZip.ExtractZip(filename, destinationPath, null);
+			ZipFile zf = null;
+           	try
+            {
+           		var fs = File.OpenRead(filename);
+           		zf = new ZipFile(fs);
+                
+           		foreach (ZipEntry zipEntry in zf)
+                {
+           			if (!zipEntry.IsFile) { continue; }
+                    
+           			var buffer = new byte[4096];
+           			var zipStream = zf.GetInputStream(zipEntry);
+           			var fullZipToPath = Path.Combine(destinationPath, Path.GetFileName(zipEntry.Name) ?? throw new Exception("Cannot resolve path name"));
+
+           			using (var streamWriter = File.Create(fullZipToPath))
+                    {
+           				StreamUtils.Copy(zipStream, streamWriter, buffer);
+           			}
+           		}
+           	}
+            finally
+            {
+           		if (zf != null)
+                {
+           			zf.IsStreamOwner = true; // Makes close also shut the underlying stream
+           			zf.Close(); // Ensure we release resources
+           		}
+           	}
         }
 
         /// <summary>
@@ -57,7 +85,7 @@ namespace Netlenium.Driver
         /// </summary>
         /// <param name="filename">The <i>.tar.gz</i> to decompress and extract.</param>
         /// <param name="destinationPath">Output directory to write the files.</param>
-        public static void ExtractTarGz(string filename, string destinationPath)
+        private static void ExtractTarGz(string filename, string destinationPath)
         {
             Stream inStream = File.OpenRead(filename);
             Stream gzipStream = new GZipInputStream(inStream);
@@ -71,19 +99,40 @@ namespace Netlenium.Driver
         }
 
         /// <summary>
-        ///     Extractes a <c>tar</c> archive to the specified directory.
+        ///     Extracts a <c>tar</c> archive to the specified directory.
         /// </summary>
         /// <param name="filename">The <i>.tar</i> to extract.</param>
         /// <param name="destinationPath">Output directory to write the files.</param>
-        public static void ExtractTar(string filename, string destinationPath)
+        private static void ExtractTar(string filename, string destinationPath)
         {
-            Stream inStream = File.OpenRead(filename);
+            using (var fsIn = new FileStream(filename, FileMode.Open, FileAccess.Read))
+            {
+                var tarIn = new TarInputStream(fsIn);
+                TarEntry tarEntry;
+                while ((tarEntry = tarIn.GetNextEntry()) != null)
+                {
+                    if (tarEntry.IsDirectory) continue;
 
-            var tarArchive = TarArchive.CreateInputTarArchive(inStream);
-            tarArchive.ExtractContents(destinationPath);
-            tarArchive.Close();
+                    // Converts the unix forward slashes in the filenames to windows backslashes
+                    var name = tarEntry.Name.Replace('/', Path.DirectorySeparatorChar);
 
-            inStream.Close();
+                    // Remove any root e.g. '\' because a PathRooted filename defeats Path.Combine
+                    if (Path.IsPathRooted(name)) name = name.Substring(Path.GetPathRoot(name).Length);
+
+                    // Apply further name transformations here as necessary
+                    var outName = Path.Combine(destinationPath, Path.GetFileName(name));
+
+                    var outStr = new FileStream(outName, FileMode.Create);
+                    tarIn.CopyEntryContents(outStr);
+                    outStr.Close();
+
+                    // Set the modification date/time. This approach seems to solve timezone issues.
+                    var myDt = DateTime.SpecifyKind(tarEntry.ModTime, DateTimeKind.Utc);
+                    File.SetLastWriteTime(outName, myDt);
+                }
+
+                tarIn.Close();
+            }
         }
     }
 }

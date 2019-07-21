@@ -29,6 +29,7 @@ namespace NetleniumServer
             CommandLineParameters.SessionInactivityLimit = 10;
             CommandLineParameters.DisableChromeDriver = false;
             CommandLineParameters.DisableFirefoxDriver = false;
+            CommandLineParameters.DisableOperaDriver = false;
             CommandLineParameters.AuthPassword = string.Empty;
             
 
@@ -67,6 +68,9 @@ namespace NetleniumServer
 
                 { "disable-firefox-driver",  "Disables the ability to start Firefox Drivers",
                   v => CommandLineParameters.DisableFirefoxDriver = v != null },
+
+                 { "disable-firefox-driver",  "Disables the ability to start Opera Drivers",
+                  v => CommandLineParameters.DisableOperaDriver = v != null },
 
                 { "auth-password=", "Authentication Password for Web Service access",
                   v => { if (v != null) CommandLineParameters.AuthPassword = v; } },

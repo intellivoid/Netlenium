@@ -61,6 +61,11 @@
         public static bool DisableFirefoxDriver { get; set; }
 
         /// <summary>
+        /// Disables the ability to start Opera Drivers
+        /// </summary>
+        public static bool DisableOperaDriver { get; set; }
+
+        /// <summary>
         /// Authenticaiton Password for Web Service access
         /// </summary>
         public static string AuthPassword { get; set; }

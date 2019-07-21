@@ -97,6 +97,12 @@ namespace NetleniumServer.Handlers
                 
                 case "opera":
 
+                    if (CommandLineParameters.DisableOperaDriver)
+                    {
+                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new DriverDisabledResponse(targetBrowser), 403);
+                        return;
+                    }
+
                     sessionObject = SessionManager.CreateSession(Browser.Opera);
                     break;
 

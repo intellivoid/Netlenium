@@ -142,20 +142,22 @@ namespace NetleniumServer
                 Console.WriteLine(ProgramText.DriverLoggingLevelInvalidOption);
                 Environment.Exit(1);
             }
+            
 
-            Console.Title = ProgramText.ProgramTitle;
-
-            if(CommandLineParameters.UpdateDrivers == true)
+            if(CommandLineParameters.UpdateDrivers)
             {
+                Console.Title = ProgramText.ProgramTitle;
                 UpdateDrivers();
                 Environment.Exit(0);
             }
 
+            Console.Title = ProgramText.ProgramServerTitle;
             Console.CancelKeyPress += CommandCancelEventHandler;
 
             try
             {
-                WebService.Start(CommandLineParameters.Port);
+                var endpoint = WebService.Start(CommandLineParameters.Port);
+                Console.Title = string.Format(ProgramText.ProgramServerEndpointTitle, ProgramText.ProgramServerTitle, endpoint);
             }
             catch(Exception)
             {
@@ -220,17 +222,17 @@ namespace NetleniumServer
         /// </summary>
         private static void UpdateDrivers()
         {
-            var ChromeDriver = new Netlenium.Driver.Chrome.Driver();
-            var FirefoxDriver = new Netlenium.Driver.Firefox.Driver();
-            var OperaDriver = new Netlenium.Driver.Opera.Driver();
+            var chromeDriver = new Netlenium.Driver.Chrome.Driver();
+            var firefoxDriver = new Netlenium.Driver.Firefox.Driver();
+            var operaDriver = new Netlenium.Driver.Opera.Driver();
 
-            Utilities.ApplyOptionsToDriver(ChromeDriver);
-            Utilities.ApplyOptionsToDriver(FirefoxDriver);
-            Utilities.ApplyOptionsToDriver(OperaDriver);
+            Utilities.ApplyOptionsToDriver(chromeDriver);
+            Utilities.ApplyOptionsToDriver(firefoxDriver);
+            Utilities.ApplyOptionsToDriver(operaDriver);
 
-            ChromeDriver.DriverManager.Initialize();
-            FirefoxDriver.DriverManager.Initialize();
-            OperaDriver.DriverManager.Initialize();
+            chromeDriver.DriverManager.Initialize();
+            firefoxDriver.DriverManager.Initialize();
+            operaDriver.DriverManager.Initialize();
         }
 
         /// <summary>

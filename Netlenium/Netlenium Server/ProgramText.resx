@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -130,7 +130,7 @@
     <value>The parameter 'server-name' cannot be empty</value>
   </data>
   <data name="ProgramTitle" xml:space="preserve">
-    <value>Netlenium Server</value>
+    <value>Netlenium</value>
   </data>
   <data name="ServerLoggingLevelInvalidOption" xml:space="preserve">
     <value>The parameter 'server-logging-level' must have a value between 0-3</value>
@@ -203,5 +203,11 @@
      --auth-password [Optional]
          Authentication Password for Web Service access
 </value>
+  </data>
+  <data name="ProgramServerTitle" xml:space="preserve">
+    <value>Netlenium Server</value>
+  </data>
+  <data name="ProgramServerEndpointTitle" xml:space="preserve">
+    <value>{0} - {1}</value>
   </data>
 </root>

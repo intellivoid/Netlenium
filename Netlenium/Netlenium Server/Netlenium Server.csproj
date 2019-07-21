@@ -111,6 +111,9 @@
     <OutputPath>..\..\Build\NetleniumServer\windows_debug_anycpu</OutputPath>
     <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Options, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Options.5.3.0.1\lib\net4-client\Mono.Options.dll</HintPath>
@@ -209,6 +212,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="logo.ico" />
     <Content Include="WebResources\favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

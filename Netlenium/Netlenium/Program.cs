@@ -250,7 +250,7 @@ namespace Netlenium
         /// </summary>
         private static void ClearCache()
         {
-            foreach(var file in Directory.GetFiles(Netlenium.Driver.ApplicationPaths.TemporaryDirectory))
+            foreach(var file in Directory.GetFiles(Driver.ApplicationPaths.TemporaryDirectory))
             {
                 try
                 {
@@ -262,7 +262,7 @@ namespace Netlenium
                 }
             }
 
-            foreach (var directory in Directory.GetDirectories(Netlenium.Driver.ApplicationPaths.TemporaryDirectory))
+            foreach (var directory in Directory.GetDirectories(Driver.ApplicationPaths.TemporaryDirectory))
             {
                 try
                 {
@@ -299,12 +299,12 @@ namespace Netlenium
         /// </summary>
         private static void GracefullyShutdown()
         {
-            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Shutting down server");
+            WebService.Logging.WriteEntry(Logging.MessageType.Information, "Application", "Shutting down server");
             WebService.Stop();
 
             if (SessionManager.activeSessions != null)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Closing active sessions");
+                WebService.Logging.WriteEntry(Logging.MessageType.Information, "Application", "Closing active sessions");
                 
                 while(true)
                 {
@@ -324,7 +324,7 @@ namespace Netlenium
                             }
                             catch (Exception ex)
                             {
-                                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "Application", $"Cannot close session '{session}', {ex.Message}");
+                                WebService.Logging.WriteEntry(Logging.MessageType.Warning, "Application", $"Cannot close session '{session}', {ex.Message}");
                             }
                         }
 
@@ -332,14 +332,14 @@ namespace Netlenium
                     }
                     catch(Exception)
                     {
-                        WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "Application", "SessionManager is busy, trying again in 2 seconds");
+                        WebService.Logging.WriteEntry(Logging.MessageType.Error, "Application", "SessionManager is busy, trying again in 2 seconds");
                         Thread.Sleep(2000);
                     }
                 }
                 
             }
 
-            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "Application", "Closing process");
+            WebService.Logging.WriteEntry(Logging.MessageType.Information, "Application", "Closing process");
             Environment.Exit(0);
         }
     }

@@ -19,6 +19,7 @@ namespace NetleniumServer
         {
             // Parse the command-line arguments
             CommandLineParameters.Help = false;
+            CommandLineParameters.UpdateDrivers = false;
             CommandLineParameters.DisabledStdout = false;
             CommandLineParameters.DisableFileLogging = false;
             CommandLineParameters.DriverLoggingLevel = 1;
@@ -39,6 +40,9 @@ namespace NetleniumServer
                 { "h|help",  "Displays the help menu and exit",
                   v => CommandLineParameters.Help = v != null },
 
+                 { "update",  "Fetches missing driver resources and or updates outdated resources then exits",
+                  v => CommandLineParameters.UpdateDrivers = v != null },
+
                 { "disable-stdout",  "Disables standard output",
                   v => CommandLineParameters.DisabledStdout = v != null },
 
@@ -57,10 +61,10 @@ namespace NetleniumServer
                 { "server-name=", "The port to run the Web Service on",
                   v => { if (v != null) CommandLineParameters.ServerName = v; } },
 
-                { "max-sessions=", "The maximum amount of sessions that can be created",
+                { "max-sessions=", "The maximum number of sessions that can be created",
                   v => { if (v != null) CommandLineParameters.MaxSessions = Convert.ToInt32(v); } },
 
-                { "session-inactivity-limit=", "The amount of minutes that a session is allowed to be inactive",
+                { "session-inactivity-limit=", "The amount of minutes that a session is allowed to be inactive for",
                   v => { if (v != null) CommandLineParameters.SessionInactivityLimit = Convert.ToInt32(v); } },
 
                 { "disable-chrome-driver",  "Disables the ability to start Chrome Drivers",
@@ -69,7 +73,7 @@ namespace NetleniumServer
                 { "disable-firefox-driver",  "Disables the ability to start Firefox Drivers",
                   v => CommandLineParameters.DisableFirefoxDriver = v != null },
 
-                 { "disable-firefox-driver",  "Disables the ability to start Opera Drivers",
+                 { "disable-opera-driver",  "Disables the ability to start Opera Drivers",
                   v => CommandLineParameters.DisableOperaDriver = v != null },
 
                 { "auth-password=", "Authentication Password for Web Service access",
@@ -140,6 +144,13 @@ namespace NetleniumServer
             }
 
             Console.Title = ProgramText.ProgramTitle;
+
+            if(CommandLineParameters.UpdateDrivers == true)
+            {
+                UpdateDrivers();
+                Environment.Exit(0);
+            }
+
             Console.CancelKeyPress += CommandCancelEventHandler;
 
             try
@@ -202,6 +213,24 @@ namespace NetleniumServer
 
             WebService.Logging.CommandLineLoggingEnabled = !CommandLineParameters.DisabledStdout;
             WebService.Logging.FileLoggingEnabled = !CommandLineParameters.DisableFileLogging;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void UpdateDrivers()
+        {
+            var ChromeDriver = new Netlenium.Driver.Chrome.Driver();
+            var FirefoxDriver = new Netlenium.Driver.Firefox.Driver();
+            var OperaDriver = new Netlenium.Driver.Opera.Driver();
+
+            Utilities.ApplyOptionsToDriver(ChromeDriver);
+            Utilities.ApplyOptionsToDriver(FirefoxDriver);
+            Utilities.ApplyOptionsToDriver(OperaDriver);
+
+            ChromeDriver.DriverManager.Initialize();
+            FirefoxDriver.DriverManager.Initialize();
+            OperaDriver.DriverManager.Initialize();
         }
 
         /// <summary>

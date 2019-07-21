@@ -103,6 +103,66 @@ namespace NetleniumServer
 
         }
 
-      
+        /// <summary>
+        /// Applies the given options to the driver
+        /// </summary>
+        /// <param name="driver"></param>
+        public static void ApplyOptionsToDriver(IDriver driver)
+        {
+            if (CommandLineParameters.DisabledStdout == true)
+            {
+                driver.Logging.CommandLineLoggingEnabled = false;
+            }
+            else
+            {
+                driver.Logging.CommandLineLoggingEnabled = true;
+            }
+
+            if (CommandLineParameters.DisableFileLogging == true)
+            {
+                driver.Logging.FileLoggingEnabled = false;
+            }
+            else
+            {
+                driver.Logging.FileLoggingEnabled = true;
+            }
+
+            switch (CommandLineParameters.DriverLoggingLevel)
+            {
+                case 0:
+                    driver.Logging.InformationEntriesEnabled = false;
+                    driver.Logging.WarningEntriesEnabled = false;
+                    driver.Logging.ErrorEntriesEnabled = false;
+                    driver.Logging.VerboseEntriesEnabled = false;
+                    driver.Logging.DebuggingEntriesEnabled = false;
+                    break;
+
+                case 1:
+                    driver.Logging.InformationEntriesEnabled = true;
+                    driver.Logging.WarningEntriesEnabled = true;
+                    driver.Logging.ErrorEntriesEnabled = true;
+                    driver.Logging.VerboseEntriesEnabled = false;
+                    driver.Logging.DebuggingEntriesEnabled = false;
+                    break;
+
+                case 2:
+                    driver.Logging.InformationEntriesEnabled = true;
+                    driver.Logging.WarningEntriesEnabled = true;
+                    driver.Logging.ErrorEntriesEnabled = true;
+                    driver.Logging.VerboseEntriesEnabled = true;
+                    driver.Logging.DebuggingEntriesEnabled = false;
+                    break;
+
+                case 3:
+                    driver.Logging.InformationEntriesEnabled = true;
+                    driver.Logging.WarningEntriesEnabled = true;
+                    driver.Logging.ErrorEntriesEnabled = true;
+                    driver.Logging.VerboseEntriesEnabled = true;
+                    driver.Logging.DebuggingEntriesEnabled = true;
+                    break;
+            }
+
+        }
+
     }
 }

@@ -11,6 +11,11 @@
         public static bool Help { get; set; }
 
         /// <summary>
+        /// Fetches missing driver resources and or updates outdated resources then exits
+        /// </summary>
+        public static bool UpdateDrivers { get; set; }
+
+        /// <summary>
         /// Disables standard output
         /// </summary>
         public static bool DisabledStdout { get; set; }
@@ -41,12 +46,12 @@
         public static string ServerName { get; set; }
 
         /// <summary>
-        /// The maximum amount of sessions that can be created
+        /// The maximum number of sessions that can be created
         /// </summary>
         public static int MaxSessions { get; set; }
 
         /// <summary>
-        /// The amount of minutes the session is allowed to be inactive before it gets closed
+        /// The amount of minutes that a session is allowed to be inactive for
         /// </summary>
         public static int SessionInactivityLimit { get; set; }
 

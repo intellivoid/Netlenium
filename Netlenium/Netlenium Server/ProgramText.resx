@@ -146,7 +146,12 @@
   </data>
   <data name="HelpMenu" xml:space="preserve">
     <value> USAGE:
-     netlenium [OPTIONS]         (main server)
+     netlenium [OPTIONS]
+         Starts the Netlenium Server on the default port 6410
+
+     netlenium --update [OPTIONS]
+         Fetches missing Driver Resources and or updates outdated
+         resources then exits
 
  OPTIONS:
      -h, --help
@@ -179,12 +184,12 @@
          Optional custom name for this server
            
      --max-sessions [Default: 100]
-         The max amount of sessions that are allowed to be created
+         The maximum number of sessions that can be created
             
      --session-inactivity-limit [Default: 10]
-         The amount of minutes that a session is allowed to be inactive
-         before it gets closed. Using 0 as the value will never close
-         inactive session
+         The amount of minutes that a session is allowed to be
+          inactive for. Setting the value to 0 will never close
+          inactive sessions.
             
      --disable-chrome-driver
          Disables the ability to start Chrome Drivers

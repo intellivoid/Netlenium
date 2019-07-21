@@ -61,59 +61,8 @@ namespace NetleniumServer
                     break;
             }
 
-            if (CommandLineParameters.DisabledStdout == true)
-            {
-                Driver.Logging.CommandLineLoggingEnabled = false;
-            }
-            else
-            {
-                Driver.Logging.CommandLineLoggingEnabled = true;
-            }
+            Utilities.ApplyOptionsToDriver(driver);
 
-            if(CommandLineParameters.DisableFileLogging == true)
-            {
-                Driver.Logging.FileLoggingEnabled = false;
-            }
-            else
-            {
-                Driver.Logging.FileLoggingEnabled = true;
-            }
-
-            switch (CommandLineParameters.DriverLoggingLevel)
-            {
-                case 0:
-                    Driver.Logging.InformationEntriesEnabled = false;
-                    Driver.Logging.WarningEntriesEnabled = false;
-                    Driver.Logging.ErrorEntriesEnabled = false;
-                    Driver.Logging.VerboseEntriesEnabled = false;
-                    Driver.Logging.DebuggingEntriesEnabled = false;
-                    break;
-
-                case 1:
-                    Driver.Logging.InformationEntriesEnabled = true;
-                    Driver.Logging.WarningEntriesEnabled = true;
-                    Driver.Logging.ErrorEntriesEnabled = true;
-                    Driver.Logging.VerboseEntriesEnabled = false;
-                    Driver.Logging.DebuggingEntriesEnabled = false;
-                    break;
-
-                case 2:
-                    Driver.Logging.InformationEntriesEnabled = true;
-                    Driver.Logging.WarningEntriesEnabled = true;
-                    Driver.Logging.ErrorEntriesEnabled = true;
-                    Driver.Logging.VerboseEntriesEnabled = true;
-                    Driver.Logging.DebuggingEntriesEnabled = false;
-                    break;
-
-                case 3:
-                    Driver.Logging.InformationEntriesEnabled = true;
-                    Driver.Logging.WarningEntriesEnabled = true;
-                    Driver.Logging.ErrorEntriesEnabled = true;
-                    Driver.Logging.VerboseEntriesEnabled = true;
-                    Driver.Logging.DebuggingEntriesEnabled = true;
-                    break;
-            }
-            
             SessionStarted = DateTime.Now;
             LastActivity = SessionStarted;
         }

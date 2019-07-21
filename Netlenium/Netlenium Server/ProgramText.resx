@@ -148,15 +148,15 @@
     <value> USAGE:
      netlenium [OPTIONS]
          Starts the Netlenium Server on the default port 6410
-
+        
+     netlenium -h, --help
+         Displays the help menu and exits
+         
      netlenium --update [OPTIONS]
-         Fetches missing Driver Resources and or updates outdated
+         Fetches missing driver resources and or updates outdated
          resources then exits
 
  OPTIONS:
-     -h, --help
-         Displays the help menu and exits
-
      --disable-stdout
          Disables standard output
             
@@ -188,8 +188,8 @@
             
      --session-inactivity-limit [Default: 10]
          The amount of minutes that a session is allowed to be
-          inactive for. Setting the value to 0 will never close
-          inactive sessions.
+         inactive for. Setting the value to 0 will never close
+         inactive sessions.
             
      --disable-chrome-driver
          Disables the ability to start Chrome Drivers

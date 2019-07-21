@@ -73,23 +73,22 @@ namespace NetleniumServer {
         ///   Looks up a localized string similar to  USAGE:
         ///     netlenium [OPTIONS]
         ///         Starts the Netlenium Server on the default port 6410
-        ///
+        ///        
+        ///     netlenium -h, --help
+        ///         Displays the help menu and exits
+        ///         
         ///     netlenium --update [OPTIONS]
-        ///         Fetches missing Driver Resources and or updates outdated
+        ///         Fetches missing driver resources and or updates outdated
         ///         resources then exits
         ///
         /// OPTIONS:
-        ///     -h, --help
-        ///         Displays the help menu and exits
-        ///
         ///     --disable-stdout
         ///         Disables standard output
         ///            
         ///     --disable-file-logging
         ///         Disables logging to files
         ///            
-        ///     --driver-logging-level [0-3]
-        ///         Logging l [rest of string was truncated]&quot;;.
+        ///     --driver-logging-leve [rest of string was truncated]&quot;;.
         /// </summary>
         public static string HelpMenu {
             get {

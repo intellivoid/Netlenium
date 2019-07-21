@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using Mono.Options;
 
@@ -17,9 +18,12 @@ namespace NetleniumServer
         /// <param name="args"></param>
         private static void Main(string[] args)
         {
+            Console.Title = ProgramText.ProgramTitle;
+
             // Parse the command-line arguments
             CommandLineParameters.Help = false;
             CommandLineParameters.UpdateDrivers = false;
+            CommandLineParameters.ClearCache = false;
             CommandLineParameters.DisabledStdout = false;
             CommandLineParameters.DisableFileLogging = false;
             CommandLineParameters.DriverLoggingLevel = 1;
@@ -42,6 +46,9 @@ namespace NetleniumServer
 
                  { "update",  "Fetches missing driver resources and or updates outdated resources then exits",
                   v => CommandLineParameters.UpdateDrivers = v != null },
+
+                 { "clear-cache",  "Clears unused cache files created by Netlenium",
+                  v => CommandLineParameters.ClearCache = v != null },
 
                 { "disable-stdout",  "Disables standard output",
                   v => CommandLineParameters.DisabledStdout = v != null },
@@ -143,11 +150,15 @@ namespace NetleniumServer
                 Environment.Exit(1);
             }
             
-
             if(CommandLineParameters.UpdateDrivers)
             {
-                Console.Title = ProgramText.ProgramTitle;
                 UpdateDrivers();
+                Environment.Exit(0);
+            }
+
+            if (CommandLineParameters.ClearCache)
+            {
+                ClearCache();
                 Environment.Exit(0);
             }
 
@@ -218,7 +229,7 @@ namespace NetleniumServer
         }
 
         /// <summary>
-        /// 
+        /// Fetches missing driver resources and or updates existing resources that are outdated
         /// </summary>
         private static void UpdateDrivers()
         {
@@ -233,6 +244,38 @@ namespace NetleniumServer
             chromeDriver.DriverManager.Initialize();
             firefoxDriver.DriverManager.Initialize();
             operaDriver.DriverManager.Initialize();
+        }
+
+        /// <summary>
+        /// Clears unused cache files created by Netlenium
+        /// </summary>
+        private static void ClearCache()
+        {
+            foreach(var file in Directory.GetFiles(Netlenium.Driver.ApplicationPaths.TemporaryDirectory))
+            {
+                try
+                {
+                    Console.WriteLine($"Deleting File '{file}'");
+                    File.Delete(file);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Cannot delete '{file}', {ex.Message}");
+                }
+            }
+
+            foreach (var directory in Directory.GetDirectories(Netlenium.Driver.ApplicationPaths.TemporaryDirectory))
+            {
+                try
+                {
+                    Console.WriteLine($"Deleting Directory '{directory}'");
+                    Directory.Delete(directory, true);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Cannot delete '{directory}', {ex.Message}");
+                }
+            }
         }
 
         /// <summary>

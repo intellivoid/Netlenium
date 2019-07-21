@@ -16,6 +16,11 @@
         public static bool UpdateDrivers { get; set; }
 
         /// <summary>
+        /// Clears unused cache files created by Netlenium
+        /// </summary>
+        public static bool ClearCache { get; set; }
+
+        /// <summary>
         /// Disables standard output
         /// </summary>
         public static bool DisabledStdout { get; set; }

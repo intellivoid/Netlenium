@@ -152,6 +152,9 @@
      netlenium -h, --help
          Displays the help menu and exits
          
+     netlenium --clear-cache
+         Clears unused cache files created by Netlenium then exits
+         
      netlenium --update [OPTIONS]
          Fetches missing driver resources and or updates outdated
          resources then exits

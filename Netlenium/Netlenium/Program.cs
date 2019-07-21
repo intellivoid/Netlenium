@@ -258,7 +258,7 @@ namespace Netlenium
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine($"Cannot delete '{file}', {ex.Message}");
+                    Console.WriteLine(ProgramText.ErrorCannotDeleteFile, file, ex.Message);
                 }
             }
 
@@ -270,7 +270,7 @@ namespace Netlenium
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Cannot delete '{directory}', {ex.Message}");
+                    Console.WriteLine(ProgramText.ErrorCannotDeleteDirectory, directory, ex.Message);
                 }
             }
         }

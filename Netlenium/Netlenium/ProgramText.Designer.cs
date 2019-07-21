@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace Netlenium {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -67,12 +70,33 @@ namespace Netlenium {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete &apos;{0}&apos;, {1}.
+        /// </summary>
+        public static string ErrorCannotDeleteDirectory {
+            get {
+                return ResourceManager.GetString("ErrorCannotDeleteDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete &apos;{0}&apos;, {1}.
+        /// </summary>
+        public static string ErrorCannotDeleteFile {
+            get {
+                return ResourceManager.GetString("ErrorCannotDeleteFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  USAGE:
         ///     netlenium [OPTIONS]
-        ///         Starts the Netlenium on the default port 6410
+        ///         Starts the Netlenium Server on the default port 6410
         ///        
         ///     netlenium -h, --help
         ///         Displays the help menu and exits
+        ///         
+        ///     netlenium --clear-cache
+        ///         Clears unused cache files created by Netlenium then exits
         ///         
         ///     netlenium --update [OPTIONS]
         ///         Fetches missing driver resources and or updates outdated
@@ -81,11 +105,7 @@ namespace Netlenium {
         /// OPTIONS:
         ///     --disable-stdout
         ///         Disables standard output
-        ///            
-        ///     --disable-file-logging
-        ///         Disables logging to files
-        ///            
-        ///     --driver-logging-leve [rest of string was truncated]&quot;;.
+        ///           [rest of string was truncated]&quot;;.
         /// </summary>
         public static string HelpMenu {
             get {
@@ -130,7 +150,7 @@ namespace Netlenium {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Netlenium.
+        ///   Looks up a localized string similar to Netlenium Server.
         /// </summary>
         public static string ProgramServerTitle {
             get {

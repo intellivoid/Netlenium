@@ -213,4 +213,10 @@
   <data name="ProgramServerEndpointTitle" xml:space="preserve">
     <value>{0} - {1}</value>
   </data>
+  <data name="ErrorCannotDeleteFile" xml:space="preserve">
+    <value>Cannot delete '{0}', {1}</value>
+  </data>
+  <data name="ErrorCannotDeleteDirectory" xml:space="preserve">
+    <value>Cannot delete '{0}', {1}</value>
+  </data>
 </root>

@@ -67,9 +67,9 @@ namespace Netlenium.Handlers
             {
                 var currentWindowObject = new CurrentWindow
                 {
-                    Id = SessionManager.activeSessions[sessionId].Driver.Actions.CurrentWindow.ID,
-                    Title = SessionManager.activeSessions[sessionId].Driver.Document.Title,
-                    Url = SessionManager.activeSessions[sessionId].Driver.Document.Uri
+                    Id = SessionManager.ActiveSessions[sessionId].Driver.Actions.CurrentWindow.ID,
+                    Title = SessionManager.ActiveSessions[sessionId].Driver.Document.Title,
+                    Url = SessionManager.ActiveSessions[sessionId].Driver.Document.Uri
                 };
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new CurrentWindowResponse(currentWindowObject));
             }
@@ -95,7 +95,7 @@ namespace Netlenium.Handlers
             try
             {
                 var windowHandlesList = new List<string>();
-                foreach(var windowHandler in SessionManager.activeSessions[sessionId].Driver.Actions.GetWindows())
+                foreach(var windowHandler in SessionManager.ActiveSessions[sessionId].Driver.Actions.GetWindows())
                 {
                     windowHandlesList.Add(windowHandler.ID);
                 }
@@ -129,7 +129,7 @@ namespace Netlenium.Handlers
 
             try
             {
-                var windowHandle = SessionManager.activeSessions[sessionId].Driver.Actions.GetWindow(windowId);
+                var windowHandle = SessionManager.ActiveSessions[sessionId].Driver.Actions.GetWindow(windowId);
                 windowHandle.SwitchTo();
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }

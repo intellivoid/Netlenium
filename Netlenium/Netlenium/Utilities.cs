@@ -1,6 +1,7 @@
 ﻿using System;
 using Netlenium.Driver;
 using Netlenium.Intellivoid;
+using Netlenium.Responses;
 
 namespace Netlenium
 {
@@ -55,29 +56,29 @@ namespace Netlenium
 
             if (searchBy == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("by"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("by"), 400);
                 return null;
             }
 
             if (searchValue == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("value"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("value"), 400);
                 return null;
             }
 
             if (indexValue == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.MissingParameterResponse("index"), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("index"), 400);
                 return null;
             }
 
             try
             {
-                var elements = SessionManager.activeSessions[sessionId].Driver.Document.GetElements(ParseSearchBy(searchBy), searchValue);
+                var elements = SessionManager.ActiveSessions[sessionId].Driver.Document.GetElements(ParseSearchBy(searchBy), searchValue);
 
                 if (elements.Count == 0)
                 {
-                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.ElementNotFoundResponse(), 404);
+                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new ElementNotFoundResponse(), 404);
                     return null;
                 }
 
@@ -86,18 +87,18 @@ namespace Netlenium
                     return elements[Convert.ToInt32(indexValue)];
                 }
 
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.ElementNotFoundResponse(), 404);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new ElementNotFoundResponse(), 404);
 
                 return null;
             }
             catch (InvalidSearchByValueException)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.InvalidSearchByValueResponse(), 400);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new InvalidSearchByValueResponse(), 400);
                 return null;
             }
             catch (Exception exception)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new Responses.UnexpectedErrorResponse(exception.Message), 500);
+                WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnexpectedErrorResponse(exception.Message), 500);
                 return null;
             }
 
@@ -109,7 +110,7 @@ namespace Netlenium
         /// <param name="driver"></param>
         public static void ApplyOptionsToDriver(IDriver driver)
         {
-            if (CommandLineParameters.DisabledStdout == true)
+            if (CommandLineParameters.DisabledStdout)
             {
                 driver.Logging.CommandLineLoggingEnabled = false;
             }
@@ -118,7 +119,7 @@ namespace Netlenium
                 driver.Logging.CommandLineLoggingEnabled = true;
             }
 
-            if (CommandLineParameters.DisableFileLogging == true)
+            if (CommandLineParameters.DisableFileLogging)
             {
                 driver.Logging.FileLoggingEnabled = false;
             }

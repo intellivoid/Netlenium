@@ -5,7 +5,7 @@ namespace Netlenium.Intellivoid
 {
     public class HttpFileCollection : NameObjectCollectionBase
     {
-        private string[] _allKeys;
+        private string[] allKeys;
 
         internal HttpFileCollection()
             : base(StringComparer.OrdinalIgnoreCase)
@@ -17,10 +17,7 @@ namespace Netlenium.Intellivoid
             return (HttpPostedFile)BaseGet(name);
         }
 
-        public HttpPostedFile this[string name]
-        {
-            get { return Get(name); }
-        }
+        public HttpPostedFile this[string name] => Get(name);
 
         public HttpPostedFile Get(int index)
         {
@@ -32,19 +29,16 @@ namespace Netlenium.Intellivoid
             return BaseGetKey(index);
         }
 
-        public HttpPostedFile this[int index]
-        {
-            get { return Get(index); }
-        }
+        public HttpPostedFile this[int index] => Get(index);
 
         public string[] AllKeys
         {
             get
             {
-                if (_allKeys == null)
-                    _allKeys = BaseGetAllKeys();
+                if (allKeys == null)
+                    allKeys = BaseGetAllKeys();
 
-                return _allKeys;
+                return allKeys;
             }
         }
 

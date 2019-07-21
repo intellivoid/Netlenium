@@ -176,7 +176,7 @@ namespace Netlenium
                 return false;
             }
 
-            SessionManager.activeSessions[sessionId].LastActivity = DateTime.Now;
+            SessionManager.ActiveSessions[sessionId].LastActivity = DateTime.Now;
 
             // TODO: Check if the driver is still running on the session
 

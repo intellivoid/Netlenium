@@ -59,9 +59,9 @@ namespace Netlenium.Handlers
                 return;
             }
 
-            if (SessionManager.activeSessions != null)
+            if (SessionManager.ActiveSessions != null)
             {
-                if (SessionManager.activeSessions.Count == CommandLineParameters.MaxSessions)
+                if (SessionManager.ActiveSessions.Count == CommandLineParameters.MaxSessions)
                 {
                     WebService.Logging.WriteEntry(MessageType.Error, "SessionManager", $"Cannot create session for '{targetBrowser}', {CommandLineParameters.MaxSessions} Session(s) are allowed at the same time");
                     WebService.SendJsonResponse(httpRequestEventArgs.Response, new MaxSessionsErrorResponse(), 403);
@@ -111,7 +111,7 @@ namespace Netlenium.Handlers
                     return;
             }
 
-            WebService.SendJsonResponse(httpRequestEventArgs.Response, new SessionCreatedResponse(sessionObject.ID));
+            WebService.SendJsonResponse(httpRequestEventArgs.Response, new SessionCreatedResponse(sessionObject.Id));
         }
 
         /// <summary>

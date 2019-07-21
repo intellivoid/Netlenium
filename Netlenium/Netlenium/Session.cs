@@ -29,7 +29,7 @@ namespace Netlenium
         /// <summary>
         /// The session ID
         /// </summary>
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// The timestamp that this session has started
@@ -49,15 +49,15 @@ namespace Netlenium
             switch(targetBrowser)
             {
                 case Browser.Chrome:
-                    driver = new Netlenium.Driver.Chrome.Driver();
+                    driver = new Driver.Chrome.Driver();
                     break;
 
                 case Browser.Firefox:
-                    driver = new Netlenium.Driver.Firefox.Driver();
+                    driver = new Driver.Firefox.Driver();
                     break;
                 
                 case Browser.Opera:
-                    driver = new Netlenium.Driver.Opera.Driver();
+                    driver = new Driver.Opera.Driver();
                     break;
             }
 

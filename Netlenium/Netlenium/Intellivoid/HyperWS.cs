@@ -1,6 +1,6 @@
 ﻿namespace Netlenium.Intellivoid
 {
-    class HyperWS
+    class HyperWs
     {
     }
 }

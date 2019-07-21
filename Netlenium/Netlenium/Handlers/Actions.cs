@@ -78,7 +78,7 @@ namespace Netlenium.Handlers
             try
             {
                 var webServiceResponse = new ElementsResultsResponse();
-                foreach (var webElement in SessionManager.activeSessions[sessionId].Driver.Document.GetElements(Utilities.ParseSearchBy(searchBy), searchValue))
+                foreach (var webElement in SessionManager.ActiveSessions[sessionId].Driver.Document.GetElements(Utilities.ParseSearchBy(searchBy), searchValue))
                 {
                     webServiceResponse.Elements.Add(new Objects.WebElement(webElement));
                 }
@@ -116,7 +116,7 @@ namespace Netlenium.Handlers
 
             try
             {
-                var output = SessionManager.activeSessions[sessionId].Driver.Actions.ExecuteJavascript(code);
+                var output = SessionManager.ActiveSessions[sessionId].Driver.Actions.ExecuteJavascript(code);
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new JavascriptExecutionResponse(output));
             }
             catch (JavascriptExecutionException jsException)

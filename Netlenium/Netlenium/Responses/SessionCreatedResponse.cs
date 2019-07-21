@@ -17,10 +17,10 @@ namespace Netlenium.Responses
         {
             Status = true;
             ResponseCode = 200;
-            SessionID = sessionId;
+            SessionId = sessionId;
         }
 
-        public string SessionID { get; set; }
+        public string SessionId { get; set; }
         
         public bool Status { get; set; }
 

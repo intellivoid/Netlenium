@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
+using Netlenium.Logging;
 
 namespace Netlenium.Intellivoid
 {
@@ -91,7 +92,7 @@ namespace Netlenium.Intellivoid
 
             if (client.Headers.TryGetValue("Accept", out header))
             {
-                string[] parts = header.Split(',');
+                var parts = header.Split(',');
 
                 HttpUtil.TrimAll(parts);
 
@@ -106,13 +107,13 @@ namespace Netlenium.Intellivoid
 
             if (client.Headers.TryGetValue("Content-Type", out header))
             {
-                string[] parts = header.Split(new[] { ';' }, 2);
+                var parts = header.Split(new[] { ';' }, 2);
 
                 ContentType = parts[0].Trim();
 
                 if (parts.Length == 2)
                 {
-                    string[] encoding = parts[1].Trim().Split(new[] { '=' }, 2);
+                    var encoding = parts[1].Trim().Split(new[] { '=' }, 2);
 
                     if (encoding.Length == 2 && String.Equals(encoding[0], "charset", StringComparison.OrdinalIgnoreCase))
                     {
@@ -145,7 +146,7 @@ namespace Netlenium.Intellivoid
 
             if (client.Headers.TryGetValue("Accept-Language", out header))
             {
-                string[] parts = header.Split(',');
+                var parts = header.Split(',');
 
                 HttpUtil.TrimAll(parts);
 
@@ -162,14 +163,14 @@ namespace Netlenium.Intellivoid
 
             if (client.Headers.TryGetValue("Cookie", out header))
             {
-                string[] parts = header.Split(';');
+                var parts = header.Split(';');
 
-                foreach (string part in parts)
+                foreach (var part in parts)
                 {
-                    string[] partParts = part.Split(new[] { '=' }, 2);
+                    var partParts = part.Split(new[] { '=' }, 2);
 
-                    string name = partParts[0].Trim();
-                    string value = partParts.Length == 1 ? null : partParts[1];
+                    var name = partParts[0].Trim();
+                    var value = partParts.Length == 1 ? null : partParts[1];
 
                     Cookies.AddCookie(new HttpCookie(name, value), true);
                 }
@@ -193,11 +194,11 @@ namespace Netlenium.Intellivoid
 
                 if (item.Headers.TryGetValue("Content-Disposition", out header))
                 {
-                    string[] parts = header.Split(';');
+                    var parts = header.Split(';');
 
-                    for (int i = 0; i < parts.Length; i++)
+                    for (var i = 0; i < parts.Length; i++)
                     {
-                        string part = parts[i].Trim();
+                        var part = parts[i].Trim();
 
                         if (part.StartsWith("name="))
                             name = ParseContentDispositionItem(part.Substring(5));
@@ -211,7 +212,7 @@ namespace Netlenium.Intellivoid
 
                 if (name == null)
                 {
-                    WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", "Received multipart item without name");
+                    WebService.Logging.WriteEntry(MessageType.Information, "HyperWS", "Received multipart item without name");
                     continue;
                 }
 
@@ -241,7 +242,7 @@ namespace Netlenium.Intellivoid
         {
             RawUrl = client.Request;
 
-            string[] parts = client.Request.Split(new[] { '?' }, 2);
+            var parts = client.Request.Split(new[] { '?' }, 2);
 
             Path = parts[0];
 
@@ -312,7 +313,7 @@ namespace Netlenium.Intellivoid
             {
                 ServerVariables[item.Key] = item.Value;
 
-                string httpKey = "HTTP_" + (item.Key.Replace('-', '_')).ToUpperInvariant();
+                var httpKey = "HTTP_" + (item.Key.Replace('-', '_')).ToUpperInvariant();
 
                 ServerVariables[httpKey] = item.Value;
 
@@ -336,7 +337,7 @@ namespace Netlenium.Intellivoid
             ServerVariables["LOCAL_ADDR"] = client.Server.EndPoint.Address.ToString();
             ServerVariables["PATH_INFO"] = Path;
 
-            string[] parts = client.Request.Split(new[] { '?' }, 2);
+            var parts = client.Request.Split(new[] { '?' }, 2);
 
             ServerVariables["QUERY_STRING"] = parts.Length == 2 ? parts[1] : "";
             ServerVariables["REMOTE_ADDR"] = UserHostAddress;
@@ -361,7 +362,7 @@ namespace Netlenium.Intellivoid
 
         private void Merge(NameValueCollection target, NameValueCollection source)
         {
-            foreach (string key in source.AllKeys)
+            foreach (var key in source.AllKeys)
             {
                 target[key] = source[key];
             }

@@ -11,15 +11,15 @@ namespace Netlenium.Intellivoid
         private static readonly byte[] MoreBoundary = Encoding.ASCII.GetBytes("\r\n");
         private static readonly byte[] EndBoundary = Encoding.ASCII.GetBytes("--");
 
-        private Dictionary<string, string> _headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        private ParserState _state = ParserState.BeforeFirstHeaders;
-        private readonly byte[] _firstBoundary;
-        private readonly byte[] _separatorBoundary;
-        private bool _readingFile;
-        private MemoryStream _fieldStream;
-        private Stream _fileStream;
-        private string _fileName;
-        private bool _disposed;
+        private Dictionary<string, string> headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        private ParserState state = ParserState.BeforeFirstHeaders;
+        private readonly byte[] firstBoundary;
+        private readonly byte[] separatorBoundary;
+        private bool readingFile;
+        private MemoryStream fieldStream;
+        private Stream fileStream;
+        private string fileName;
+        private bool disposed;
 
         public HttpMultiPartRequestParser(HttpClient client, int contentLength, string boundary)
             : base(client, contentLength)
@@ -27,15 +27,15 @@ namespace Netlenium.Intellivoid
             if (boundary == null)
                 throw new ArgumentNullException("boundary");
 
-            _firstBoundary = Encoding.ASCII.GetBytes("--" + boundary + "\r\n");
-            _separatorBoundary = Encoding.ASCII.GetBytes("\r\n--" + boundary);
+            firstBoundary = Encoding.ASCII.GetBytes("--" + boundary + "\r\n");
+            separatorBoundary = Encoding.ASCII.GetBytes("\r\n--" + boundary);
 
             Client.MultiPartItems = new List<HttpMultiPartItem>();
         }
 
         public override void Parse()
         {
-            switch (_state)
+            switch (state)
             {
                 case ParserState.BeforeFirstHeaders:
                     ParseFirstHeader();
@@ -57,14 +57,14 @@ namespace Netlenium.Intellivoid
 
         private void ParseFirstHeader()
         {
-            bool? atBoundary = Client.ReadBuffer.AtBoundary(_firstBoundary, ContentLength);
+            var atBoundary = Client.ReadBuffer.AtBoundary(firstBoundary, ContentLength);
 
             if (atBoundary.HasValue)
             {
                 if (!atBoundary.Value)
                     throw new ProtocolException("Expected multipart content to start with the boundary");
 
-                _state = ParserState.ReadingHeaders;
+                state = ParserState.ReadingHeaders;
 
                 ParseHeaders();
             }
@@ -84,20 +84,20 @@ namespace Netlenium.Intellivoid
 
                     string contentDispositionHeader;
 
-                    if (!_headers.TryGetValue("Content-Disposition", out contentDispositionHeader))
+                    if (!headers.TryGetValue("Content-Disposition", out contentDispositionHeader))
                         throw new ProtocolException("Expected Content-Disposition header with multipart");
 
                     parts = contentDispositionHeader.Split(';');
 
-                    _readingFile = false;
+                    readingFile = false;
 
-                    for (int i = 0; i < parts.Length; i++)
+                    for (var i = 0; i < parts.Length; i++)
                     {
-                        string part = parts[i].Trim();
+                        var part = parts[i].Trim();
 
                         if (part.StartsWith("filename=", StringComparison.OrdinalIgnoreCase))
                         {
-                            _readingFile = true;
+                            readingFile = true;
                             break;
                         }
                     }
@@ -105,25 +105,25 @@ namespace Netlenium.Intellivoid
                     // Prepare our state for whether we're reading a file
                     // or a field.
 
-                    if (_readingFile)
+                    if (readingFile)
                     {
-                        _fileName = Path.GetTempFileName();
-                        _fileStream = File.Create(_fileName, 4096, FileOptions.DeleteOnClose);
+                        fileName = Path.GetTempFileName();
+                        fileStream = File.Create(fileName, 4096, FileOptions.DeleteOnClose);
                     }
                     else
                     {
-                        if (_fieldStream == null)
+                        if (fieldStream == null)
                         {
-                            _fieldStream = new MemoryStream();
+                            fieldStream = new MemoryStream();
                         }
                         else
                         {
-                            _fieldStream.Position = 0;
-                            _fieldStream.SetLength(0);
+                            fieldStream.Position = 0;
+                            fieldStream.SetLength(0);
                         }
                     }
 
-                    _state = ParserState.ReadingContent;
+                    state = ParserState.ReadingContent;
 
                     ParseContent();
                     return;
@@ -134,16 +134,16 @@ namespace Netlenium.Intellivoid
                 if (parts.Length != 2)
                     throw new ProtocolException("Received header without colon");
 
-                _headers[parts[0].Trim()] = parts[1].Trim();
+                headers[parts[0].Trim()] = parts[1].Trim();
             }
         }
 
         private void ParseContent()
         {
-            bool result = Client.ReadBuffer.CopyToStream(
-                _readingFile ? _fileStream : _fieldStream,
+            var result = Client.ReadBuffer.CopyToStream(
+                readingFile ? fileStream : fieldStream,
                 ContentLength,
-                _separatorBoundary
+                separatorBoundary
             );
 
             if (result)
@@ -151,23 +151,23 @@ namespace Netlenium.Intellivoid
                 string value = null;
                 Stream stream = null;
 
-                if (!_readingFile)
+                if (!readingFile)
                 {
-                    value = Encoding.ASCII.GetString(_fieldStream.ToArray());
+                    value = Encoding.ASCII.GetString(fieldStream.ToArray());
                 }
                 else
                 {
-                    stream = _fileStream;
-                    _fileStream = null;
+                    stream = fileStream;
+                    fileStream = null;
 
                     stream.Position = 0;
                 }
 
-                Client.MultiPartItems.Add(new HttpMultiPartItem(_headers, value, stream));
+                Client.MultiPartItems.Add(new HttpMultiPartItem(headers, value, stream));
 
-                _headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-                _state = ParserState.ReadingBoundary;
+                state = ParserState.ReadingBoundary;
 
                 ParseBoundary();
             }
@@ -175,19 +175,19 @@ namespace Netlenium.Intellivoid
 
         private void ParseBoundary()
         {
-            bool? atMore = Client.ReadBuffer.AtBoundary(MoreBoundary, ContentLength);
+            var atMore = Client.ReadBuffer.AtBoundary(MoreBoundary, ContentLength);
 
             if (atMore.HasValue)
             {
                 if (atMore.Value)
                 {
-                    _state = ParserState.ReadingHeaders;
+                    state = ParserState.ReadingHeaders;
 
                     ParseHeaders();
                 }
                 else
                 {
-                    bool? atEnd = Client.ReadBuffer.AtBoundary(EndBoundary, ContentLength);
+                    var atEnd = Client.ReadBuffer.AtBoundary(EndBoundary, ContentLength);
 
                     // The more and end boundaries have the same length.
 
@@ -203,21 +203,21 @@ namespace Netlenium.Intellivoid
 
         protected override void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!disposed)
             {
-                if (_fieldStream != null)
+                if (fieldStream != null)
                 {
-                    _fieldStream.Dispose();
-                    _fieldStream = null;
+                    fieldStream.Dispose();
+                    fieldStream = null;
                 }
 
-                if (_fileStream != null)
+                if (fileStream != null)
                 {
-                    _fileStream.Dispose();
-                    _fileStream = null;
+                    fileStream.Dispose();
+                    fileStream = null;
                 }
 
-                _disposed = true;
+                disposed = true;
             }
 
             base.Dispose(disposing);

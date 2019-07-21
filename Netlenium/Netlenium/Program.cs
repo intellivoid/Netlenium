@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Mono.Options;
+using Netlenium.Logging;
+using ApplicationPaths = Netlenium.Driver.ApplicationPaths;
 
 namespace Netlenium
 {
@@ -83,7 +85,7 @@ namespace Netlenium
                   v => CommandLineParameters.DisableOperaDriver = v != null },
 
                 { "auth-password=", "Authentication Password for Web Service access",
-                  v => { if (v != null) CommandLineParameters.AuthPassword = v; } },
+                  v => { if (v != null) CommandLineParameters.AuthPassword = v; } }
 
             };
             p.Parse(args);
@@ -232,9 +234,9 @@ namespace Netlenium
         /// </summary>
         private static void UpdateDrivers()
         {
-            var chromeDriver = new Netlenium.Driver.Chrome.Driver();
-            var firefoxDriver = new Netlenium.Driver.Firefox.Driver();
-            var operaDriver = new Netlenium.Driver.Opera.Driver();
+            var chromeDriver = new Driver.Chrome.Driver();
+            var firefoxDriver = new Driver.Firefox.Driver();
+            var operaDriver = new Driver.Opera.Driver();
 
             Utilities.ApplyOptionsToDriver(chromeDriver);
             Utilities.ApplyOptionsToDriver(firefoxDriver);
@@ -250,7 +252,7 @@ namespace Netlenium
         /// </summary>
         private static void ClearCache()
         {
-            foreach(var file in Directory.GetFiles(Driver.ApplicationPaths.TemporaryDirectory))
+            foreach(var file in Directory.GetFiles(ApplicationPaths.TemporaryDirectory))
             {
                 try
                 {
@@ -262,7 +264,7 @@ namespace Netlenium
                 }
             }
 
-            foreach (var directory in Directory.GetDirectories(Driver.ApplicationPaths.TemporaryDirectory))
+            foreach (var directory in Directory.GetDirectories(ApplicationPaths.TemporaryDirectory))
             {
                 try
                 {
@@ -299,17 +301,17 @@ namespace Netlenium
         /// </summary>
         private static void GracefullyShutdown()
         {
-            WebService.Logging.WriteEntry(Logging.MessageType.Information, "Application", "Shutting down server");
+            WebService.Logging.WriteEntry(MessageType.Information, "Application", "Shutting down server");
             WebService.Stop();
 
-            if (SessionManager.activeSessions != null)
+            if (SessionManager.ActiveSessions != null)
             {
-                WebService.Logging.WriteEntry(Logging.MessageType.Information, "Application", "Closing active sessions");
+                WebService.Logging.WriteEntry(MessageType.Information, "Application", "Closing active sessions");
                 
                 while(true)
                 {
                     var currentActiveSessions = new List<string>();
-                    foreach (var session in SessionManager.activeSessions.Keys)
+                    foreach (var session in SessionManager.ActiveSessions.Keys)
                     {
                         currentActiveSessions.Add(session);
                     }
@@ -324,7 +326,7 @@ namespace Netlenium
                             }
                             catch (Exception ex)
                             {
-                                WebService.Logging.WriteEntry(Logging.MessageType.Warning, "Application", $"Cannot close session '{session}', {ex.Message}");
+                                WebService.Logging.WriteEntry(MessageType.Warning, "Application", $"Cannot close session '{session}', {ex.Message}");
                             }
                         }
 
@@ -332,14 +334,14 @@ namespace Netlenium
                     }
                     catch(Exception)
                     {
-                        WebService.Logging.WriteEntry(Logging.MessageType.Error, "Application", "SessionManager is busy, trying again in 2 seconds");
+                        WebService.Logging.WriteEntry(MessageType.Error, "Application", "SessionManager is busy, trying again in 2 seconds");
                         Thread.Sleep(2000);
                     }
                 }
                 
             }
 
-            WebService.Logging.WriteEntry(Logging.MessageType.Information, "Application", "Closing process");
+            WebService.Logging.WriteEntry(MessageType.Information, "Application", "Closing process");
             Environment.Exit(0);
         }
     }

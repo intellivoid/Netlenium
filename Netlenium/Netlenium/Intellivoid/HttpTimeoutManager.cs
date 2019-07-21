@@ -7,8 +7,8 @@ namespace Netlenium.Intellivoid
 {
     internal class HttpTimeoutManager : IDisposable
     {
-        private Thread _thread;
-        private ManualResetEvent _closeEvent = new ManualResetEvent(false);
+        private Thread thread;
+        private ManualResetEvent closeEvent = new ManualResetEvent(false);
 
         public TimeoutQueue ReadQueue { get; private set; }
         public TimeoutQueue WriteQueue { get; private set; }
@@ -21,13 +21,13 @@ namespace Netlenium.Intellivoid
             ReadQueue = new TimeoutQueue(server.ReadTimeout);
             WriteQueue = new TimeoutQueue(server.WriteTimeout);
 
-            _thread = new Thread(ThreadProc);
-            _thread.Start();
+            thread = new Thread(ThreadProc);
+            thread.Start();
         }
 
         private void ThreadProc()
         {
-            while (!_closeEvent.WaitOne(TimeSpan.FromSeconds(1)))
+            while (!closeEvent.WaitOne(TimeSpan.FromSeconds(1)))
             {
                 ProcessQueue(ReadQueue);
                 ProcessQueue(WriteQueue);
@@ -58,29 +58,29 @@ namespace Netlenium.Intellivoid
 
         public void Dispose()
         {
-            if (_thread != null)
+            if (thread != null)
             {
-                _closeEvent.Set();
-                _thread.Join();
-                _thread = null;
+                closeEvent.Set();
+                thread.Join();
+                thread = null;
             }
-            if (_closeEvent != null)
+            if (closeEvent != null)
             {
-                _closeEvent.Close();
-                _closeEvent = null;
+                closeEvent.Close();
+                closeEvent = null;
             }
         }
 
         public class TimeoutQueue
         {
-            private readonly object _syncRoot = new object();
-            private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
-            private readonly long _timeout;
-            private readonly Queue<TimeoutItem> _items = new Queue<TimeoutItem>();
+            private readonly object syncRoot = new object();
+            private readonly Stopwatch stopwatch = Stopwatch.StartNew();
+            private readonly long timeout;
+            private readonly Queue<TimeoutItem> items = new Queue<TimeoutItem>();
 
             public TimeoutQueue(TimeSpan timeout)
             {
-                _timeout = (long)(timeout.TotalSeconds * Stopwatch.Frequency);
+                this.timeout = (long)(timeout.TotalSeconds * Stopwatch.Frequency);
             }
 
             public void Add(IAsyncResult asyncResult, IDisposable disposable)
@@ -90,22 +90,22 @@ namespace Netlenium.Intellivoid
                 if (disposable == null)
                     throw new ArgumentNullException(nameof(disposable));
 
-                lock (_syncRoot)
+                lock (syncRoot)
                 {
-                    _items.Enqueue(new TimeoutItem(_stopwatch.ElapsedTicks + _timeout, asyncResult, disposable));
+                    items.Enqueue(new TimeoutItem(stopwatch.ElapsedTicks + timeout, asyncResult, disposable));
                 }
             }
 
             public TimeoutItem DequeueExpired()
             {
-                lock (_syncRoot)
+                lock (syncRoot)
                 {
-                    if (_items.Count == 0)
+                    if (items.Count == 0)
                         return null;
 
-                    var item = _items.Peek();
-                    if (item.Expires < _stopwatch.ElapsedTicks)
-                        return _items.Dequeue();
+                    var item = items.Peek();
+                    if (item.Expires < stopwatch.ElapsedTicks)
+                        return items.Dequeue();
 
                     return null;
                 }
@@ -120,11 +120,8 @@ namespace Netlenium.Intellivoid
 
             public TimeoutItem(long expires, IAsyncResult asyncResult, IDisposable disposable)
             {
-                if (asyncResult == null)
-                    throw new ArgumentNullException(nameof(asyncResult));
-
                 Expires = expires;
-                AsyncResult = asyncResult;
+                AsyncResult = asyncResult ?? throw new ArgumentNullException(nameof(asyncResult));
                 Disposable = disposable;
             }
         }

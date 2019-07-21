@@ -50,10 +50,7 @@ namespace Netlenium.Intellivoid
 
         public DateTime Expires { get; set; }
 
-        public bool HasKeys
-        {
-            get { return !(Values.Keys.Count == 1 && Values.Keys[0] == null); }
-        }
+        public bool HasKeys => !(Values.Keys.Count == 1 && Values.Keys[0] == null);
 
         public bool HttpOnly { get; set; }
 
@@ -65,7 +62,7 @@ namespace Netlenium.Intellivoid
 
         public string Value
         {
-            get { return SerializeValues(); }
+            get => SerializeValues();
             set
             {
                 Values.Clear();
@@ -80,32 +77,31 @@ namespace Netlenium.Intellivoid
             {
                 return String.Empty;
             }
-            else if (!HasKeys)
+
+            if (!HasKeys)
             {
                 return Values[0];
             }
-            else
+
+            var sb = new StringBuilder();
+
+            for (var i = 0; i < Values.Keys.Count; i++)
             {
-                var sb = new StringBuilder();
+                if (i > 0)
+                    sb.Append('&');
 
-                for (int i = 0; i < Values.Keys.Count; i++)
+                sb.Append(Values.Keys[i]);
+
+                var value = Values[i];
+
+                if (value != null)
                 {
-                    if (i > 0)
-                        sb.Append('&');
-
-                    sb.Append(Values.Keys[i]);
-
-                    string value = Values[i];
-
-                    if (value != null)
-                    {
-                        sb.Append('=');
-                        sb.Append(value);
-                    }
+                    sb.Append('=');
+                    sb.Append(value);
                 }
-
-                return sb.ToString();
             }
+
+            return sb.ToString();
         }
 
         public NameValueCollection Values { get; private set; }

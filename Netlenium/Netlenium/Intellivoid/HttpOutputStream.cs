@@ -21,11 +21,7 @@ namespace Netlenium.Intellivoid
         /// <exception cref="ArgumentNullException">stream is null</exception>
         public HttpOutputStream(MemoryStream stream)
         {
-            if (stream == null)
-            {
-                throw new ArgumentNullException("stream");
-            }
-            this.stream = stream;
+            this.stream = stream ?? throw new ArgumentNullException("stream");
         }
 
         MemoryStream stream;
@@ -33,10 +29,7 @@ namespace Netlenium.Intellivoid
         /// <summary>
         /// Stream wrapped by this wrapper
         /// </summary>
-        internal MemoryStream BaseStream
-        {
-            get { return stream; }
-        }
+        internal MemoryStream BaseStream => stream;
 
         /// <summary>
         /// Whether this stream has been closed or not
@@ -109,26 +102,17 @@ namespace Netlenium.Intellivoid
         /// <summary>
         /// Indicates whether or not the underlying stream can be read from.
         /// </summary>
-        public override bool CanRead
-        {
-            get { return closed ? false : stream.CanRead; }
-        }
+        public override bool CanRead => closed ? false : stream.CanRead;
 
         /// <summary>
         /// Indicates whether or not the underlying stream supports seeking.
         /// </summary>
-        public override bool CanSeek
-        {
-            get { return closed ? false : stream.CanSeek; }
-        }
+        public override bool CanSeek => closed ? false : stream.CanSeek;
 
         /// <summary>
         /// Indicates whether or not the underlying stream can be written to.
         /// </summary>
-        public override bool CanWrite
-        {
-            get { return closed ? false : stream.CanWrite; }
-        }
+        public override bool CanWrite => closed ? false : stream.CanWrite;
 
         /// <summary>
         /// This method is not proxied to the underlying stream; instead, the wrapper

@@ -73,7 +73,7 @@ namespace Netlenium.Handlers
 
             try
             {
-                SessionManager.activeSessions[sessionId].Driver.Actions.LoadURI(url);
+                SessionManager.ActiveSessions[sessionId].Driver.Actions.LoadURI(url);
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
@@ -97,7 +97,7 @@ namespace Netlenium.Handlers
 
             try
             {
-                SessionManager.activeSessions[sessionId].Driver.Actions.GoBack();
+                SessionManager.ActiveSessions[sessionId].Driver.Actions.GoBack();
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
@@ -121,7 +121,7 @@ namespace Netlenium.Handlers
 
             try
             {
-                SessionManager.activeSessions[sessionId].Driver.Actions.GoForward();
+                SessionManager.ActiveSessions[sessionId].Driver.Actions.GoForward();
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)
@@ -145,7 +145,7 @@ namespace Netlenium.Handlers
 
             try
             {
-                SessionManager.activeSessions[sessionId].Driver.Actions.Reload();
+                SessionManager.ActiveSessions[sessionId].Driver.Actions.Reload();
                 WebService.SendJsonResponse(httpRequestEventArgs.Response, new RequestSuccessResponse());
             }
             catch (Exception exception)

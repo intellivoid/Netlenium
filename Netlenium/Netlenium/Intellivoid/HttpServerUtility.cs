@@ -9,10 +9,7 @@ namespace Netlenium.Intellivoid
         {
         }
 
-        public string MachineName
-        {
-            get { return Environment.MachineName; }
-        }
+        public string MachineName => Environment.MachineName;
 
         public string HtmlEncode(string value)
         {

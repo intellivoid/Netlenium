@@ -8,12 +8,12 @@ namespace Netlenium.Intellivoid
 {
     internal static class HttpUtil
     {
-        private static readonly int _longestHtmlEntity;
-        private static readonly Dictionary<int, string> _htmlEntitiesByNumber = new Dictionary<int, string>();
+        private static readonly int LongestHtmlEntity;
+        private static readonly Dictionary<int, string> HtmlEntitiesByNumber = new Dictionary<int, string>();
 
         // HTML entities taken from http://www.w3.org/TR/html4/sgml/entities.html.
 
-        private static readonly Dictionary<string, int> _htmlEntitiesByEntity = new Dictionary<string, int>
+        private static readonly Dictionary<string, int> HtmlEntitiesByEntity = new Dictionary<string, int>
         {
             { "Aacute", 193 }, { "aacute", 225 }, { "Acirc", 194 }, { "acirc", 226 }, { "acute", 180 }, { "AElig", 198 },
             { "aelig", 230 }, { "Agrave", 192 }, { "agrave", 224 }, { "alefsym", 8501 }, { "Alpha", 913 }, { "alpha", 945 },
@@ -61,12 +61,12 @@ namespace Netlenium.Intellivoid
 
         static HttpUtil()
         {
-            _longestHtmlEntity = 0;
+            LongestHtmlEntity = 0;
 
-            foreach (var item in _htmlEntitiesByEntity)
+            foreach (var item in HtmlEntitiesByEntity)
             {
-                _longestHtmlEntity = Math.Max(_longestHtmlEntity, item.Key.Length);
-                _htmlEntitiesByNumber.Add(item.Value, item.Key);
+                LongestHtmlEntity = Math.Max(LongestHtmlEntity, item.Key.Length);
+                HtmlEntitiesByNumber.Add(item.Value, item.Key);
             }
         }
 
@@ -82,14 +82,14 @@ namespace Netlenium.Intellivoid
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            string[] parts = content.Split('&');
+            var parts = content.Split('&');
 
-            foreach (string part in parts)
+            foreach (var part in parts)
             {
-                string[] item = part.Split(new[] { '=' }, 2);
+                var item = part.Split(new[] { '=' }, 2);
 
-                string key = UriDecode(item[0], encoding);
-                string value = item.Length == 1 ? "" : UriDecode(item[1], encoding);
+                var key = UriDecode(item[0], encoding);
+                var value = item.Length == 1 ? "" : UriDecode(item[1], encoding);
 
                 target.Add(key, value);
             }
@@ -107,10 +107,10 @@ namespace Netlenium.Intellivoid
             if (encoding == null)
                 throw new ArgumentNullException("encoding");
 
-            byte[] result = new byte[value.Length];
-            int length = 0;
+            var result = new byte[value.Length];
+            var length = 0;
 
-            for (int i = 0; i < value.Length; i++)
+            for (var i = 0; i < value.Length; i++)
             {
                 if (
                     value[i] == '%' &&
@@ -212,7 +212,7 @@ namespace Netlenium.Intellivoid
 
         public static void TrimAll(string[] parts)
         {
-            for (int i = 0; i < parts.Length; i++)
+            for (var i = 0; i < parts.Length; i++)
             {
                 parts[i] = parts[i].Trim();
             }
@@ -225,11 +225,11 @@ namespace Netlenium.Intellivoid
 
             var sb = new StringBuilder();
 
-            foreach (char c in value)
+            foreach (var c in value)
             {
                 string entity;
 
-                if (_htmlEntitiesByNumber.TryGetValue(c, out entity))
+                if (HtmlEntitiesByNumber.TryGetValue(c, out entity))
                 {
                     sb.Append("&");
                     sb.Append(entity);
@@ -257,16 +257,16 @@ namespace Netlenium.Intellivoid
 
             var sb = new StringBuilder();
 
-            for (int i = 0; i < value.Length; i++)
+            for (var i = 0; i < value.Length; i++)
             {
                 if (value[i] == '&' && value.Length > i + 2)
                 {
                     // Scan for the ;.
 
-                    int maxSearch = Math.Min(value.Length, i + _longestHtmlEntity + 2);
-                    int endPosition = -1;
+                    var maxSearch = Math.Min(value.Length, i + LongestHtmlEntity + 2);
+                    var endPosition = -1;
 
-                    for (int j = i + 1; j < maxSearch; j++)
+                    for (var j = i + 1; j < maxSearch; j++)
                     {
                         if (value[j] == ';')
                         {
@@ -288,9 +288,9 @@ namespace Netlenium.Intellivoid
 
                     if (value[i + 1] == '#')
                     {
-                        int offset = 2;
+                        var offset = 2;
 
-                        bool isHexNumeric = false;
+                        var isHexNumeric = false;
 
                         if (value[i + 2] == 'x' || value[i + 2] == 'X')
                         {
@@ -300,13 +300,13 @@ namespace Netlenium.Intellivoid
 
                         // All parts of the numeric separator must be digits.
 
-                        bool isNumeric = true;
+                        var isNumeric = true;
 
-                        for (int j = i + offset; j < endPosition; j++)
+                        for (var j = i + offset; j < endPosition; j++)
                         {
                             if (!(
                                 Char.IsDigit(value[j]) ||
-                                (isHexNumeric && HttpUtil.IsHex(value[j]))
+                                (isHexNumeric && IsHex(value[j]))
                             ))
                             {
                                 isNumeric = false;
@@ -325,7 +325,7 @@ namespace Netlenium.Intellivoid
 
                         // Convert the numeric entity to unicode.
 
-                        string numericEntity = value.Substring(i + offset, endPosition - (i + offset));
+                        var numericEntity = value.Substring(i + offset, endPosition - (i + offset));
 
                         sb.Append((char)int.Parse(numericEntity, isHexNumeric ? NumberStyles.HexNumber : NumberStyles.Integer));
 
@@ -333,11 +333,11 @@ namespace Netlenium.Intellivoid
                     }
                     else
                     {
-                        string entity = value.Substring(i + 1, endPosition - (i + 1));
+                        var entity = value.Substring(i + 1, endPosition - (i + 1));
 
                         int codePoint;
 
-                        if (_htmlEntitiesByEntity.TryGetValue(entity, out codePoint))
+                        if (HtmlEntitiesByEntity.TryGetValue(entity, out codePoint))
                         {
                             sb.Append((char)codePoint);
 

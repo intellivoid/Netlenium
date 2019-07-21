@@ -7,6 +7,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using Netlenium.Logging;
 
 namespace Netlenium.Intellivoid
 {
@@ -25,42 +26,42 @@ namespace Netlenium.Intellivoid
         /// <summary>
         /// Indicates if this object was disposed or not
         /// </summary>
-        private bool _disposed;
+        private bool disposed;
         
         /// <summary>
         /// The current write buffer for the client
         /// </summary>
-        private readonly byte[] _writeBuffer;
+        private readonly byte[] writeBuffer;
         
         /// <summary>
         /// The incoming/outgoing network stream for this client
         /// </summary>
-        private NetworkStream _stream;
+        private NetworkStream stream;
         
         /// <summary>
         /// The current state of the client
         /// </summary>
-        private ClientState _state;
+        private ClientState state;
         
         /// <summary>
         /// The current write stream
         /// </summary>
-        private MemoryStream _writeStream;
+        private MemoryStream writeStream;
         
         /// <summary>
         /// HTTP Request Parser
         /// </summary>
-        private HttpRequestParser _parser;
+        private HttpRequestParser parser;
         
         /// <summary>
         /// HTTP Context
         /// </summary>
-        private HttpContext _context;
+        private HttpContext context;
         
         /// <summary>
         /// If there is an ongoing error with the client
         /// </summary>
-        private bool _errored;
+        private bool errored;
 
         /// <summary>
         /// The server that this client is connected to
@@ -123,9 +124,9 @@ namespace Netlenium.Intellivoid
             TcpClient = client ?? throw new ArgumentNullException("client");
 
             ReadBuffer = new HttpReadBuffer(server.ReadBufferSize);
-            _writeBuffer = new byte[server.WriteBufferSize];
+            writeBuffer = new byte[server.WriteBufferSize];
 
-            _stream = client.GetStream();
+            stream = client.GetStream();
         }
 
         /// <summary>
@@ -133,19 +134,19 @@ namespace Netlenium.Intellivoid
         /// </summary>
         private void Reset()
         {
-            _state = ClientState.ReadingProlog;
-            _context = null;
+            state = ClientState.ReadingProlog;
+            context = null;
 
-            if (_parser != null)
+            if (parser != null)
             {
-                _parser.Dispose();
-                _parser = null;
+                parser.Dispose();
+                parser = null;
             }
 
-            if (_writeStream != null)
+            if (writeStream != null)
             {
-                _writeStream.Dispose();
-                _writeStream = null;
+                writeStream.Dispose();
+                writeStream = null;
             }
 
             if (InputStream != null)
@@ -189,17 +190,17 @@ namespace Netlenium.Intellivoid
         /// </summary>
         private void BeginRead()
         {
-            if (_disposed)
+            if (disposed)
                 return;
 
             try
             {
                 Server.TimeoutManager.ReadQueue.Add(
-                    ReadBuffer.BeginRead(_stream, ReadCallback, null),
+                    ReadBuffer.BeginRead(stream, ReadCallback, null),
                     this
                 );
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Logging.WriteEntry(LogType.Information, "HyperWS", $"BeginRead failed {ex}");
 
@@ -213,14 +214,14 @@ namespace Netlenium.Intellivoid
         /// <param name="asyncResult"></param>
         private void ReadCallback(IAsyncResult asyncResult)
         {
-            if (_disposed)
+            if (disposed)
                 return;
 
             // The below state matches the RequestClose state. Dispose immediately
             // when this occurs.
 
             if (
-                _state == ClientState.ReadingProlog &&
+                state == ClientState.ReadingProlog &&
                 Server.State != HttpServerState.Started
             )
             {
@@ -236,7 +237,7 @@ namespace Netlenium.Intellivoid
                 }
                 try
                 {
-                    ReadBuffer.EndRead(_stream, asyncResult);
+                    ReadBuffer.EndRead(stream, asyncResult);
                 }
                 catch
                 {
@@ -257,12 +258,12 @@ namespace Netlenium.Intellivoid
             }
             catch (ObjectDisposedException ex)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", $"Failed to read {ex}");
+                WebService.Logging.WriteEntry(MessageType.Information, "HyperWS", $"Failed to read {ex}");
                 Dispose();
             }
             catch (Exception ex)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", $"Failed to read from the HTTP connection {ex}");
+                WebService.Logging.WriteEntry(MessageType.Information, "HyperWS", $"Failed to read from the HTTP connection {ex}");
                 ProcessException(ex);
             }
         }
@@ -273,9 +274,9 @@ namespace Netlenium.Intellivoid
         /// <exception cref="InvalidOperationException"></exception>
         private void ProcessReadBuffer()
         {
-            while (_writeStream == null && ReadBuffer.DataAvailable)
+            while (writeStream == null && ReadBuffer.DataAvailable)
             {
-                switch (_state)
+                switch (state)
                 {
                     case ClientState.ReadingProlog:
                         ProcessProlog();
@@ -294,7 +295,7 @@ namespace Netlenium.Intellivoid
                 }
             }
 
-            if (_writeStream == null)
+            if (writeStream == null)
                 BeginRead();
         }
 
@@ -304,7 +305,7 @@ namespace Netlenium.Intellivoid
         /// <exception cref="ProtocolException"></exception>
         private void ProcessProlog()
         {
-            string line = ReadBuffer.ReadLine();
+            var line = ReadBuffer.ReadLine();
 
             if (line == null)
                 return;
@@ -313,7 +314,7 @@ namespace Netlenium.Intellivoid
 
             if (!match.Success)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HttpClient", $"Could not parse prolog '{line}'");
+                WebService.Logging.WriteEntry(MessageType.Warning, "HttpClient", $"Could not parse prolog '{line}'");
                 return;
             }
 
@@ -323,7 +324,7 @@ namespace Netlenium.Intellivoid
 
             // Continue reading the headers.
 
-            _state = ClientState.ReadingHeaders;
+            state = ClientState.ReadingHeaders;
 
             ProcessHeaders();
         }
@@ -348,7 +349,7 @@ namespace Netlenium.Intellivoid
 
                     // Start processing the body of the request.
 
-                    _state = ClientState.ReadingContent;
+                    state = ClientState.ReadingContent;
 
                     ProcessContent();
 
@@ -369,9 +370,9 @@ namespace Netlenium.Intellivoid
         /// </summary>
         private void ProcessContent()
         {
-            if (_parser != null)
+            if (parser != null)
             {
-                _parser.Parse();
+                parser.Parse();
                 return;
             }
 
@@ -393,7 +394,7 @@ namespace Netlenium.Intellivoid
         /// <exception cref="ProtocolException"></exception>
         private bool ProcessExpectHeader()
         {
-            if (!Headers.TryGetValue("Expect", out string expectHeader)) return false;
+            if (!Headers.TryGetValue("Expect", out var expectHeader)) return false;
             // Remove the expect header for the next run.
 
             Headers.Remove("Expect");
@@ -435,16 +436,16 @@ namespace Netlenium.Intellivoid
                 contentTypeExtra = parts.Length == 2 ? parts[1].Trim() : null;
             }
 
-            if (_parser != null)
+            if (parser != null)
             {
-                _parser.Dispose();
-                _parser = null;
+                parser.Dispose();
+                parser = null;
             }
 
             switch (contentType)
             {
                 case "application/x-www-form-urlencoded":
-                    _parser = new HttpUrlEncodedRequestParser(this, contentLength);
+                    parser = new HttpUrlEncodedRequestParser(this, contentLength);
                     break;
 
                 case "multipart/form-data":
@@ -465,11 +466,11 @@ namespace Netlenium.Intellivoid
                         throw new ProtocolException("Expected boundary with multipart content type");
                     }
 
-                    _parser = new HttpMultiPartRequestParser(this, contentLength, boundary);
+                    parser = new HttpMultiPartRequestParser(this, contentLength, boundary);
                     break;
 
                 default:
-                    _parser = new HttpUnknownRequestParser(this, contentLength);
+                    parser = new HttpUnknownRequestParser(this, contentLength);
                     break;
             }
 
@@ -497,11 +498,11 @@ namespace Netlenium.Intellivoid
 
             var bytes = Encoding.ASCII.GetBytes(sb.ToString());
 
-            _writeStream?.Dispose();
+            writeStream?.Dispose();
 
-            _writeStream = new MemoryStream();
-            _writeStream.Write(bytes, 0, bytes.Length);
-            _writeStream.Position = 0;
+            writeStream = new MemoryStream();
+            writeStream.Write(bytes, 0, bytes.Length);
+            writeStream.Position = 0;
 
             BeginWrite();
         }
@@ -515,23 +516,23 @@ namespace Netlenium.Intellivoid
             {
                 // Copy the next part from the write stream.
 
-                var read = _writeStream.Read(_writeBuffer, 0, _writeBuffer.Length);
+                var read = writeStream.Read(writeBuffer, 0, writeBuffer.Length);
 
                 Server.TimeoutManager.WriteQueue.Add(
-                    _stream.BeginWrite(_writeBuffer, 0, read, WriteCallback, null),
+                    stream.BeginWrite(writeBuffer, 0, read, WriteCallback, null),
                     this
                 );
             
             }
             catch (IOException)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HyperWS", $"The HTTP server wasn't able to write to the stream because the stream was terminated by the client/host machine. Priority=NORMAL");
+                WebService.Logging.WriteEntry(MessageType.Warning, "HyperWS", "The HTTP server wasn't able to write to the stream because the stream was terminated by the client/host machine. Priority=NORMAL");
                 
                 Dispose();
             }
             catch (Exception ex)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "HyperWS", $"BeginWrite failed {ex}");
+                WebService.Logging.WriteEntry(MessageType.Error, "HyperWS", $"BeginWrite failed {ex}");
 
                 Dispose();
             }
@@ -543,14 +544,14 @@ namespace Netlenium.Intellivoid
         /// <param name="asyncResult"></param>
         private void WriteCallback(IAsyncResult asyncResult)
         {
-            if (_disposed)
+            if (disposed)
                 return;
 
             try
             {
-                _stream.EndWrite(asyncResult);
+                stream.EndWrite(asyncResult);
 
-                if (_writeStream != null && _writeStream.Length != _writeStream.Position)
+                if (writeStream != null && writeStream.Length != writeStream.Position)
                 {
                     // Continue writing from the write stream.
 
@@ -558,13 +559,13 @@ namespace Netlenium.Intellivoid
                 }
                 else
                 {
-                    if (_writeStream != null)
+                    if (writeStream != null)
                     {
-                        _writeStream.Dispose();
-                        _writeStream = null;
+                        writeStream.Dispose();
+                        writeStream = null;
                     }
 
-                    switch (_state)
+                    switch (state)
                     {
                         case ClientState.WritingHeaders:
                             WriteResponseContent();
@@ -575,7 +576,7 @@ namespace Netlenium.Intellivoid
                             break;
 
                         default:
-                            Debug.Assert(_state != ClientState.Closed);
+                            Debug.Assert(state != ClientState.Closed);
 
                             if (ReadBuffer.DataAvailable)
                             {
@@ -598,7 +599,7 @@ namespace Netlenium.Intellivoid
             }
             catch (Exception ex)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HyperWS", $"Failed to write {ex}");
+                WebService.Logging.WriteEntry(MessageType.Warning, "HyperWS", $"Failed to write {ex}");
 
                 Dispose();
             }
@@ -609,11 +610,11 @@ namespace Netlenium.Intellivoid
         /// </summary>
         public void ExecuteRequest()
         {
-            _context = new HttpContext(this);
+            context = new HttpContext(this);
 
-            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Verbose, "HyperWS", $"Accepted request {_context.Request.RawUrl.Replace(Environment.NewLine, string.Empty)}");
+            WebService.Logging.WriteEntry(MessageType.Verbose, "HyperWS", $"Accepted request {context.Request.RawUrl.Replace(Environment.NewLine, string.Empty)}");
 
-            Server.RaiseRequest(_context);
+            Server.RaiseRequest(context);
 
             WriteResponseHeaders();
         }
@@ -625,11 +626,11 @@ namespace Netlenium.Intellivoid
         {
             var headers = BuildResponseHeaders();
 
-            _writeStream?.Dispose();
+            writeStream?.Dispose();
 
-            _writeStream = new MemoryStream(headers);
+            writeStream = new MemoryStream(headers);
 
-            _state = ClientState.WritingHeaders;
+            state = ClientState.WritingHeaders;
 
             BeginWrite();
         }
@@ -640,7 +641,7 @@ namespace Netlenium.Intellivoid
         /// <returns></returns>
         private byte[] BuildResponseHeaders()
         {
-            var response = _context.Response;
+            var response = context.Response;
             var sb = new StringBuilder();
 
             // Write the prolog.
@@ -713,12 +714,12 @@ namespace Netlenium.Intellivoid
         /// </summary>
         private void WriteResponseContent()
         {
-            _writeStream?.Dispose();
+            writeStream?.Dispose();
 
-            _writeStream = _context.Response.OutputStream.BaseStream;
-            _writeStream.Position = 0;
+            writeStream = context.Response.OutputStream.BaseStream;
+            writeStream.Position = 0;
 
-            _state = ClientState.WritingContent;
+            state = ClientState.WritingContent;
 
             BeginWrite();
         }
@@ -732,9 +733,9 @@ namespace Netlenium.Intellivoid
             // Do not accept new requests when the server is stopping.
 
             if (
-                !_errored &&
+                !errored &&
                 Server.State == HttpServerState.Started &&
-                Headers.TryGetValue("Connection", out string connectionHeader) &&
+                Headers.TryGetValue("Connection", out var connectionHeader) &&
                 string.Equals(connectionHeader, "keep-alive", StringComparison.OrdinalIgnoreCase)
             )
                 BeginRequest();
@@ -747,8 +748,8 @@ namespace Netlenium.Intellivoid
         /// </summary>
         public void RequestClose()
         {
-            if (_state != ClientState.ReadingProlog) return;
-            var stream = _stream;
+            if (state != ClientState.ReadingProlog) return;
+            var stream = this.stream;
 
             stream?.Dispose();
         }
@@ -758,7 +759,7 @@ namespace Netlenium.Intellivoid
         /// </summary>
         public void ForceClose()
         {
-            var stream = _stream;
+            var stream = this.stream;
 
             stream?.Dispose();
         }
@@ -768,9 +769,9 @@ namespace Netlenium.Intellivoid
         /// </summary>
         public void UnsetParser()
         {
-            Debug.Assert(_parser != null);
+            Debug.Assert(parser != null);
 
-            _parser = null;
+            parser = null;
         }
 
         /// <summary>
@@ -779,10 +780,10 @@ namespace Netlenium.Intellivoid
         /// <param name="exception"></param>
         private void ProcessException(Exception exception)
         {
-            if (_disposed)
+            if (disposed)
                 return;
 
-            _errored = true;
+            errored = true;
 
             // If there is no request available, the error didn't occur as part
             // of a request (e.g. the client closed the connection). Just close
@@ -796,23 +797,23 @@ namespace Netlenium.Intellivoid
 
             try
             {
-                if (_context == null)
-                    _context = new HttpContext(this);
+                if (context == null)
+                    context = new HttpContext(this);
 
-                _context.Response.Status = "500 Internal Server Error";
+                context.Response.Status = "500 Internal Server Error";
 
                 bool handled;
 
                 try
                 {
-                    handled = Server.RaiseUnhandledException(_context, exception);
+                    handled = Server.RaiseUnhandledException(context, exception);
                 }
                 catch
                 {
                     handled = false;
                 }
 
-                if (!handled && _context.Response.OutputStream.CanWrite)
+                if (!handled && context.Response.OutputStream.CanWrite)
                 {
                     var resourceName = GetType().Namespace + ".Resources.InternalServerError.html";
 
@@ -823,7 +824,7 @@ namespace Netlenium.Intellivoid
 
                         while (stream != null && (read = stream.Read(buffer, 0, buffer.Length)) != 0)
                         {
-                            _context.Response.OutputStream.Write(buffer, 0, read);
+                            context.Response.OutputStream.Write(buffer, 0, read);
                         }
                     }
                 }
@@ -832,7 +833,7 @@ namespace Netlenium.Intellivoid
             }
             catch (Exception ex)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HyperWS", $"Failed to process internal server error response {ex}");
+                WebService.Logging.WriteEntry(MessageType.Warning, "HyperWS", $"Failed to process internal server error response {ex}");
 
                 Dispose();
             }
@@ -844,15 +845,15 @@ namespace Netlenium.Intellivoid
         /// </summary>
         public void Dispose()
         {
-            if (_disposed) return;
+            if (disposed) return;
             Server.UnregisterClient(this);
 
-            _state = ClientState.Closed;
+            state = ClientState.Closed;
 
-            if (_stream != null)
+            if (stream != null)
             {
-                _stream.Dispose();
-                _stream = null;
+                stream.Dispose();
+                stream = null;
             }
 
             if (TcpClient != null)
@@ -863,7 +864,7 @@ namespace Netlenium.Intellivoid
 
             Reset();
 
-            _disposed = true;
+            disposed = true;
         }
 
         /// <summary>

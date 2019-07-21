@@ -5,7 +5,7 @@ namespace Netlenium.Intellivoid
 {
     public class HttpCookieCollection : NameObjectCollectionBase
     {
-        private string[] _allKeys;
+        private string[] allKeys;
 
         internal HttpCookieCollection()
             : base(StringComparer.OrdinalIgnoreCase)
@@ -17,7 +17,7 @@ namespace Netlenium.Intellivoid
             if (cookie == null)
                 throw new ArgumentNullException("cookie");
 
-            _allKeys = null;
+            allKeys = null;
 
             if (append)
                 BaseAdd(cookie.Name, cookie);
@@ -42,7 +42,7 @@ namespace Netlenium.Intellivoid
 
         private void RemoveCookie(string name)
         {
-            _allKeys = null;
+            allKeys = null;
 
             BaseRemove(name);
         }
@@ -54,7 +54,7 @@ namespace Netlenium.Intellivoid
 
         private void Reset()
         {
-            _allKeys = null;
+            allKeys = null;
 
             BaseClear();
         }
@@ -73,10 +73,7 @@ namespace Netlenium.Intellivoid
             return result;
         }
 
-        public HttpCookie this[string name]
-        {
-            get { return Get(name); }
-        }
+        public HttpCookie this[string name] => Get(name);
 
         public HttpCookie Get(int index)
         {
@@ -88,19 +85,16 @@ namespace Netlenium.Intellivoid
             return BaseGetKey(index);
         }
 
-        public HttpCookie this[int index]
-        {
-            get { return Get(index); }
-        }
+        public HttpCookie this[int index] => Get(index);
 
         public string[] AllKeys
         {
             get
             {
-                if (_allKeys == null)
-                    _allKeys = BaseGetAllKeys();
+                if (allKeys == null)
+                    allKeys = BaseGetAllKeys();
 
-                return _allKeys;
+                return allKeys;
             }
         }
     }

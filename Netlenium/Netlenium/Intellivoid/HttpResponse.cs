@@ -8,7 +8,7 @@ namespace Netlenium.Intellivoid
 {
     public class HttpResponse
     {
-        private readonly HttpContext _context;
+        private readonly HttpContext context;
         public string CacheControl { get; set; }
 
         public string CharSet { get; set; }
@@ -23,12 +23,9 @@ namespace Netlenium.Intellivoid
 
         public NameValueCollection Headers { get; private set; }
 
-        public bool IsClientConnected { get { return true; } }
+        public bool IsClientConnected => true;
 
-        public bool IsRequestBeingRedirected
-        {
-            get { return !String.IsNullOrEmpty(RedirectLocation); }
-        }
+        public bool IsRequestBeingRedirected => !String.IsNullOrEmpty(RedirectLocation);
 
         public HttpOutputStream OutputStream { get; private set; }
 
@@ -44,8 +41,7 @@ namespace Netlenium.Intellivoid
             {
                 if (StatusDescription == null)
                     return StatusCode.ToString(CultureInfo.InvariantCulture);
-                else
-                    return StatusCode.ToString(CultureInfo.InvariantCulture) + " " + StatusDescription;
+                return StatusCode.ToString(CultureInfo.InvariantCulture) + " " + StatusDescription;
             }
             set
             {
@@ -54,7 +50,7 @@ namespace Netlenium.Intellivoid
 
                 if (value != null)
                 {
-                    string[] parts = value.Split(new[] { ' ' }, 2);
+                    var parts = value.Split(new[] { ' ' }, 2);
                     int statusCode;
 
                     if (int.TryParse(parts[0], out statusCode))
@@ -72,10 +68,7 @@ namespace Netlenium.Intellivoid
 
         internal HttpResponse(HttpContext context)
         {
-            if (context == null)
-                throw new ArgumentNullException("context");
-
-            _context = context;
+            this.context = context ?? throw new ArgumentNullException("context");
 
             CacheControl = "private";
             CharSet = "utf-8";
@@ -107,7 +100,7 @@ namespace Netlenium.Intellivoid
             if (!location.Contains(":"))
             {
                 var sb = new StringBuilder();
-                var url = _context.Request.Url;
+                var url = context.Request.Url;
 
                 sb.Append(url.Scheme);
                 sb.Append("://");
@@ -120,7 +113,7 @@ namespace Netlenium.Intellivoid
                 }
 
                 if (location.Length == 0)
-                    location = _context.Request.Path;
+                    location = context.Request.Path;
 
                 if (location[0] == '/')
                 {
@@ -128,8 +121,8 @@ namespace Netlenium.Intellivoid
                 }
                 else
                 {
-                    string path = _context.Request.Path;
-                    int pos = path.LastIndexOf('/');
+                    var path = context.Request.Path;
+                    var pos = path.LastIndexOf('/');
 
                     if (pos == -1)
                         sb.Append('/');

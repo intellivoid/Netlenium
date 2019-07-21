@@ -3,27 +3,28 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Netlenium.Logging;
 
 namespace Netlenium.Intellivoid
 {
     public class HttpServer : IDisposable
     {
 
-        private bool _disposed;
-        private TcpListener _listener;
-        private readonly object _syncLock = new object();
-        private readonly Dictionary<HttpClient, bool> _clients = new Dictionary<HttpClient, bool>();
-        private HttpServerState _state = HttpServerState.Stopped;
-        private AutoResetEvent _clientsChangedEvent = new AutoResetEvent(false);
+        private bool disposed;
+        private TcpListener listener;
+        private readonly object syncLock = new object();
+        private readonly Dictionary<HttpClient, bool> clients = new Dictionary<HttpClient, bool>();
+        private HttpServerState state = HttpServerState.Stopped;
+        private AutoResetEvent clientsChangedEvent = new AutoResetEvent(false);
 
         public HttpServerState State
         {
-            get { return _state; }
+            get => state;
             private set
             {
-                if (_state != value)
+                if (state != value)
                 {
-                    _state = value;
+                    state = value;
 
                     OnStateChanged(EventArgs.Empty);
                 }
@@ -98,7 +99,7 @@ namespace Netlenium.Intellivoid
 
             State = HttpServerState.Starting;
 
-            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", $"Starting HTTP server at {EndPoint}");
+            WebService.Logging.WriteEntry(MessageType.Information, "HyperWS", $"Starting HTTP server at {EndPoint}");
 
             TimeoutManager = new HttpTimeoutManager(this);
 
@@ -112,16 +113,16 @@ namespace Netlenium.Intellivoid
 
                 EndPoint = (IPEndPoint)listener.LocalEndpoint;
 
-                _listener = listener;
+                this.listener = listener;
 
                 ServerUtility = new HttpServerUtility();
 
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", String.Format("HTTP server running at {0}", EndPoint));
+                WebService.Logging.WriteEntry(MessageType.Information, "HyperWS", String.Format("HTTP server running at {0}", EndPoint));
             }
             catch (Exception ex)
             {
                 State = HttpServerState.Stopped;
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "HyperWS", $"Failed to start HTTP server, {ex.Message}");
+                WebService.Logging.WriteEntry(MessageType.Error, "HyperWS", $"Failed to start HTTP server, {ex.Message}");
                 throw new WebServerException("Failed to start HTTP server", ex);
             }
 
@@ -133,7 +134,7 @@ namespace Netlenium.Intellivoid
         public void Stop()
         {
             VerifyState(HttpServerState.Started);
-            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", "Stopping HTTP Server");
+            WebService.Logging.WriteEntry(MessageType.Information, "HyperWS", "Stopping HTTP Server");
             
             State = HttpServerState.Stopping;
 
@@ -141,7 +142,7 @@ namespace Netlenium.Intellivoid
             {
                 // Prevent any new connections.
 
-                _listener.Stop();
+                listener.Stop();
 
                 // Wait for all clients to complete.
 
@@ -149,30 +150,30 @@ namespace Netlenium.Intellivoid
             }
             catch (Exception ex)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "HyperWS", $"Failed to stop HTTP server; {ex}");
+                WebService.Logging.WriteEntry(MessageType.Error, "HyperWS", $"Failed to stop HTTP server; {ex}");
                 throw new WebServerException("Failed to stop HTTP server", ex);
             }
             finally
             {
-                _listener = null;
+                listener = null;
 
                 State = HttpServerState.Stopped;
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", "Stopped HTTP server");
+                WebService.Logging.WriteEntry(MessageType.Information, "HyperWS", "Stopped HTTP server");
             }
         }
 
         private void StopClients()
         {
             var shutdownStarted = DateTime.Now;
-            bool forceShutdown = false;
+            var forceShutdown = false;
 
             // Clients that are waiting for new requests are closed.
 
             List<HttpClient> clients;
 
-            lock (_syncLock)
+            lock (syncLock)
             {
-                clients = new List<HttpClient>(_clients.Keys);
+                clients = new List<HttpClient>(this.clients.Keys);
             }
 
             foreach (var client in clients)
@@ -184,9 +185,9 @@ namespace Netlenium.Intellivoid
 
             while (true)
             {
-                lock (_syncLock)
+                lock (syncLock)
                 {
-                    if (_clients.Count == 0)
+                    if (this.clients.Count == 0)
                         break;
                 }
 
@@ -198,7 +199,7 @@ namespace Netlenium.Intellivoid
                     break;
                 }
 
-                _clientsChangedEvent.WaitOne(ShutdownTimeout - shutdownRunning);
+                clientsChangedEvent.WaitOne(ShutdownTimeout - shutdownRunning);
             }
 
             if (!forceShutdown)
@@ -207,9 +208,9 @@ namespace Netlenium.Intellivoid
             // If there are still clients running after the timeout, their
             // connections will be forcibly closed.
 
-            lock (_syncLock)
+            lock (syncLock)
             {
-                clients = new List<HttpClient>(_clients.Keys);
+                clients = new List<HttpClient>(this.clients.Keys);
             }
 
             foreach (var client in clients)
@@ -221,19 +222,19 @@ namespace Netlenium.Intellivoid
 
             while (true)
             {
-                lock (_syncLock)
+                lock (syncLock)
                 {
-                    if (_clients.Count == 0)
+                    if (this.clients.Count == 0)
                         break;
                 }
 
-                _clientsChangedEvent.WaitOne();
+                clientsChangedEvent.WaitOne();
             }
         }
 
         private void BeginAcceptTcpClient()
         {
-            var listener = _listener;
+            var listener = this.listener;
             if (listener != null)
                 listener.BeginAcceptTcpClient(AcceptTcpClientCallback, null);
         }
@@ -242,7 +243,7 @@ namespace Netlenium.Intellivoid
         {
             try
             {
-                var listener = _listener; // Prevent race condition.
+                var listener = this.listener; // Prevent race condition.
 
                 if (listener == null)
                     return;
@@ -251,7 +252,7 @@ namespace Netlenium.Intellivoid
 
                 // If we've stopped already, close the TCP client now.
 
-                if (_state != HttpServerState.Started)
+                if (state != HttpServerState.Started)
                 {
                     tcpClient.Close();
                     return;
@@ -272,7 +273,7 @@ namespace Netlenium.Intellivoid
             }
             catch (Exception ex)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "HyperWS", $"Failed to accept TCP client {ex}");
+                WebService.Logging.WriteEntry(MessageType.Information, "HyperWS", $"Failed to accept TCP client {ex}");
             }
         }
 
@@ -281,11 +282,11 @@ namespace Netlenium.Intellivoid
             if (client == null)
                 throw new ArgumentNullException("client");
 
-            lock (_syncLock)
+            lock (syncLock)
             {
-                _clients.Add(client, true);
+                clients.Add(client, true);
 
-                _clientsChangedEvent.Set();
+                clientsChangedEvent.Set();
             }
         }
 
@@ -296,39 +297,39 @@ namespace Netlenium.Intellivoid
                 if (client == null)
                     throw new ArgumentNullException("client");
 
-                lock (_syncLock)
+                lock (syncLock)
                 {
 
-                    _clients.Remove(client);
+                    clients.Remove(client);
 
-                    _clientsChangedEvent.Set();
+                    clientsChangedEvent.Set();
                 }
             }
             catch(Exception exception)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "HyperWS", $"Cannot unregister client; {exception.Message}");
+                WebService.Logging.WriteEntry(MessageType.Warning, "HyperWS", $"Cannot unregister client; {exception.Message}");
             }
         }
 
         private void VerifyState(HttpServerState state)
         {
-            if (_disposed)
+            if (disposed)
                 throw new ObjectDisposedException(GetType().Name);
-            if (_state != state)
+            if (this.state != state)
                 throw new InvalidOperationException(String.Format("Expected server to be in the '{0}' state", state));
         }
 
         public void Dispose()
         {
-            if (!_disposed)
+            if (!disposed)
             {
-                if (_state == HttpServerState.Started)
+                if (state == HttpServerState.Started)
                     Stop();
 
-                if (_clientsChangedEvent != null)
+                if (clientsChangedEvent != null)
                 {
-                    ((IDisposable)_clientsChangedEvent).Dispose();
-                    _clientsChangedEvent = null;
+                    ((IDisposable)clientsChangedEvent).Dispose();
+                    clientsChangedEvent = null;
                 }
 
                 if (TimeoutManager != null)
@@ -337,7 +338,7 @@ namespace Netlenium.Intellivoid
                     TimeoutManager = null;
                 }
 
-                _disposed = true;
+                disposed = true;
             }
         }
 

@@ -8,10 +8,7 @@ namespace Netlenium.Intellivoid
     {
         public HttpMultiPartItem(Dictionary<string, string> headers, string value, Stream stream)
         {
-            if (headers == null)
-                throw new ArgumentNullException("headers");
-
-            Headers = headers;
+            Headers = headers ?? throw new ArgumentNullException("headers");
             Value = value;
             Stream = stream;
         }

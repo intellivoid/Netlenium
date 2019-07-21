@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Netlenium.Driver;
+using Netlenium.Logging;
 
 namespace Netlenium
 {
@@ -12,12 +13,12 @@ namespace Netlenium
         /// <summary>
         /// The current list of active sessions
         /// </summary>
-        public static Dictionary<string, Session> activeSessions;
+        public static Dictionary<string, Session> ActiveSessions;
 
         /// <summary>
         /// Current list of expired sessions, this list will be cleared over time
         /// </summary>
-        public static IDictionary<string, DateTime> expiredSessions;
+        public static IDictionary<string, DateTime> ExpiredSessions;
 
         /// <summary>
         /// Generates a new Session ID
@@ -29,7 +30,7 @@ namespace Netlenium
             var stringChars = new char[32];
             var random = new Random();
 
-            for (int i = 0; i < stringChars.Length; i++)
+            for (var i = 0; i < stringChars.Length; i++)
             {
                 stringChars[i] = chars[random.Next(chars.Length)];
             }
@@ -44,25 +45,25 @@ namespace Netlenium
         /// <returns></returns>
         public static Session CreateSession(Browser targetBrowser)
         {
-            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Creating new session for '{targetBrowser.ToString()}'");
+            WebService.Logging.WriteEntry(MessageType.Information, "SessionManager", $"Creating new session for '{targetBrowser.ToString()}'");
 
-            var SessionObject = new Session(targetBrowser)
+            var sessionObject = new Session(targetBrowser)
             {
-                ID = GeneratedSessionId()
+                Id = GeneratedSessionId()
             };
 
-            if (activeSessions == null)
+            if (ActiveSessions == null)
             {
-                activeSessions = new Dictionary<string, Session>();
+                ActiveSessions = new Dictionary<string, Session>();
             }
 
-            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Session '{SessionObject.ID}' created, starting driver");
-            SessionObject.Driver.Start();
+            WebService.Logging.WriteEntry(MessageType.Information, "SessionManager", $"Session '{sessionObject.Id}' created, starting driver");
+            sessionObject.Driver.Start();
 
-            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Session ready");
-            activeSessions.Add(SessionObject.ID, SessionObject);
+            WebService.Logging.WriteEntry(MessageType.Information, "SessionManager", "Session ready");
+            ActiveSessions.Add(sessionObject.Id, sessionObject);
 
-            return SessionObject;
+            return sessionObject;
         }
 
         /// <summary>
@@ -72,12 +73,12 @@ namespace Netlenium
         /// <returns></returns>
         public static bool SessionExists(string sessionId)
         {
-            if (activeSessions == null)
+            if (ActiveSessions == null)
             {
                 return false;
             }
 
-            if (activeSessions.ContainsKey(sessionId))
+            if (ActiveSessions.ContainsKey(sessionId))
             {
                 return true;
             }
@@ -92,12 +93,12 @@ namespace Netlenium
         /// <returns></returns>
         public static bool SessionExpired(string sessionId)
         {
-            if (expiredSessions == null)
+            if (ExpiredSessions == null)
             {
                 return false;
             }
 
-            if (expiredSessions.ContainsKey(sessionId))
+            if (ExpiredSessions.ContainsKey(sessionId))
             {
                 return true;
             }
@@ -111,11 +112,11 @@ namespace Netlenium
         /// <param name="sessionID"></param>
         public static void StopSession(string sessionId)
         {
-            WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"Closing session '{sessionId}'");
+            WebService.Logging.WriteEntry(MessageType.Information, "SessionManager", $"Closing session '{sessionId}'");
 
             if(SessionExists(sessionId) == false)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "SessionManager", $"Cannot close session '{sessionId}', it does not exist or it has already been closed");
+                WebService.Logging.WriteEntry(MessageType.Error, "SessionManager", $"Cannot close session '{sessionId}', it does not exist or it has already been closed");
                 throw new SessionNotFoundException();
             }
 
@@ -124,19 +125,19 @@ namespace Netlenium
 
                 try
                 {
-                    activeSessions[sessionId].Driver.Stop();
+                    ActiveSessions[sessionId].Driver.Stop();
                 }
                 catch(DriverNotRunningException)
                 {
-                    WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "SessionManager", $"The driver for '{sessionId}' cannot be stopped because it is not running");
+                    WebService.Logging.WriteEntry(MessageType.Warning, "SessionManager", $"The driver for '{sessionId}' cannot be stopped because it is not running");
                 }
 
-                activeSessions.Remove(sessionId);
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Information, "SessionManager", $"The session '{sessionId}' has been closed");
+                ActiveSessions.Remove(sessionId);
+                WebService.Logging.WriteEntry(MessageType.Information, "SessionManager", $"The session '{sessionId}' has been closed");
             }
             catch (Exception exception)
             {
-                WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Error, "SessionManager", $"Cannot close session '{sessionId}', {exception.Message}");
+                WebService.Logging.WriteEntry(MessageType.Error, "SessionManager", $"Cannot close session '{sessionId}', {exception.Message}");
                 throw;
             }
         }
@@ -146,35 +147,35 @@ namespace Netlenium
         /// </summary>
         public static void Sync()
         {
-            var current_time = DateTime.Now;
+            var currentTime = DateTime.Now;
 
-            if (activeSessions != null)
+            if (ActiveSessions != null)
             {
-                foreach (KeyValuePair<string, Session> active_session in activeSessions)
+                foreach (var activeSession in ActiveSessions)
                 {
-                    var session_id = active_session.Key;
-                    var total_inactivity = Convert.ToInt32((current_time - active_session.Value.LastActivity).TotalMinutes);
-                    if (total_inactivity > CommandLineParameters.SessionInactivityLimit)
+                    var sessionId = activeSession.Key;
+                    var totalInactivity = Convert.ToInt32((currentTime - activeSession.Value.LastActivity).TotalMinutes);
+                    if (totalInactivity > CommandLineParameters.SessionInactivityLimit)
                     {
-                        WebService.Logging.WriteEntry(Netlenium.Logging.MessageType.Warning, "SessionManager", $"The session '{session_id}' has expired due to {total_inactivity} minute(s) of inactivity");
-                        StopSession(session_id);
-                        if(expiredSessions == null)
+                        WebService.Logging.WriteEntry(MessageType.Warning, "SessionManager", $"The session '{sessionId}' has expired due to {totalInactivity} minute(s) of inactivity");
+                        StopSession(sessionId);
+                        if(ExpiredSessions == null)
                         {
-                            expiredSessions = new Dictionary<string, DateTime>();
+                            ExpiredSessions = new Dictionary<string, DateTime>();
                         }
-                        expiredSessions.Add(session_id, DateTime.Now);
+                        ExpiredSessions.Add(sessionId, DateTime.Now);
                     }
                 }
             }
 
-            if (expiredSessions != null)
+            if (ExpiredSessions != null)
             {
-                foreach (KeyValuePair<string, DateTime> expired_session in expiredSessions)
+                foreach (var expiredSession in ExpiredSessions)
                 {
-                    var session_id = expired_session.Key;
-                    if (Convert.ToInt32((current_time - expired_session.Value).TotalMinutes) > 10)
+                    var sessionId = expiredSession.Key;
+                    if (Convert.ToInt32((currentTime - expiredSession.Value).TotalMinutes) > 10)
                     {
-                        expiredSessions.Remove(session_id);
+                        ExpiredSessions.Remove(sessionId);
                     }
                 }
             }

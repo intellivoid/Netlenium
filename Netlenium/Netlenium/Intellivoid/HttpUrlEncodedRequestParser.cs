@@ -5,19 +5,19 @@ namespace Netlenium.Intellivoid
 {
     internal class HttpUrlEncodedRequestParser : HttpRequestParser
     {
-        private readonly MemoryStream _stream;
+        private readonly MemoryStream stream;
 
         public HttpUrlEncodedRequestParser(HttpClient client, int contentLength)
             : base(client, contentLength)
         {
-            _stream = new MemoryStream();
+            stream = new MemoryStream();
         }
 
         public override void Parse()
         {
-            Client.ReadBuffer.CopyToStream(_stream, ContentLength);
+            Client.ReadBuffer.CopyToStream(stream, ContentLength);
 
-            if (_stream.Length == ContentLength)
+            if (stream.Length == ContentLength)
             {
                 ParseContent();
 
@@ -27,11 +27,11 @@ namespace Netlenium.Intellivoid
 
         private void ParseContent()
         {
-            _stream.Position = 0;
+            stream.Position = 0;
 
             string content;
 
-            using (var reader = new StreamReader(_stream, Encoding.ASCII))
+            using (var reader = new StreamReader(stream, Encoding.ASCII))
             {
                 content = reader.ReadToEnd();
             }

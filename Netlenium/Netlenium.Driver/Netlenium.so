@@ -1,1 +1,25 @@
 ﻿[{'s': NETLENIUM}@{'s': INTELLIVOID}@{'v': '1.0.0.0'}]
+
+[(FUNCTION) => TYPE :: NULL | NAME :: NETLENIUM_SERVER] {
+	[(VAR) => NAME :: AUTHOR | TYPE :: STRING | VALUE :: "Intellivoid"]
+	[(VAR) => NAME :: BUILD_FLAG | TYPE :: STRING | VALUE :: "INTERNAL"]
+	[(VAR) => NAME :: VERSION | TYPE :: STRING | VALUE :: "1.0.0.0"]
+}
+
+[(FUNCTION) => TYPE :: NULL | NAME :: NETLENIUM_DRIVER] {
+	[(VAR) => NAME :: AUTHOR | TYPE :: STRING | VALUE :: "Intellivoid"]
+	[(VAR) => NAME :: BUILD_FLAG | TYPE :: STRING | VALUE :: "INTERNAL"]
+	[(VAR) => NAME :: VERSION | TYPE :: STRING | VALUE :: "1.0.0.0"]
+}
+
+[(FUNCTION) => TYPE :: NULL | NAME :: NETLENIUM_WEB_API] {
+	[(VAR) => NAME :: AUTHOR | TYPE :: STRING | VALUE :: "Intellivoid"]
+	[(VAR) => NAME :: BUILD_FLAG | TYPE :: STRING | VALUE :: "INTERNAL"]
+	[(VAR) => NAME :: VERSION | TYPE :: STRING | VALUE :: "1.0.0.0"]
+}
+
+[(FUNCTION) => TYPE :: NULL | NAME :: NETLENIUM_LOGGING] {
+	[(VAR) => NAME :: AUTHOR | TYPE :: STRING | VALUE :: "Intellivoid"]
+	[(VAR) => NAME :: BUILD_FLAG | TYPE :: STRING | VALUE :: "INTERNAL"]
+	[(VAR) => NAME :: VERSION | TYPE :: STRING | VALUE :: "1.0.0.0"]
+}

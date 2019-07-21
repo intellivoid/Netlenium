@@ -436,10 +436,6 @@
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_128.png" />
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_16.png" />
     <Content Include="ServiceExtensions\Chrome\icons\netlenium_48.png" />
-    <None Include="netlenium.xpi">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="webdriver.xpi" />
     <None Include="webdriver.json">
       <Generator>None</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

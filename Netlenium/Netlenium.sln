@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium.Driver", "Netleni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium.WebAPI", "Netlenium.WebAPI\Netlenium.WebAPI.csproj", "{D0F19DD7-EBBB-4BEC-9A02-79DB0A99BFBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium Server", "Netlenium Server\Netlenium Server.csproj", "{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium", "Netlenium\Netlenium.csproj", "{72CDDB82-517A-4706-A9EA-4BECCF4F8FB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlenium.Logging", "Netlenium.Logging\Netlenium.Logging.csproj", "{B00DFF05-7ABC-4F3F-B3C8-7A0C4DFC8591}"
 EndProject

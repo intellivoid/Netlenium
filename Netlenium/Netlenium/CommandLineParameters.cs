@@ -16,7 +16,7 @@
         public static bool UpdateDrivers { get; set; }
 
         /// <summary>
-        /// Clears unused cache files created by Netlenium
+        /// Clears unused cache files created by Netlenium then exits
         /// </summary>
         public static bool ClearCache { get; set; }
 
@@ -59,6 +59,11 @@
         /// The amount of minutes that a session is allowed to be inactive for
         /// </summary>
         public static int SessionInactivityLimit { get; set; }
+
+        /// <summary>
+        /// The default driver to start when no target browser is provided
+        /// </summary>
+        public static string DefaultDriver { get; set; }
 
         /// <summary>
         /// Disables the ability to start Chrome Drivers

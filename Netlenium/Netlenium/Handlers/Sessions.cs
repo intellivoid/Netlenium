@@ -55,8 +55,13 @@ namespace Netlenium.Handlers
 
             if (targetBrowser == null)
             {
-                WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("target_browser"), 400);
-                return;
+                if(CommandLineParameters.DefaultDriver == string.Empty)
+                {
+                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("target_browser"), 400);
+                    return;
+                }
+
+                targetBrowser = CommandLineParameters.DefaultDriver.ToLower();
             }
 
             if (SessionManager.ActiveSessions != null)

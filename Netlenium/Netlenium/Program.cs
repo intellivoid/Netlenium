@@ -34,6 +34,7 @@ namespace Netlenium
             CommandLineParameters.ServerName = ProgramText.ProgramTitle;
             CommandLineParameters.MaxSessions = 100;
             CommandLineParameters.SessionInactivityLimit = 10;
+            CommandLineParameters.DefaultDriver = string.Empty;
             CommandLineParameters.DisableChromeDriver = false;
             CommandLineParameters.DisableFirefoxDriver = false;
             CommandLineParameters.DisableOperaDriver = false;
@@ -74,6 +75,9 @@ namespace Netlenium
 
                 { "session-inactivity-limit=", "The amount of minutes that a session is allowed to be inactive for",
                   v => { if (v != null) CommandLineParameters.SessionInactivityLimit = Convert.ToInt32(v); } },
+
+                { "default-driver=", "The default driver to start when no target browser is provided",
+                  v => { if (v != null) CommandLineParameters.DefaultDriver = v; } },
 
                 { "disable-chrome-driver",  "Disables the ability to start Chrome Drivers",
                   v => CommandLineParameters.DisableChromeDriver = v != null },
@@ -222,6 +226,21 @@ namespace Netlenium
                 {
                     Console.WriteLine(ProgramText.InavlidAuthPasswordOption);
                     Environment.Exit(64);
+                }
+            }
+
+            if(CommandLineParameters.DefaultDriver != string.Empty)
+            {
+                switch(CommandLineParameters.DefaultDriver.ToLower())
+                {
+                    case "chrome": break;
+                    case "opera": break;
+                    case "firefox": break;
+
+                    default:
+                        Console.WriteLine("The given option for 'default-driver' is invalid.");
+                        Environment.Exit(64);
+                        break;
                 }
             }
 

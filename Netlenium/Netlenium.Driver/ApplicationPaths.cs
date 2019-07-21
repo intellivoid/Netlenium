@@ -8,6 +8,9 @@ namespace Netlenium.Driver
     /// </summary>
     public static class ApplicationPaths
     {
+        /// <summary>
+        ///     The main application directory path
+        /// </summary>
         public static string AppData
         {
             get

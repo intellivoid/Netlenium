@@ -37,7 +37,6 @@ namespace NetleniumServer
             CommandLineParameters.DisableOperaDriver = false;
             CommandLineParameters.AuthPassword = string.Empty;
             
-
             var p = new OptionSet
             {
 
@@ -255,7 +254,6 @@ namespace NetleniumServer
             {
                 try
                 {
-                    Console.WriteLine($"Deleting File '{file}'");
                     File.Delete(file);
                 }
                 catch(Exception ex)
@@ -268,7 +266,6 @@ namespace NetleniumServer
             {
                 try
                 {
-                    Console.WriteLine($"Deleting Directory '{directory}'");
                     Directory.Delete(directory, true);
                 }
                 catch (Exception ex)

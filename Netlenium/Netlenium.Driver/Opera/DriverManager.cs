@@ -144,8 +144,7 @@ namespace Netlenium.Driver.Opera
 
             if (IsInstalled == false)
             {
-                driver.Logging.WriteEntry(MessageType.Warning, "DriverManager",
-                    "Driver is not installed, attempting to install driver resources");
+                driver.Logging.WriteEntry(MessageType.Warning, "DriverManager", "Driver is not installed, attempting to install driver resources");
                 InstallLatestDriver();
                 return;
             }
@@ -153,11 +152,15 @@ namespace Netlenium.Driver.Opera
             var latestVersion = GetLatestVersion();
             var currentVersion = GetCurrentVersion();
 
-            if (currentVersion.CompareTo(latestVersion) == 0) return;
-            
-            driver.Logging.WriteEntry(MessageType.Warning, "DriverManager",$"The current driver ({currentVersion}) does not match the latest version {latestVersion}");
-            driver.Logging.WriteEntry(MessageType.Information, "DriverManager","Attempting to update the driver resources");
-            InstallLatestDriver();
+            if (currentVersion.CompareTo(latestVersion) != 0)
+            {
+                driver.Logging.WriteEntry(MessageType.Warning, "DriverManager", $"The current driver ({currentVersion}) does not match the latest version {latestVersion}");
+                driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Attempting to update the driver resources");
+                InstallLatestDriver();
+                return;
+            }
+
+            driver.Logging.WriteEntry(MessageType.Information, "DriverManager", "Driver resources are up to date");
         }
 
 

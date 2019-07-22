@@ -29,6 +29,7 @@ namespace Netlenium
             CommandLineParameters.Help = false;
             CommandLineParameters.UpdateDrivers = false;
             CommandLineParameters.ClearCache = false;
+            CommandLineParameters.CreateStartupConfiguration = false;
             CommandLineParameters.DisabledStdout = false;
             CommandLineParameters.DisableFileLogging = false;
             CommandLineParameters.DriverLoggingLevel = 1;
@@ -56,6 +57,9 @@ namespace Netlenium
                  { "clear-cache",  "Clears unused cache files created by Netlenium",
                   v => CommandLineParameters.ClearCache = v != null },
 
+                 { "create-startup-configuration",  "Starts the setup for creating a startup configuration file",
+                  v => CommandLineParameters.CreateStartupConfiguration = v != null },
+
                 { "disable-stdout",  "Disables standard output",
                   v => CommandLineParameters.DisabledStdout = v != null },
 
@@ -82,6 +86,9 @@ namespace Netlenium
 
                 { "default-driver=", "The default driver to start when no target browser is provided",
                   v => { if (v != null) CommandLineParameters.DefaultDriver = v; } },
+                
+                { "disable-headless-mode", "Prevents browsers from starting in headless mode",
+                  v => CommandLineParameters.DisableHeadlessMode = v != null },
 
                 { "disable-chrome-driver",  "Disables the ability to start Chrome Drivers",
                   v => CommandLineParameters.DisableChromeDriver = v != null },
@@ -171,6 +178,12 @@ namespace Netlenium
             if (CommandLineParameters.ClearCache)
             {
                 ClearCache();
+                Environment.Exit(0);
+            }
+
+            if(CommandLineParameters.CreateStartupConfiguration)
+            {
+                CreateConfigurationSetup();
                 Environment.Exit(0);
             }
 

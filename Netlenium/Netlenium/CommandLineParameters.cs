@@ -21,6 +21,11 @@
         public static bool ClearCache { get; set; }
 
         /// <summary>
+        /// Starts the setup for creating a startup configuration file
+        /// </summary>
+        public static bool CreateStartupConfiguration { get; set; }
+
+        /// <summary>
         /// Disables standard output
         /// </summary>
         public static bool DisabledStdout { get; set; }
@@ -64,6 +69,11 @@
         /// The default driver to start when no target browser is provided
         /// </summary>
         public static string DefaultDriver { get; set; }
+
+        /// <summary>
+        /// Prevents browsers from starting in headless mode
+        /// </summary>
+        public static bool DisableHeadlessMode { get; set; }
 
         /// <summary>
         /// Disables the ability to start Chrome Drivers

@@ -155,6 +155,9 @@
      netlenium --clear-cache
          Clears unused cache files created by Netlenium then exits
          
+     netlenium --create-startup-configuration
+         Starts the setup for creating a startup configuration file
+         
      netlenium --update [OPTIONS]
          Fetches missing driver resources and or updates outdated
          resources then exits
@@ -199,6 +202,9 @@
          chrome = Chrome Driver
          opera = Opera Chromium Driver
          firefox = Firefox Gecko Driver
+            
+     --disable-headless-mode
+         Prevents browsers from starting in headless mode
             
      --disable-chrome-driver
          Disables the ability to start Chrome Drivers

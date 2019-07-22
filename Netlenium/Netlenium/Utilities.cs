@@ -129,6 +129,15 @@ namespace Netlenium
                 driver.Logging.FileLoggingEnabled = true;
             }
 
+            if(CommandLineParameters.DisableHeadlessMode)
+            {
+                driver.Headless = true;
+            }
+            else
+            {
+                driver.Headless = false;
+            }
+
             switch (CommandLineParameters.DriverLoggingLevel)
             {
                 case 0:

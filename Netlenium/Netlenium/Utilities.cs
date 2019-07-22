@@ -131,11 +131,11 @@ namespace Netlenium
 
             if(CommandLineParameters.DisableHeadlessMode)
             {
-                driver.Headless = true;
+                driver.Headless = false;
             }
             else
             {
-                driver.Headless = false;
+                driver.Headless = true;
             }
 
             switch (CommandLineParameters.DriverLoggingLevel)

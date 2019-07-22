@@ -38,6 +38,7 @@ namespace Netlenium
             CommandLineParameters.MaxSessions = 100;
             CommandLineParameters.SessionInactivityLimit = 10;
             CommandLineParameters.DefaultDriver = "chrome";
+            CommandLineParameters.DisableHeadlessMode = false;
             CommandLineParameters.DisableChromeDriver = false;
             CommandLineParameters.DisableFirefoxDriver = false;
             CommandLineParameters.DisableOperaDriver = false;

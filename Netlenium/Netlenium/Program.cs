@@ -317,6 +317,14 @@ namespace Netlenium
         }
 
         /// <summary>
+        /// Creates a new startup configuration file
+        /// </summary>
+        private static void CreateConfigurationSetup()
+        {
+            Console.WriteLine("Choose a default browser");
+        }
+
+        /// <summary>
         /// Displays the Help Menu
         /// </summary>
         private static void ShowHelp()

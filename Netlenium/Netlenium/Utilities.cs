@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Netlenium.Driver;
 using Netlenium.Intellivoid;
 using Netlenium.Responses;
@@ -163,6 +164,47 @@ namespace Netlenium
                     break;
             }
 
+        }
+
+        /// <summary>
+        /// Prompts the user with a list and asks for an input
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static string CommandLineAskOptions(string message, List<string> options)
+        {
+            Console.WriteLine(message);
+            foreach(var option in options)
+            {
+                Console.WriteLine($" {options.IndexOf(option)}) {option}");
+            }
+            Console.WriteLine();
+
+            while(true)
+            {
+                Console.Write("Choice: ");
+                var Input = Console.ReadLine();
+
+                try
+                {
+                    var IntInput = Convert.ToInt32(Input);
+                    
+
+                    if (options.Count > IntInput && options[IntInput] != null)
+                    {
+                        return options[IntInput];
+                    }
+
+                    Console.WriteLine("Invalid Option!");
+
+                }
+                catch(Exception)
+                {
+                    Console.WriteLine("Invalid Option!");
+                    continue;
+                }
+            }
         }
 
     }

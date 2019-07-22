@@ -44,7 +44,7 @@ namespace Netlenium.Handlers
         /// <param name="httpRequestEventArgs"></param>
         private static void ActiveSessions(HttpRequestEventArgs httpRequestEventArgs)
         {
-
+            WebService.SendJsonResponse(httpRequestEventArgs.Response, new ListSessionsResponse(), 200);
         }
     }
 }

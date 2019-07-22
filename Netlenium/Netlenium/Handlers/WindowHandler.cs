@@ -67,7 +67,7 @@ namespace Netlenium.Handlers
             {
                 var currentWindowObject = new CurrentWindow
                 {
-                    Id = SessionManager.ActiveSessions[sessionId].Driver.Actions.CurrentWindow.ID,
+                    ID = SessionManager.ActiveSessions[sessionId].Driver.Actions.CurrentWindow.ID,
                     Title = SessionManager.ActiveSessions[sessionId].Driver.Document.Title,
                     Url = SessionManager.ActiveSessions[sessionId].Driver.Document.Uri
                 };

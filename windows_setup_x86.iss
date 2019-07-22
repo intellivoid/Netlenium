@@ -11,7 +11,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{D4AFB56D-CB31-4E5A-8A1C-E424477AF6E3}
+AppId={{42075102-e5d9-438f-b943-31534eb8a3a6}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -23,7 +23,7 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=C:\Users\Netkas\Documents\gits\Netlenium\Build\Windows Setup
-OutputBaseFilename=netlenium_v1.0.0.0_setup_x64
+OutputBaseFilename=netlenium_v1.0.0.0_setup_x86
 SetupIconFile=C:\Users\Netkas\Documents\gits\Netlenium\Graphics\Icons\netlenium_package_cat.ico
 Compression=lzma
 SolidCompression=yes
@@ -36,20 +36,20 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "Build\NetleniumServer\windows_release_x64\netlenium.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\getAttribute.js"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\isDisplayed.js"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\Mono.Options.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\Netlenium.Driver.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\netlenium.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\Netlenium.Logging.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\Netlenium.so"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\Netlenium.WebAPI.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\webdriver.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Build\NetleniumServer\windows_release_x64\extensions\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "Build\NetleniumServer\windows_release_x64\WebResources\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "Build\NetleniumServer\windows_release_x86\netlenium.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\getAttribute.js"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\isDisplayed.js"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\Mono.Options.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\Netlenium.Driver.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\netlenium.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\Netlenium.Logging.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\Netlenium.so"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\Netlenium.WebAPI.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\webdriver.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Build\NetleniumServer\windows_release_x86\extensions\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "Build\NetleniumServer\windows_release_x86\WebResources\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

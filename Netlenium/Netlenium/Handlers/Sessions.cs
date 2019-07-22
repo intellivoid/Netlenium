@@ -52,6 +52,12 @@ namespace Netlenium.Handlers
         private static void CreateSession(HttpRequestEventArgs httpRequestEventArgs)
         {
             var targetBrowser = WebService.GetParameter(httpRequestEventArgs.Request, "target_browser");
+            var proxy_scheme = WebService.GetParameter(httpRequestEventArgs.Request, "proxy_scheme");
+            var proxy_host = WebService.GetParameter(httpRequestEventArgs.Request, "proxy_host");
+            var proxy_port = WebService.GetParameter(httpRequestEventArgs.Request, "proxy_port");
+            var proxy_username = WebService.GetParameter(httpRequestEventArgs.Request, "proxy_username");
+            var proxy_password = WebService.GetParameter(httpRequestEventArgs.Request, "proxy_password");
+            
 
             if (targetBrowser == null)
             {
@@ -114,6 +120,57 @@ namespace Netlenium.Handlers
                 default:
                     WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnsupportedBrowserResponse(), 400);
                     return;
+            }
+
+           
+            if(proxy_scheme != null)
+            {
+                if(proxy_host == null)
+                {
+                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("proxy_host"), 400);
+                    return;
+                }
+
+                if(proxy_port == null)
+                {
+                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("proxy_port"), 400);
+                    return;
+                }
+
+                switch(proxy_scheme.ToLower())
+                {
+                    case "http":
+                        sessionObject.Driver.ProxyConfiguration.Scheme = ProxyScheme.HTTP;
+                        break;
+
+                    case "https":
+                        sessionObject.Driver.ProxyConfiguration.Scheme = ProxyScheme.HTTPS;
+                        break;
+
+                    default:
+                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new InvalidProxySchemeResponse(), 400);
+                        return;
+                }
+
+                sessionObject.Driver.ProxyConfiguration.Enabled = true;
+                sessionObject.Driver.ProxyConfiguration.AuthenticationRequired = false;
+                sessionObject.Driver.ProxyConfiguration.Host = proxy_host;
+                sessionObject.Driver.ProxyConfiguration.Port = Convert.ToInt32(proxy_port);
+
+
+                if(proxy_username != null)
+                {
+                    if(proxy_password == null)
+                    {
+                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("proxy_password"), 400);
+                        return;
+                    }
+
+                    sessionObject.Driver.ProxyConfiguration.AuthenticationRequired = true;
+                    sessionObject.Driver.ProxyConfiguration.Username = proxy_username;
+                    sessionObject.Driver.ProxyConfiguration.Password = proxy_password;
+
+                }
             }
 
             WebService.SendJsonResponse(httpRequestEventArgs.Response, new SessionCreatedResponse(sessionObject.Id));

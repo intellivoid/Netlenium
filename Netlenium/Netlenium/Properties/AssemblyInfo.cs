@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Netlenium")]
-[assembly: AssemblyDescription("Allows Netlenium Sessions to be created and used")]
+[assembly: AssemblyDescription("Allows software to automate browsers without using a lot of resources")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Intellivoid")]
 [assembly: AssemblyProduct("Netlenium")]

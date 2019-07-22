@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using Mono.Options;
 using Netlenium.Logging;
@@ -21,6 +22,8 @@ namespace Netlenium
         private static void Main(string[] args)
         {
             Console.Title = ProgramText.ProgramTitle;
+            Console.WriteLine($"Netlenium v{Assembly.GetExecutingAssembly().GetName().Version} Alpha Build");
+            Console.WriteLine($"(c) 2017-2019 Intellivoid. All rights reserved.{Environment.NewLine}");
 
             // Parse the command-line arguments
             CommandLineParameters.Help = false;
@@ -39,6 +42,7 @@ namespace Netlenium
             CommandLineParameters.DisableFirefoxDriver = false;
             CommandLineParameters.DisableOperaDriver = false;
             CommandLineParameters.AuthPassword = string.Empty;
+            CommandLineParameters.AdministratorPassword = string.Empty;
             
             var p = new OptionSet
             {
@@ -89,7 +93,10 @@ namespace Netlenium
                   v => CommandLineParameters.DisableOperaDriver = v != null },
 
                 { "auth-password=", "Authentication Password for Web Service access",
-                  v => { if (v != null) CommandLineParameters.AuthPassword = v; } }
+                  v => { if (v != null) CommandLineParameters.AuthPassword = v; } },
+
+                { "admin-password=", "Authentication Password for Administrator access",
+                  v => { if (v != null) CommandLineParameters.AdministratorPassword = v; } }
 
             };
             p.Parse(args);
@@ -229,7 +236,16 @@ namespace Netlenium
                 }
             }
 
-            if(CommandLineParameters.DefaultDriver != string.Empty)
+            if (CommandLineParameters.AdministratorPassword != string.Empty)
+            {
+                if (CommandLineParameters.AdministratorPassword.Length < 6)
+                {
+                    Console.WriteLine("The parameter 'admin-password' is invalid, the password must be greater than 6 characters");
+                    Environment.Exit(64);
+                }
+            }
+
+            if (CommandLineParameters.DefaultDriver != string.Empty)
             {
                 switch(CommandLineParameters.DefaultDriver.ToLower())
                 {
@@ -275,6 +291,7 @@ namespace Netlenium
             {
                 try
                 {
+                    Console.WriteLine($"Deleting File '{file}'");
                     File.Delete(file);
                 }
                 catch(Exception ex)
@@ -287,6 +304,7 @@ namespace Netlenium
             {
                 try
                 {
+                    Console.WriteLine($"Deleting Directory '{directory}'");
                     Directory.Delete(directory, true);
                 }
                 catch (Exception ex)
@@ -294,6 +312,8 @@ namespace Netlenium
                     Console.WriteLine(ProgramText.ErrorCannotDeleteDirectory, directory, ex.Message);
                 }
             }
+
+            Console.WriteLine("Operation Completed");
         }
 
         /// <summary>

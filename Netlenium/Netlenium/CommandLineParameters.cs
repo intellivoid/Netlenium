@@ -84,6 +84,11 @@
         /// Authenticaiton Password for Web Service access
         /// </summary>
         public static string AuthPassword { get; set; }
+
+        /// <summary>
+        /// Authentication Password for Administrating the server
+        /// </summary>
+        public static string AdministratorPassword { get; set; }
         
     }
 }

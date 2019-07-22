@@ -22,8 +22,8 @@ namespace Netlenium
         private static void Main(string[] args)
         {
             Console.Title = ProgramText.ProgramTitle;
-            Console.WriteLine($"Netlenium v{Assembly.GetExecutingAssembly().GetName().Version} Alpha Build");
-            Console.WriteLine($"(c) 2017-2019 Intellivoid. All rights reserved.{Environment.NewLine}");
+            Console.WriteLine(ProgramText.ProgramVersion, Assembly.GetExecutingAssembly().GetName().Version);
+            Console.WriteLine(ProgramText.ProgramCopyright, Environment.NewLine);
 
             // Parse the command-line arguments
             CommandLineParameters.Help = false;
@@ -246,7 +246,7 @@ namespace Netlenium
             {
                 if (CommandLineParameters.AdministratorPassword.Length < 6)
                 {
-                    Console.WriteLine("The parameter 'admin-password' is invalid, the password must be greater than 6 characters");
+                    Console.WriteLine(ProgramText.ProgramInvalidOptionForAdminPassword);
                     Environment.Exit(64);
                 }
             }
@@ -260,7 +260,7 @@ namespace Netlenium
                     case "firefox": break;
 
                     default:
-                        Console.WriteLine("The given option for 'default-driver' is invalid.");
+                        Console.WriteLine(ProgramText.ProgramInvalidOptionForDefaultDriver);
                         Environment.Exit(64);
                         break;
                 }
@@ -297,7 +297,7 @@ namespace Netlenium
             {
                 try
                 {
-                    Console.WriteLine($"Deleting File '{file}'");
+                    Console.WriteLine(ProgramText.ProgramDeletingFile, file);
                     File.Delete(file);
                 }
                 catch(Exception ex)
@@ -310,7 +310,7 @@ namespace Netlenium
             {
                 try
                 {
-                    Console.WriteLine($"Deleting Directory '{directory}'");
+                    Console.WriteLine(ProgramText.ProgramDeletingDirectory, directory);
                     Directory.Delete(directory, true);
                 }
                 catch (Exception ex)
@@ -319,7 +319,7 @@ namespace Netlenium
                 }
             }
 
-            Console.WriteLine("Operation Completed");
+            Console.WriteLine(ProgramText.ProgramOperationCompleted);
         }
 
         /// <summary>

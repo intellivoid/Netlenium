@@ -235,4 +235,25 @@
   <data name="ErrorCannotDeleteDirectory" xml:space="preserve">
     <value>Cannot delete '{0}', {1}</value>
   </data>
+  <data name="ProgramDeletingDirectory" xml:space="preserve">
+    <value>Deleting Directory '{0}'</value>
+  </data>
+  <data name="ProgramDeletingFile" xml:space="preserve">
+    <value>Deleting File '{0}'</value>
+  </data>
+  <data name="ProgramOperationCompleted" xml:space="preserve">
+    <value>Operation Completed</value>
+  </data>
+  <data name="ProgramInvalidOptionForDefaultDriver" xml:space="preserve">
+    <value>The given option for 'default-driver' is invalid.</value>
+  </data>
+  <data name="ProgramInvalidOptionForAdminPassword" xml:space="preserve">
+    <value>The parameter 'admin-password' is invalid, the password must be greater than 6 characters</value>
+  </data>
+  <data name="ProgramVersion" xml:space="preserve">
+    <value>Netlenium v{0} Alpha Build</value>
+  </data>
+  <data name="ProgramCopyright" xml:space="preserve">
+    <value>(c) 2017-2019 Intellivoid. All rights reserved.{0}</value>
+  </data>
 </root>

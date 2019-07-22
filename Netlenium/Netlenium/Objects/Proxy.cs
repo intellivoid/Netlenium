@@ -10,7 +10,7 @@ namespace Netlenium.Objects
     public class Proxy
     {
         /// <summary>
-        /// Public Consturctor
+        /// Public Constructor
         /// </summary>
         /// <param name="proxy"></param>
         public Proxy(IProxy proxy)
@@ -38,25 +38,16 @@ namespace Netlenium.Objects
             }
 
 
-            if (proxy.Enabled != null)
-            {
-                Enabled = proxy.Enabled;
-            }
+            Enabled = proxy.Enabled;
 
             if (proxy.Host != null)
             {
                 Host = proxy.Host;
             }
 
-            if(proxy.Port != null)
-            {
-                Port = proxy.Port;
-            }
+            Port = proxy.Port;
 
-            if(proxy.AuthenticationRequired != null)
-            {
-                AuthenticationRequired = proxy.AuthenticationRequired;
-            }
+            AuthenticationRequired = proxy.AuthenticationRequired;
 
             if (proxy.Username != null)
             {

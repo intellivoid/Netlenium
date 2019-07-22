@@ -86,7 +86,7 @@
         public static string AuthPassword { get; set; }
 
         /// <summary>
-        /// Authentication Password for Administrating the server
+        /// Authentication Password for Administrator access
         /// </summary>
         public static string AdministratorPassword { get; set; }
         

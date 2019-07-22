@@ -211,6 +211,9 @@
             
      --auth-password [Optional]
          Authentication Password for Web Service access
+         
+     --admin-password [Optional]
+         Authentication Password for Administrator access
 </value>
   </data>
   <data name="ProgramServerTitle" xml:space="preserve">

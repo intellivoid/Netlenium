@@ -216,5 +216,30 @@ namespace Netlenium
             }
         }
 
+        /// <summary>
+        /// Prompts the user with a yes or no input
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static bool CommandLineAskYesNo(string message)
+        {
+            while(true)
+            {
+                Console.Write($"{message} (Y/N): ");
+                var Input = Console.ReadLine().ToLower();
+
+                switch(Input)
+                {
+                    case "y": return true;
+                    case "yes": return true;
+                    case "n": return false;
+                    case "no": return false;
+                    default:
+                        Console.WriteLine("Invalid Option!");
+                        break;
+                }
+            }
+        }
+
     }
 }

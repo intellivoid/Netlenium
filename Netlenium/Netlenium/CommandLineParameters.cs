@@ -19,12 +19,7 @@
         /// Clears unused cache files created by Netlenium then exits
         /// </summary>
         public static bool ClearCache { get; set; }
-
-        /// <summary>
-        /// Starts the setup for creating a startup configuration file
-        /// </summary>
-        public static bool CreateStartupConfiguration { get; set; }
-
+       
         /// <summary>
         /// Disables standard output
         /// </summary>

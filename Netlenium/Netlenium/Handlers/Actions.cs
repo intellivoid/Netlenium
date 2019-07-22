@@ -22,7 +22,7 @@ namespace Netlenium.Handlers
                 WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
             }
 
-            if (WebService.IsAuthorized(httpRequestEventArg) == false)
+            if (WebService.IsAuthorizedAsAdmin(httpRequestEventArg) == false)
             {
                 WebService.SendJsonResponse(httpRequestEventArg.Response, new UnauthorizedRequestResponse(), 401);
                 return;

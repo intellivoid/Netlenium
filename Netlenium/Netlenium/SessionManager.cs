@@ -21,6 +21,22 @@ namespace Netlenium
         public static IDictionary<string, DateTime> ExpiredSessions;
 
         /// <summary>
+        /// Returns the total amount of sessions that are currently active
+        /// </summary>
+        public static int TotalActiveSessions
+        {
+            get
+            {
+                if(ActiveSessions == null)
+                {
+                    return 0;
+                }
+
+                return ActiveSessions.Count;
+            }
+        }
+
+        /// <summary>
         /// Generates a new Session ID
         /// </summary>
         /// <returns></returns>

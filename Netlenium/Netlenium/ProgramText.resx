@@ -194,7 +194,7 @@
          inactive for. Setting the value to 0 will never close
          inactive sessions.
          
-     --default-browser [Optional]
+     --default-browser [Default: 'chrome']
          The default driver to run if no target browser was provided
          chrome = Chrome Driver
          opera = Opera Chromium Driver

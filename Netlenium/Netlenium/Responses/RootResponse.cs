@@ -1,4 +1,5 @@
 ﻿using System;
+using Netlenium.Objects;
 
 namespace Netlenium.Responses
 {
@@ -16,13 +17,13 @@ namespace Netlenium.Responses
         {
             Status = true;
             ResponseCode = 200;
-            ServerName = CommandLineParameters.ServerName;
+            ServerDetails = new ServerDetails();
         }
 
-        public string ServerName { get; set; }
-        
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ServerDetails ServerDetails { get; set; }
     }
 }

@@ -28,11 +28,23 @@ namespace Netlenium.Handlers
 
             switch (requestPath[1])
             {
+                case "active_sessions":
+                    ActiveSessions(httpRequestEventArg);
+                    break;
+
                 default:
                     WebService.SendJsonResponse(httpRequestEventArg.Response, new NotFoundResponse(), 404);
                     break;
             }
         }
 
+        /// <summary>
+        /// Lists all active sessions with their related information
+        /// </summary>
+        /// <param name="httpRequestEventArgs"></param>
+        private static void ActiveSessions(HttpRequestEventArgs httpRequestEventArgs)
+        {
+
+        }
     }
 }

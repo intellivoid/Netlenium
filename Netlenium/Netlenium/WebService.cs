@@ -150,6 +150,35 @@ namespace Netlenium
         }
 
         /// <summary>
+        /// Determines if the request is authorized as a administrator
+        /// </summary>
+        /// <param name="httpRequestEvent"></param>
+        /// <returns></returns>
+        public static bool IsAuthorizedAsAdmin(HttpRequestEventArgs httpRequestEvent)
+        {
+            if (CommandLineParameters.AdministratorPassword == string.Empty)
+            {
+                return true;
+            }
+
+            var authenticationPassword = GetParameter(httpRequestEvent.Request, "auth");
+
+            if (authenticationPassword == null)
+            {
+                Logging.WriteEntry(MessageType.Warning, "WebService", "Authentication Failed, Reason: Missing Parameter 'auth'");
+                return false;
+            }
+
+            if (authenticationPassword != CommandLineParameters.AdministratorPassword)
+            {
+                Logging.WriteEntry(MessageType.Warning, "WebService", "Authentication Failed, Reason: Incorrect Password");
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Verifies if the given session is valid
         /// </summary>
         /// <param name="httpRequestEvent"></param>

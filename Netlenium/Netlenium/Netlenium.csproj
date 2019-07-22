@@ -128,6 +128,7 @@
   <ItemGroup>
     <Compile Include="CommandLineParameters.cs" />
     <Compile Include="Handlers\Actions.cs" />
+    <Compile Include="Handlers\Admin.cs" />
     <Compile Include="Handlers\Navigation.cs" />
     <Compile Include="Handlers\Sessions.cs" />
     <Compile Include="Handlers\WebElement.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="IResponse.cs" />
     <Compile Include="Objects\CurrentWindow.cs" />
     <Compile Include="Objects\LocationProperty.cs" />
+    <Compile Include="Objects\ServerDetails.cs" />
     <Compile Include="Objects\SizeProperty.cs" />
     <Compile Include="Objects\WebElement.cs" />
     <Compile Include="Program.cs" />

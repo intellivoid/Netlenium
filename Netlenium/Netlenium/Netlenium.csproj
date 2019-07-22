@@ -172,6 +172,8 @@
     <Compile Include="Responses\DriverDisabledResponse.cs" />
     <Compile Include="Responses\ElementNotFoundResponse.cs" />
     <Compile Include="Responses\ElementsResultsResponse.cs" />
+    <Compile Include="Responses\InternalServerErrorResponse.cs" />
+    <Compile Include="Responses\InvalidProxySchemeResponse.cs" />
     <Compile Include="Responses\InvalidSearchByValueResponse.cs" />
     <Compile Include="Responses\JavascriptExecutionErrorResponse.cs" />
     <Compile Include="Responses\JavascriptExecutionResponse.cs" />

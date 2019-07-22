@@ -198,41 +198,50 @@ namespace Netlenium
             var requestPath = httpRequestEvent.Request.Path.ToLower().Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
             if(requestPath.Length > 0)
             {
-                switch(requestPath[0])
+                try
                 {
-                    case "actions":
-                        Actions.HandleRequest(requestPath, httpRequestEvent);
-                        break;
+                    switch (requestPath[0])
+                    {
+                        case "actions":
+                            Actions.HandleRequest(requestPath, httpRequestEvent);
+                            break;
 
-                    case "navigation":
-                        Navigation.HandleRequest(requestPath, httpRequestEvent);
-                        break;
+                        case "navigation":
+                            Navigation.HandleRequest(requestPath, httpRequestEvent);
+                            break;
 
-                    case "sessions":
-                        Sessions.HandleRequest(requestPath, httpRequestEvent);
-                        break;
+                        case "sessions":
+                            Sessions.HandleRequest(requestPath, httpRequestEvent);
+                            break;
 
-                    case "web_element":
-                        WebElement.HandleRequest(requestPath, httpRequestEvent);
-                        break;
+                        case "web_element":
+                            WebElement.HandleRequest(requestPath, httpRequestEvent);
+                            break;
 
-                    case "window_handler":
-                        WindowHandler.HandleRequest(requestPath, httpRequestEvent);
-                        break;
+                        case "window_handler":
+                            WindowHandler.HandleRequest(requestPath, httpRequestEvent);
+                            break;
 
-                    case "favicon.ico":
-                        var faviconLocation = $"{AssemblyDirectory}{Path.DirectorySeparatorChar}WebResources{Path.DirectorySeparatorChar}favicon.ico";
-                        if (File.Exists(faviconLocation))
-                        {
-                            httpRequestEvent.Response.Headers.Add("Content-Type", "image/ico");
-                            SendFile(httpRequestEvent.Response, faviconLocation);
-                        }
-                        break;
+                        case "favicon.ico":
+                            var faviconLocation = $"{AssemblyDirectory}{Path.DirectorySeparatorChar}WebResources{Path.DirectorySeparatorChar}favicon.ico";
+                            if (File.Exists(faviconLocation))
+                            {
+                                httpRequestEvent.Response.Headers.Add("Content-Type", "image/ico");
+                                SendFile(httpRequestEvent.Response, faviconLocation);
+                            }
+                            break;
 
-                    default:
-                        SendJsonResponse(httpRequestEvent.Response, new NotFoundResponse(), 404);
-                        break;
+                        default:
+                            SendJsonResponse(httpRequestEvent.Response, new NotFoundResponse(), 404);
+                            break;
+                    }
                 }
+                catch(Exception ex)
+                {
+                    SendJsonResponse(httpRequestEvent.Response, new InternalServerErrorResponse(ex), 500);
+                    return;
+                }
+                
             }
             else
             {

@@ -155,9 +155,6 @@
      netlenium --clear-cache
          Clears unused cache files created by Netlenium then exits
          
-     netlenium --create-startup-configuration
-         Starts the setup for creating a startup configuration file
-         
      netlenium --update [OPTIONS]
          Fetches missing driver resources and or updates outdated
          resources then exits
@@ -185,6 +182,10 @@
 
      -p, --port [Default: 6410]
          The port to run the Web Service on
+         
+     --allow-remote-requests
+         Disables loopback only connections and allows requests from other
+         devices on your network or outside your network
             
      --server-name [Default: 'Netlenium Server']
          Optional custom name for this server

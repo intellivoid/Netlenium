@@ -71,6 +71,9 @@ namespace Netlenium
                 { "p|port=", "The port to run the Web Service on",
                   v => { if (v != null) CommandLineParameters.Port = Convert.ToInt32(v); } },
 
+                { "allow-remote-requests",  "Disables loopback only connections",
+                  v => CommandLineParameters.AllowRemoteRequests = v != null },
+
                 { "server-name=", "The port to run the Web Service on",
                   v => { if (v != null) CommandLineParameters.ServerName = v; } },
 

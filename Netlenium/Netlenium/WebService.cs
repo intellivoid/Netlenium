@@ -56,7 +56,14 @@ namespace Netlenium
 
             if (port != 0)
             {
-                server.EndPoint = new IPEndPoint(IPAddress.Loopback, port);
+                if(CommandLineParameters.AllowRemoteRequests == true)
+                {
+                    server.EndPoint = new IPEndPoint(IPAddress.Any, port);
+                }
+                else
+                {
+                    server.EndPoint = new IPEndPoint(IPAddress.Loopback, port);
+                }
             }
 
             server.RequestReceived += (s, e) => { RequestReceived(e); };

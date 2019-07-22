@@ -46,6 +46,12 @@
         public static int Port { get; set; }
 
         /// <summary>
+        /// Disables loopback only connections and allows requests from other
+        /// devices on your network or outside your network
+        /// </summary>
+        public static bool AllowRemoteRequests { get; set; }
+
+        /// <summary>
         /// Optional custom name for this server
         /// </summary>
         public static string ServerName { get; set; }

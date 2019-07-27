@@ -13,6 +13,7 @@
         {
             Status = false;
             ResponseCode = 403;
+            ErrorCode = ErrorCode.TooManySessions;
             Message = $"A maximum of {CommandLineParameters.MaxSessions} session(s) are allowed to be created";
         }
 
@@ -21,5 +22,7 @@
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace Netlenium.Responses
         {
             Status = false;
             ResponseCode = 400;
+            ErrorCode = ErrorCode.InvalidProxyScheme;
             Message = "The given proxy scheme is unsupported";
         }
 
@@ -23,5 +24,7 @@ namespace Netlenium.Responses
         public int ResponseCode { get; set; }
 
         public string Message { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

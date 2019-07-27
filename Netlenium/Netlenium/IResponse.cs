@@ -14,5 +14,10 @@
         /// The response code of the request
         /// </summary>
         int ResponseCode { get; set; }
+
+        /// <summary>
+        /// The error code that is returned
+        /// </summary>
+        ErrorCode ErrorCode { get; set; }
     }
 }

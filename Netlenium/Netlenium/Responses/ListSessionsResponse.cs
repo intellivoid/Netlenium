@@ -14,6 +14,7 @@ namespace Netlenium.Responses
         {
             Status = true;
             ResponseCode = 200;
+            ErrorCode = ErrorCode.NoError;
             Sessions = new List<Objects.Session>();
 
             if(SessionManager.TotalActiveSessions > 0)
@@ -30,5 +31,7 @@ namespace Netlenium.Responses
         public int ResponseCode { get; set; }
 
         public List<Objects.Session> Sessions { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

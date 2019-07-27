@@ -17,6 +17,7 @@ namespace Netlenium.Responses
         {
             Status = true;
             ResponseCode = 200;
+            ErrorCode = ErrorCode.NoError;
             ServerDetails = new ServerDetails();
         }
 
@@ -25,5 +26,7 @@ namespace Netlenium.Responses
         public int ResponseCode { get; set; }
 
         public ServerDetails ServerDetails { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

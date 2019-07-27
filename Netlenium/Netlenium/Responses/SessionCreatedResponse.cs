@@ -17,6 +17,7 @@ namespace Netlenium.Responses
         {
             Status = true;
             ResponseCode = 200;
+            ErrorCode = ErrorCode.NoError;
             SessionId = sessionId;
         }
 
@@ -25,5 +26,7 @@ namespace Netlenium.Responses
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

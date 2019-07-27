@@ -18,12 +18,16 @@ namespace Netlenium.Responses
         {
             Status = true;
             ResponseCode = 200;
+            ErrorCode = ErrorCode.NoError;
             Elements = new List<WebElement>();
         }
 
         public List<WebElement> Elements { get; set; }
+
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

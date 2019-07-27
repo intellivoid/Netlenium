@@ -51,7 +51,7 @@ namespace Netlenium.Handlers
         /// <param name="httpRequestEventArgs"></param>
         private static void CreateSession(HttpRequestEventArgs httpRequestEventArgs)
         {
-            var targetBrowser = WebService.GetParameter(httpRequestEventArgs.Request, "target_browser");
+            var targetDriver = WebService.GetParameter(httpRequestEventArgs.Request, "target_driver");
             var proxy_scheme = WebService.GetParameter(httpRequestEventArgs.Request, "proxy_scheme");
             var proxy_host = WebService.GetParameter(httpRequestEventArgs.Request, "proxy_host");
             var proxy_port = WebService.GetParameter(httpRequestEventArgs.Request, "proxy_port");
@@ -59,22 +59,22 @@ namespace Netlenium.Handlers
             var proxy_password = WebService.GetParameter(httpRequestEventArgs.Request, "proxy_password");
             
 
-            if (targetBrowser == null)
+            if (targetDriver == null)
             {
                 if(CommandLineParameters.DefaultDriver == string.Empty)
                 {
-                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("target_browser"), 400);
+                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new MissingParameterResponse("target_driver"), 400);
                     return;
                 }
 
-                targetBrowser = CommandLineParameters.DefaultDriver.ToLower();
+                targetDriver = CommandLineParameters.DefaultDriver.ToLower();
             }
 
             if (SessionManager.ActiveSessions != null)
             {
                 if (SessionManager.ActiveSessions.Count == CommandLineParameters.MaxSessions)
                 {
-                    WebService.Logging.WriteEntry(MessageType.Error, "SessionManager", $"Cannot create session for '{targetBrowser}', {CommandLineParameters.MaxSessions} Session(s) are allowed at the same time");
+                    WebService.Logging.WriteEntry(MessageType.Error, "SessionManager", $"Cannot create session for '{targetDriver}', {CommandLineParameters.MaxSessions} Session(s) are allowed at the same time");
                     WebService.SendJsonResponse(httpRequestEventArgs.Response, new MaxSessionsErrorResponse(), 403);
                     return;
                 }
@@ -82,13 +82,13 @@ namespace Netlenium.Handlers
 
             Session sessionObject;
 
-            switch (targetBrowser)
+            switch (targetDriver)
             {
                 case "chrome":
 
                     if (CommandLineParameters.DisableChromeDriver)
                     {
-                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new DriverDisabledResponse(targetBrowser), 403);
+                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new DriverDisabledResponse(targetDriver), 403);
                         return;
                     }
 
@@ -99,7 +99,7 @@ namespace Netlenium.Handlers
 
                     if (CommandLineParameters.DisableFirefoxDriver)
                     {
-                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new DriverDisabledResponse(targetBrowser), 403);
+                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new DriverDisabledResponse(targetDriver), 403);
                         return;
                     }
 
@@ -110,7 +110,7 @@ namespace Netlenium.Handlers
 
                     if (CommandLineParameters.DisableOperaDriver)
                     {
-                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new DriverDisabledResponse(targetBrowser), 403);
+                        WebService.SendJsonResponse(httpRequestEventArgs.Response, new DriverDisabledResponse(targetDriver), 403);
                         return;
                     }
 
@@ -118,7 +118,7 @@ namespace Netlenium.Handlers
                     break;
 
                 default:
-                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnsupportedBrowserResponse(), 400);
+                    WebService.SendJsonResponse(httpRequestEventArgs.Response, new UnsupportedDriverResponse(), 400);
                     return;
             }
 

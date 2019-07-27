@@ -16,6 +16,7 @@ namespace Netlenium.Responses
         {
             Status = false;
             ResponseCode = 404;
+            ErrorCode = ErrorCode.ElementNotFound;
             Message = "The element was not found";
         }
 
@@ -24,5 +25,7 @@ namespace Netlenium.Responses
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

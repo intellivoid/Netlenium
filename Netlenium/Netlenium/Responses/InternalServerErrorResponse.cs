@@ -13,6 +13,8 @@ namespace Netlenium.Responses
 
         public string Error { get; set; }
 
+        public ErrorCode ErrorCode { get; set; }
+
         /// <summary>
         /// Public Consturctor
         /// </summary>
@@ -21,6 +23,7 @@ namespace Netlenium.Responses
         {
             Status = false;
             ResponseCode = 500;
+            ErrorCode = ErrorCode.UnexpectedError;
             Error = exception.Message;
         }
     }

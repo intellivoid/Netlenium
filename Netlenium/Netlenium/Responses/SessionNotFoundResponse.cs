@@ -17,6 +17,7 @@ namespace Netlenium.Responses
         {
             Status = false;
             ResponseCode = 404;
+            ErrorCode = ErrorCode.SessionNotFound;
             Message = $"The session '{sessionId}' was not found";
         }
 
@@ -25,5 +26,7 @@ namespace Netlenium.Responses
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

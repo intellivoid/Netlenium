@@ -16,6 +16,7 @@ namespace Netlenium.Responses
         {
             Status = false;
             ResponseCode = 401;
+            ErrorCode = ErrorCode.Unauthorized;
             Message = "Unauthorized Request";
         }
 
@@ -24,5 +25,7 @@ namespace Netlenium.Responses
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

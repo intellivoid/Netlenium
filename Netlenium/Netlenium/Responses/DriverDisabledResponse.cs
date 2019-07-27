@@ -17,6 +17,7 @@ namespace Netlenium.Responses
         {
             Status = false;
             ResponseCode = 403;
+            ErrorCode = ErrorCode.DriverDisabled;
             Message = $"The driver for '{targetBrowser}' is disabled";
         }
 
@@ -25,5 +26,7 @@ namespace Netlenium.Responses
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

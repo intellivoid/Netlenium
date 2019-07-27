@@ -17,6 +17,7 @@ namespace Netlenium.Responses
         {
             Status = false;
             ResponseCode = 400;
+            ErrorCode = ErrorCode.MissingParameter;
             Message = $"The required parameter '{parameterName}' is missing";
         }
 
@@ -25,5 +26,7 @@ namespace Netlenium.Responses
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

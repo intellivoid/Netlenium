@@ -16,6 +16,7 @@ namespace Netlenium.Responses
         {
             Status = false;
             ResponseCode = 400;
+            ErrorCode = ErrorCode.InvalidSearchValue;
             Message = "The given value for 'by' is invalid";
         }
 
@@ -24,5 +25,7 @@ namespace Netlenium.Responses
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

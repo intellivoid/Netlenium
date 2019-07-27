@@ -16,10 +16,13 @@ namespace Netlenium.Responses
         {
             Status = true;
             ResponseCode = 200;
+            ErrorCode = ErrorCode.NoError;
         }
 
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
     }
 }

@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineParameters.cs" />
+    <Compile Include="ErrorCode.cs" />
     <Compile Include="Handlers\Actions.cs" />
     <Compile Include="Handlers\Admin.cs" />
     <Compile Include="Handlers\Navigation.cs" />

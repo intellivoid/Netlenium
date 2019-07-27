@@ -21,12 +21,12 @@ namespace Netlenium.Responses
             SessionId = sessionId;
         }
 
-        public string SessionId { get; set; }
-        
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
 
         public ErrorCode ErrorCode { get; set; }
+
+        public string SessionId { get; set; }
     }
 }

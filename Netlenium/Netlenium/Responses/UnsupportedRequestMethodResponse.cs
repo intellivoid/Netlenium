@@ -19,13 +19,13 @@ namespace Netlenium.Responses
             ErrorCode = ErrorCode.UnsupportedRequestMethod;
             Message = "The request method used is not supported for this Web Service";
         }
-
-        public string Message { get; set; }
-        
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
 
         public ErrorCode ErrorCode { get; set; }
+
+        public string Message { get; set; }
+
     }
 }

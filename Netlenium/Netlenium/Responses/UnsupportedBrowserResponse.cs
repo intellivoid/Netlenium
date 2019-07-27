@@ -21,12 +21,12 @@ namespace Netlenium.Responses
             Message = "The given driver is unsupported";
         }
 
-        public string Message { get; set; }
-        
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
 
         public ErrorCode ErrorCode { get; set; }
+
+        public string Message { get; set; }
     }
 }

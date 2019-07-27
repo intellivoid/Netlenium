@@ -17,12 +17,12 @@
             Message = $"A maximum of {CommandLineParameters.MaxSessions} session(s) are allowed to be created";
         }
 
-        public string Message { get; set; }
-        
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
 
         public ErrorCode ErrorCode { get; set; }
+
+        public string Message { get; set; }
     }
 }

@@ -23,8 +23,9 @@ namespace Netlenium.Responses
 
         public int ResponseCode { get; set; }
 
+        public ErrorCode ErrorCode { get; set; }
+
         public string Message { get; set; }
 
-        public ErrorCode ErrorCode { get; set; }
     }
 }

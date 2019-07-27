@@ -7,13 +7,6 @@ namespace Netlenium.Responses
     /// </summary>
     public class InternalServerErrorResponse : IResponse
     {
-        public bool Status { get; set; }
-
-        public int ResponseCode { get; set; }
-
-        public string Error { get; set; }
-
-        public ErrorCode ErrorCode { get; set; }
 
         /// <summary>
         /// Public Consturctor
@@ -26,5 +19,13 @@ namespace Netlenium.Responses
             ErrorCode = ErrorCode.UnexpectedError;
             Error = exception.Message;
         }
+
+        public bool Status { get; set; }
+
+        public int ResponseCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
+
+        public string Error { get; set; }
     }
 }

@@ -22,12 +22,12 @@ namespace Netlenium.Responses
             WindowHandles = windowHandles;
         }
 
-        public List<string> WindowHandles { get; set; }
-        
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
 
         public ErrorCode ErrorCode { get; set; }
+
+        public List<string> WindowHandles { get; set; }
     }
 }

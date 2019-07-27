@@ -22,12 +22,12 @@ namespace Netlenium.Responses
             CurrentWindow = currentWindow;
         }
 
-        public CurrentWindow CurrentWindow { get; set; }
-        
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
 
         public ErrorCode ErrorCode { get; set; }
+
+        public CurrentWindow CurrentWindow { get; set; }
     }
 }

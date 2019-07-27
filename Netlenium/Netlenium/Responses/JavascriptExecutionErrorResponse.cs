@@ -21,12 +21,13 @@ namespace Netlenium.Responses
             Error = exceptionMessage;
         }
 
-        public string Error { get; set; }
-        
         public bool Status { get; set; }
 
         public int ResponseCode { get; set; }
 
         public ErrorCode ErrorCode { get; set; }
+
+        public string Error { get; set; }
+        
     }
 }

@@ -17,7 +17,7 @@ namespace Netlenium.Objects
             ID = session.Id;
             Created = session.SessionStarted.ToString();
             LastActivity = session.LastActivity.ToString();
-            Driver = session.Driver.TargetBrowser.ToString();
+            Driver = session.Driver.TargetBrowser.ToString().ToLower();
             Headless = session.Driver.Headless;
             ProxyConfiguration = new Proxy(session.Driver.ProxyConfiguration);
             CurrentWindow = new CurrentWindow

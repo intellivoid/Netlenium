@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Netlenium"
-#define MyAppVersion "1.0.0.0"
+#define MyAppVersion "1.0.0.1"
 #define MyAppPublisher "Intellivoid"
 #define MyAppURL "https://netlenium.intellivoid.info/"
 #define MyAppExeName "netlenium.exe"
@@ -23,7 +23,7 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=C:\Users\Netkas\Documents\gits\Netlenium\Build\Windows Setup
-OutputBaseFilename=netlenium_v1.0.0.0_setup_x86
+OutputBaseFilename=netlenium_v1.0.0.1_setup_x86
 SetupIconFile=C:\Users\Netkas\Documents\gits\Netlenium\Graphics\Icons\netlenium_package_cat.ico
 Compression=lzma
 SolidCompression=yes

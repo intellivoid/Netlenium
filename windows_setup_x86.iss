@@ -22,9 +22,9 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-OutputDir=C:\Users\Netkas\Documents\gits\Netlenium\Build\Windows Setup
+OutputDir=Build\Windows Setup
 OutputBaseFilename=netlenium_v1.0.0.1_setup_x86
-SetupIconFile=C:\Users\Netkas\Documents\gits\Netlenium\Graphics\Icons\netlenium_package_cat.ico
+SetupIconFile=Graphics\Icons\netlenium_package_cat.ico
 Compression=lzma
 SolidCompression=yes
 

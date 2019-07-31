@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <DocumentationFile>
     </DocumentationFile>
-    <OutputPath>..\..\Build\NetleniumServer\linux_debug_anycpu</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\linux_debug_anycpu</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release|AnyCPU' ">
@@ -27,12 +27,12 @@
     <Prefer32bit>false</Prefer32bit>
     <DocumentationFile>
     </DocumentationFile>
-    <OutputPath>..\..\Build\NetleniumServer\linux_release_anycpu</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\linux_release_anycpu</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>..\..\Build\NetleniumServer\linux_debug_x64\</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\linux_debug_x64\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Prefer32bit>false</Prefer32bit>
     <DebugSymbols>true</DebugSymbols>
@@ -40,14 +40,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>..\..\Build\NetleniumServer\linux_release_x64</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\linux_release_x64</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>..\..\Build\NetleniumServer\linux_debug_x86</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\linux_debug_x86</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Prefer32bit>false</Prefer32bit>
     <DebugSymbols>true</DebugSymbols>
@@ -55,13 +55,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>..\..\Build\NetleniumServer\linux_release_x86</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\linux_release_x86</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|x64' ">
-    <OutputPath>..\..\Build\NetleniumServer\windows_debug_x64</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\windows_debug_x64</OutputPath>
     <PlatformTarget>x64</PlatformTarget>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Prefer32bit>false</Prefer32bit>
@@ -69,14 +69,14 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|x64' ">
-    <OutputPath>..\..\Build\NetleniumServer\windows_release_x64</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\windows_release_x64</OutputPath>
     <PlatformTarget>x64</PlatformTarget>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|x86' ">
-    <OutputPath>..\..\Build\NetleniumServer\windows_debug_x86</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\windows_debug_x86</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Prefer32bit>false</Prefer32bit>
@@ -84,7 +84,7 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|x86' ">
-    <OutputPath>..\..\Build\NetleniumServer\windows_release_x86</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\windows_release_x86</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
@@ -96,7 +96,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <OutputPath>..\..\Build\NetleniumServer\windows_release_anycpu</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\windows_release_anycpu</OutputPath>
     <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
@@ -108,7 +108,7 @@
     <WarningLevel>4</WarningLevel>
     <StartArguments>--driver-logging-level 3 --server-name "Intellivoid Server"</StartArguments>
     <RemoteDebugEnabled>false</RemoteDebugEnabled>
-    <OutputPath>..\..\Build\NetleniumServer\windows_debug_anycpu</OutputPath>
+    <OutputPath>..\..\Build\Netlenium\windows_debug_anycpu</OutputPath>
     <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <PropertyGroup>

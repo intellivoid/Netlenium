@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Netlenium"
-#define MyAppVersion "1.0.0.1"
+#define MyAppVersion "1.0.0.2"
 #define MyAppPublisher "Intellivoid"
 #define MyAppURL "https://netlenium.intellivoid.info/"
 #define MyAppExeName "netlenium.exe"
@@ -11,7 +11,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{D4AFB56D-CB31-4E5A-8A1C-E424477AF6E3}
+AppId={4852B2BE-D578-4793-B797-D37AFDD18D49}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -23,7 +23,7 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=Build\Windows Setup
-OutputBaseFilename=netlenium_v1.0.0.1_setup_x64
+OutputBaseFilename=netlenium_v1.0.0.2_setup_x64
 SetupIconFile=Graphics\Icons\netlenium_package_cat.ico
 Compression=lzma
 SolidCompression=yes

@@ -175,7 +175,8 @@ namespace Netlenium.Driver.Opera
             Logging.WriteEntry(MessageType.Verbose, "Driver", "Setting options for driver");
             SetOptions(options);
 
-            var loggingPath = $"{ApplicationPaths.LoggingDirectory}{Path.DirectorySeparatorChar}chrome_driver.log";
+            var isolated_directory = Utilities.CreateIsolatedLoggingDirectory("opera");
+            var loggingPath = $"{isolated_directory}{Path.DirectorySeparatorChar}opera_driver.log";
             Logging.WriteEntry(MessageType.Verbose, "Driver", $"Setting logging path '{loggingPath}'");
             DriverService.LogPath = loggingPath;
 

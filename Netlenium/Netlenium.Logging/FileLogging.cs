@@ -60,7 +60,16 @@ namespace Netlenium.Logging
             }
 
             output.Append($"=> {serviceName}.{moduleName} ::   {entry}{Environment.NewLine}");
-            File.AppendAllText(GetLoggingFilepath(serviceName), output.ToString());
+            var file_name = GetLoggingFilepath(serviceName);
+
+            try
+            {
+                File.AppendAllText(file_name, output.ToString());
+            }
+            catch(IOException io_ex)
+            {
+                Console.WriteLine(string.Format("Warning: Cannot write to file '{0}' due to IO error; {1}", file_name, io_ex.Message));
+            }
         }
 
     }

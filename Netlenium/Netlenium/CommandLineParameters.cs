@@ -52,6 +52,11 @@
         public static bool AllowRemoteRequests { get; set; }
 
         /// <summary>
+        /// Sets Server and Driver logging level to 3 and disables headless mode.
+        /// </summary>
+        public static bool DebuggingMode { get; set; }
+
+        /// <summary>
         /// Optional custom name for this server
         /// </summary>
         public static string ServerName { get; set; }
@@ -72,7 +77,8 @@
         public static string DefaultDriver { get; set; }
 
         /// <summary>
-        /// Prevents browsers from starting in headless mode
+        /// Prevents browsers from starting in 
+        /// mode
         /// </summary>
         public static bool DisableHeadlessMode { get; set; }
 

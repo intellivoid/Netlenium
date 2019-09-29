@@ -186,6 +186,9 @@
      --allow-remote-requests
          Disables loopback only connections and allows requests from other
          devices on your network or outside your network
+         
+     --debugging-mode
+         Sets driver and server logging levels to 3 and disables headless mode
             
      --server-name [Default: 'Netlenium Server']
          Optional custom name for this server

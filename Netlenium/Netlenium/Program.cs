@@ -44,7 +44,9 @@ namespace Netlenium
             CommandLineParameters.DisableOperaDriver = false;
             CommandLineParameters.AuthPassword = string.Empty;
             CommandLineParameters.AdministratorPassword = string.Empty;
-            
+            CommandLineParameters.AllowRemoteRequests = false;
+            CommandLineParameters.DebuggingMode = false;
+
             var p = new OptionSet
             {
 
@@ -74,6 +76,9 @@ namespace Netlenium
 
                 { "allow-remote-requests",  "Disables loopback only connections",
                   v => CommandLineParameters.AllowRemoteRequests = v != null },
+
+                { "debugging-mode",  "Sets server and driver logging level to 3 and disables headless mode",
+                  v => CommandLineParameters.DebuggingMode = v != null },
 
                 { "server-name=", "The port to run the Web Service on",
                   v => { if (v != null) CommandLineParameters.ServerName = v; } },
@@ -157,16 +162,25 @@ namespace Netlenium
                     break;
             }
 
-            if(CommandLineParameters.DriverLoggingLevel < 0)
+            if (CommandLineParameters.DebuggingMode == true)
             {
-                Console.WriteLine(ProgramText.DriverLoggingLevelInvalidOption);
-                Environment.Exit(1);
+                CommandLineParameters.DriverLoggingLevel = 3;
+                CommandLineParameters.ServerLoggingLevel = 3;
+                CommandLineParameters.DisableHeadlessMode = true;
             }
-
-            if(CommandLineParameters.DriverLoggingLevel > 3)
+            else
             {
-                Console.WriteLine(ProgramText.DriverLoggingLevelInvalidOption);
-                Environment.Exit(1);
+                if (CommandLineParameters.DriverLoggingLevel < 0)
+                {
+                    Console.WriteLine(ProgramText.DriverLoggingLevelInvalidOption);
+                    Environment.Exit(1);
+                }
+
+                if (CommandLineParameters.DriverLoggingLevel > 3)
+                {
+                    Console.WriteLine(ProgramText.DriverLoggingLevelInvalidOption);
+                    Environment.Exit(1);
+                }
             }
             
             if(CommandLineParameters.UpdateDrivers)

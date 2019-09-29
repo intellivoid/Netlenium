@@ -14,9 +14,19 @@ namespace Netlenium.Logging
         /// </summary>
         /// <param name="serviceName"></param>
         /// <returns></returns>
-        private static string GetLoggingFilepath(string serviceName)
+        private static string GetLoggingFilepath(string serviceName, string logging_tag = null)
         {
-            var fileName = $"{serviceName}-{DateTime.Today:dd-MM-yyyy}.log";
+            var fileName = string.Empty;
+
+            if(logging_tag == null)
+            {
+                fileName = $"{serviceName}-{DateTime.Today:dd-MM-yyyy}.log";
+            }
+            else
+            {
+                fileName = $"{serviceName}-{DateTime.Today:dd-MM-yyyy}_{logging_tag}.log";
+            }
+
             return $"{ApplicationPaths.LoggingDirectory}{Path.DirectorySeparatorChar}{fileName}";
         }
 
@@ -27,7 +37,7 @@ namespace Netlenium.Logging
         /// <param name="serviceName"></param>
         /// <param name="moduleName"></param>
         /// <param name="entry"></param>
-        public static void WriteEntry(MessageType messageType, string serviceName, string moduleName, string entry)
+        public static void WriteEntry(MessageType messageType, string serviceName, string moduleName, string entry, string tag_name = null)
         {
             var output = new StringBuilder();
             output.Append($"[{DateTime.Now:hh:mm:ss tt}]");
@@ -60,7 +70,7 @@ namespace Netlenium.Logging
             }
 
             output.Append($"=> {serviceName}.{moduleName} ::   {entry}{Environment.NewLine}");
-            var file_name = GetLoggingFilepath(serviceName);
+            var file_name = GetLoggingFilepath(serviceName, tag_name);
 
             try
             {

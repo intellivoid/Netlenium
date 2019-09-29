@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Netlenium.Logging
 {
@@ -13,6 +14,11 @@ namespace Netlenium.Logging
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Optional tag name for creating multiple log files
+        /// </summary>
+        public string TagName { get; set; } = null;
+        
         /// <summary>
         /// Option for if Information Type Entries are allowed to be logged
         /// </summary>
@@ -52,6 +58,24 @@ namespace Netlenium.Logging
         /// If enabled, all entried will be logged to a file
         /// </summary>
         public bool FileLoggingEnabled { get; set; }
+
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
+        public Service()
+        {
+            GenerateTag();
+        }
+
+        /// <summary>
+        /// Generates a tag name
+        /// </summary>
+        public void GenerateTag()
+        {
+            var random = new Random();
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            TagName = new string(Enumerable.Repeat(chars, 5).Select(s => s[random.Next(s.Length)]).ToArray());
+        }
 
         /// <summary>
         /// Writes a log entry
@@ -114,11 +138,7 @@ namespace Netlenium.Logging
 
             if(FileLoggingEnabled)
             {
-                FileLogging.WriteEntry(messageType,
-                    Name,
-                    moduleName,
-                    message
-                );
+                FileLogging.WriteEntry(messageType, Name, moduleName, message, TagName);
             }
 
             if(DebuggingOutputEnabled)

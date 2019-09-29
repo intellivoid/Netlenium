@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Netlenium.Driver
@@ -11,6 +12,12 @@ namespace Netlenium.Driver
     /// </summary>
     public static class Utilities
     {
+
+        /// <summary>
+        /// Random Object
+        /// </summary>
+        private static Random random = new Random();
+
         /// <summary>
         ///     The directory of this current executable
         /// </summary>
@@ -124,6 +131,39 @@ namespace Netlenium.Driver
             if (archiveName.ToLower().Contains("win64")) return Platform.Windows64;
 
             return Platform.None;
+        }
+
+        /// <summary>
+        /// Generates and returns a random string
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        /// <summary>
+        /// Creates a isolated logging directory
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static string CreateIsolatedLoggingDirectory(string name)
+        {
+            var isolated_directory = $"{ApplicationPaths.LoggingDirectory}{Path.DirectorySeparatorChar}{name}_{RandomString(7)}";
+
+            if (Directory.Exists(isolated_directory))
+            {
+                Directory.Delete(isolated_directory, true);
+            }
+            else
+            {
+                Directory.CreateDirectory(isolated_directory);
+            }
+
+            return isolated_directory;
         }
     }
 }

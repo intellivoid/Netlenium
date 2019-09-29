@@ -193,7 +193,8 @@ namespace Netlenium.Driver.Chrome
             logging.WriteEntry(MessageType.Verbose, "Driver", "Setting options for driver");
             SetOptions(options);
 
-            var loggingPath = $"{ApplicationPaths.LoggingDirectory}{Path.DirectorySeparatorChar}chrome_driver.log";
+            var isolated_directory = Utilities.CreateIsolatedLoggingDirectory("chrome");
+            var loggingPath = $"{isolated_directory}{Path.DirectorySeparatorChar}chrome_driver.log";
             logging.WriteEntry(MessageType.Verbose, "Driver", $"Setting logging path '{loggingPath}'");
             DriverService.LogPath = loggingPath;
 
